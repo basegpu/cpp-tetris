@@ -61,9 +61,9 @@ private:
 		switch (rotate)
 		{
 			case 0: return {x, y};
-			case 1: return {x, y};
-			case 2: return {x, y};
-			case 3: return {x, y};
+			case 1: return {y, WIDTH-1-x};
+			case 2: return {WIDTH-1-x, WIDTH-1-y};
+			case 3: return {WIDTH-1-y, x};
 			default: throw std::runtime_error("bad rotation");
 		}
 	}	
