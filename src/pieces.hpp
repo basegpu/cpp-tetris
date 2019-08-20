@@ -17,7 +17,7 @@ class Piece
 public:
 	Piece(const char (&asset)[WIDTH][WIDTH])
 	{
-		this->doRotation<NROTATIONS-1>(asset);
+		this->rotate<NROTATIONS-1>(asset);
 	}
 
 	char getShape(const int& rotation, const int& x, const int& y) const
@@ -37,28 +37,31 @@ private:
 	char assets[NROTATIONS][WIDTH][WIDTH];
 
 	template<int ROTATION>
-	void doRotation(const char (&asset)[WIDTH][WIDTH])
+	void rotate(const char (&asset)[WIDTH][WIDTH])
 	{
-		this->rotate<ROTATION>(asset);
-		this->doRotation<ROTATION-1>(asset);
+		this->doRotation<ROTATION>(asset);
+		this->rotate<ROTATION-1>(asset);
 	}
 
 	template<int ROTATE>
-	void rotate(const char (&asset)[WIDTH][WIDTH])
+	void doRotation(const char (&asset)[WIDTH][WIDTH])
 	{
-		for (int ii=0; ii<WIDTH; ii++)
-		{
-			for (int jj=0; jj<WIDTH; jj++)
-			{
-				Index index = this->getRotatedIndices(ii, jj, ROTATE);
-				this->assets[ROTATE][index.x][index.y] = asset[ii][jj];
-			}
-		}
+		this->initAsset<WIDTH*WIDTH-1>(asset, ROTATE);
 	}
 
-	Index getRotatedIndices(const int& x, const int& y, const int& rotate)
+	template<int ISHAPE>
+	void initAsset(const char (&asset)[WIDTH][WIDTH], const int& rotation)
 	{
-		switch (rotate)
+		int ii = ISHAPE / WIDTH;
+		int jj = ISHAPE % WIDTH;
+		Index index = this->getRotatedIndices(ii, jj, rotation);
+		this->assets[rotation][index.x][index.y] = asset[ii][jj];
+		this->initAsset<ISHAPE-1>(asset, rotation);
+	}
+
+	Index getRotatedIndices(const int& x, const int& y, const int& rotation)
+	{
+		switch (rotation)
 		{
 			case 0: return {x, y};
 			case 1: return {y, WIDTH-1-x};
@@ -70,7 +73,14 @@ private:
 };
 
 template<>
-void Piece::doRotation<0>(const char (&asset)[WIDTH][WIDTH])
+void Piece::rotate<0>(const char (&asset)[WIDTH][WIDTH])
 {
-	this->rotate<0>(asset);
+	this->doRotation<0>(asset);
+}
+
+template<>
+void Piece::initAsset<0>(const char (&asset)[WIDTH][WIDTH], const int& rotation)
+{
+	Index index = this->getRotatedIndices(0, 0, rotation);
+	this->assets[rotation][index.x][index.y] = asset[0][0];
 }

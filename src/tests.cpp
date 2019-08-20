@@ -56,3 +56,8 @@ TEST_F(PieceTest, rotation270)
 	ASSERT_EQ(p.getShape(3, 3, 3), 3);
 	ASSERT_EQ(p.getShape(3, 1, 0), 0);
 }
+
+TEST_F(PieceTest, badRotation)
+{
+	ASSERT_ANY_THROW(p.getShape(4, 0, 0));
+}
