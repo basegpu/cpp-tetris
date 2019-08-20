@@ -1,3 +1,7 @@
+build/*
+!build/*.md
+
+
 # Prerequisites
 *.d
 
