@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "pieces.hpp"
 
 int main(int argc, char **argv)
 {
@@ -6,7 +7,25 @@ int main(int argc, char **argv)
 	return RUN_ALL_TESTS();
 }
 
-TEST(Test, AlwaysTrue)
+class PieceTest : public ::testing::Test
 {
-	ASSERT_TRUE(true);
+protected:
+	// void SetUp() override {}
+	// void TearDown() override {}
+	Piece p = Piece({
+		{0,0,0,0,0},
+		{1,0,0,0,0},
+		{0,0,2,0,0},
+		{0,3,0,0,0},
+		{0,0,0,0,0}
+	});
+};
+
+TEST_F(PieceTest, noRotation)
+{
+	ASSERT_EQ(p.getShape(0, 0, 0), 0);
+	ASSERT_EQ(p.getShape(0, 1, 0), 1);
+	ASSERT_EQ(p.getShape(0, 2, 2), 2);
+	ASSERT_EQ(p.getShape(0, 3, 1), 3);
+	ASSERT_EQ(p.getShape(0, 0, 4), 0);
 }
