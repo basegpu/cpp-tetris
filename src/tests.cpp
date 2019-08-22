@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "pieces.hpp"
+#include "tetrimino.hpp"
 
 int main(int argc, char **argv)
 {
@@ -7,12 +7,12 @@ int main(int argc, char **argv)
 	return RUN_ALL_TESTS();
 }
 
-class PieceTest : public ::testing::Test
+class TetriminoTest : public ::testing::Test
 {
 protected:
 	// void SetUp() override {}
 	// void TearDown() override {}
-	Piece p = Piece({
+	Tetrimino p = Tetrimino({
 		{0,0,0,0},
 		{1,0,0,0},
 		{0,0,2,0},
@@ -20,7 +20,7 @@ protected:
 	});
 };
 
-TEST_F(PieceTest, noRotation)
+TEST_F(TetriminoTest, noRotation)
 {
 	ASSERT_EQ(p.getShape(0, 0, 0), 0);
 	ASSERT_EQ(p.getShape(0, 1, 0), 1);
@@ -29,7 +29,7 @@ TEST_F(PieceTest, noRotation)
 	ASSERT_EQ(p.getShape(0, 0, 3), 0);
 }
 
-TEST_F(PieceTest, rotation90)
+TEST_F(TetriminoTest, rotation90)
 {
 	ASSERT_EQ(p.getShape(1, 0, 0), 0);
 	ASSERT_EQ(p.getShape(1, 0, 2), 1);
@@ -38,7 +38,7 @@ TEST_F(PieceTest, rotation90)
 	ASSERT_EQ(p.getShape(1, 3, 3), 0);
 }
 
-TEST_F(PieceTest, rotation180)
+TEST_F(TetriminoTest, rotation180)
 {
 	ASSERT_EQ(p.getShape(2, 0, 0), 0);
 	ASSERT_EQ(p.getShape(2, 2, 3), 1);
@@ -47,7 +47,7 @@ TEST_F(PieceTest, rotation180)
 	ASSERT_EQ(p.getShape(2, 1, 0), 0);
 }
 
-TEST_F(PieceTest, rotation270)
+TEST_F(TetriminoTest, rotation270)
 {
 	ASSERT_EQ(p.getShape(3, 0, 0), 0);
 	ASSERT_EQ(p.getShape(3, 3, 1), 1);
@@ -57,21 +57,21 @@ TEST_F(PieceTest, rotation270)
 }
 
 
-class PieceFactoryTest : public ::testing::Test
+class TetriminoFactoryTest : public ::testing::Test
 {
 protected:
 	// void SetUp() override {}
 	// void TearDown() override {}
-	Piece square = makePiece(Piece::Type::Square);
-	Piece line = makePiece(Piece::Type::Line);
+	Tetrimino square = makePiece(Tetrimino::Type::Square);
+	Tetrimino line = makePiece(Tetrimino::Type::Line);
 };
 
-TEST_F(PieceFactoryTest, badType)
+TEST_F(TetriminoFactoryTest, badType)
 {
-	ASSERT_ANY_THROW(makePiece(Piece::Type::None));
+	ASSERT_ANY_THROW(makePiece(Tetrimino::Type::None));
 }
 
-TEST_F(PieceFactoryTest, Square)
+TEST_F(TetriminoFactoryTest, Square)
 {
 	ASSERT_EQ(square.getShape(0, 2, 2), 1);
 	ASSERT_EQ(square.getShape(1, 2, 1), 1);
@@ -79,7 +79,7 @@ TEST_F(PieceFactoryTest, Square)
 	ASSERT_EQ(square.getShape(3, 1, 2), 1);
 }
 
-TEST_F(PieceFactoryTest, Line)
+TEST_F(TetriminoFactoryTest, Line)
 {
 	ASSERT_EQ(line.getShape(0, 2, 2), 1);
 	ASSERT_EQ(line.getShape(1, 2, 1), 1);
