@@ -61,3 +61,34 @@ TEST_F(PieceTest, badRotation)
 {
 	ASSERT_ANY_THROW(p.getShape(4, 0, 0));
 }
+
+
+class PieceFactoryTest : public ::testing::Test
+{
+protected:
+	// void SetUp() override {}
+	// void TearDown() override {}
+	Piece square = makePiece(Piece::Type::Square);
+	Piece line = makePiece(Piece::Type::Line);
+};
+
+TEST_F(PieceFactoryTest, badType)
+{
+	ASSERT_ANY_THROW(makePiece(Piece::Type::None));
+}
+
+TEST_F(PieceFactoryTest, Square)
+{
+	ASSERT_EQ(square.getShape(0, 2, 2), 2);
+	ASSERT_EQ(square.getShape(1, 2, 1), 1);
+	ASSERT_EQ(square.getShape(2, 1, 1), 1);
+	ASSERT_EQ(square.getShape(3, 2, 2), 2);
+}
+
+TEST_F(PieceFactoryTest, Line)
+{
+	ASSERT_EQ(line.getShape(0, 2, 2), 2);
+	ASSERT_EQ(line.getShape(1, 4, 2), 1);
+	ASSERT_EQ(line.getShape(2, 2, 1), 1);
+	ASSERT_EQ(line.getShape(3, 3, 2), 1);
+}
