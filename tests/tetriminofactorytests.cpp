@@ -7,13 +7,13 @@ class TetriminoFactoryTest : public ::testing::Test
 protected:
 	// void SetUp() override {}
 	// void TearDown() override {}
-	Tetrimino square = makeTetrimino(Tetrimino::Type::Square);
-	Tetrimino line = makeTetrimino(Tetrimino::Type::Line);
-	Tetrimino rHook = makeTetrimino(Tetrimino::Type::RightHook);
-	Tetrimino lHook = makeTetrimino(Tetrimino::Type::LeftHook);
-	Tetrimino tee = makeTetrimino(Tetrimino::Type::Tee);
-	Tetrimino rChair = makeTetrimino(Tetrimino::Type::RightChair);
-	Tetrimino lChair = makeTetrimino(Tetrimino::Type::LeftChair);
+	Tetrimino square = Tetrimino::make(Tetrimino::Type::Square);
+	Tetrimino line = Tetrimino::make(Tetrimino::Type::Line);
+	Tetrimino rHook = Tetrimino::make(Tetrimino::Type::RightHook);
+	Tetrimino lHook = Tetrimino::make(Tetrimino::Type::LeftHook);
+	Tetrimino tee = Tetrimino::make(Tetrimino::Type::Tee);
+	Tetrimino rChair = Tetrimino::make(Tetrimino::Type::RightChair);
+	Tetrimino lChair = Tetrimino::make(Tetrimino::Type::LeftChair);
 };
 
 TEST_F(TetriminoFactoryTest, Square)

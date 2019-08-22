@@ -1,6 +1,4 @@
 #include "gtest/gtest.h"
-#include "tetriminotests.hpp"
-#include "tetriminofactorytests.hpp"
 
 int main(int argc, char **argv)
 {

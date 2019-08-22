@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TETRIMINO_H
+#define TETRIMINO_H
 
 #include <algorithm>
 
@@ -20,15 +21,11 @@ public:
 		LeftChair
 	};
 
-	Tetrimino(const unsigned char (&shape)[WIDTH][WIDTH])
-	{
-		this->rotateRecursion<NROTATIONS-1>(shape);
-	}
+	static Tetrimino make(const Type& type);
 
-	unsigned char getShape(const int& rotation, const int& x, const int& y) const
-	{
-		return this->shapes[rotation % NROTATIONS][x][y];
-	}
+	Tetrimino(const unsigned char (&shape)[WIDTH][WIDTH]);
+
+	unsigned char getShape(const int& rotation, const int& x, const int& y) const;
 
 private:
 
@@ -77,65 +74,4 @@ private:
 	}
 };
 
-template<>
-void Tetrimino::rotateRecursion<0>(const unsigned char (&shape)[WIDTH][WIDTH])
-{
-	this->doRotation<0>(shape);
-}
-
-template<>
-void Tetrimino::assetInitializationRecursion<0>(const unsigned char (&shape)[WIDTH][WIDTH], const int& rotation)
-{
-	this->doAssetInitialization<0>(shape, rotation);
-}
-
-
-Tetrimino makeTetrimino(const Tetrimino::Type& type)
-{
-	switch (type)
-	{
-		case Tetrimino::Type::Square: return Tetrimino({
-			{0,0,0,0},
-			{0,1,1,0},
-			{0,1,1,0},
-			{0,0,0,0},
-		});
-		case Tetrimino::Type::Line: return Tetrimino({
-			{0,0,1,0},
-			{0,0,1,0},
-			{0,0,1,0},
-			{0,0,1,0},
-		});
-		case Tetrimino::Type::RightHook: return Tetrimino({
-			{0,1,0,0},
-			{0,1,0,0},
-			{0,1,1,0},
-			{0,0,0,0},
-		});
-		case Tetrimino::Type::LeftHook: return Tetrimino({
-			{0,0,1,0},
-			{0,0,1,0},
-			{0,1,1,0},
-			{0,0,0,0},
-		});
-		case Tetrimino::Type::Tee: return Tetrimino({
-			{0,0,0,0},
-			{0,0,1,0},
-			{0,1,1,1},
-			{0,0,0,0},
-		});
-		case Tetrimino::Type::RightChair: return Tetrimino({
-			{0,0,0,0},
-			{0,1,1,0},
-			{0,0,1,1},
-			{0,0,0,0},
-		});
-
-		case Tetrimino::Type::LeftChair: return Tetrimino({
-			{0,0,0,0},
-			{0,1,1,0},
-			{1,1,0,0},
-			{0,0,0,0},
-		});
-	}
-}
+#endif
