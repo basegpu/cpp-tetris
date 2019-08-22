@@ -8,6 +8,18 @@ Board::Board(const int& pScreenHeight) :
 	this->Initialize();
 }
 
+bool Board::IsFreeBlock(const int& pX, const int& pY)
+{
+    if (this->mBoard[pX][pY] == Position::Free)
+    {
+   		return true;
+   	}
+   	else
+   	{
+   		return false;
+   	}
+}
+
 void Board::Initialize()
 {
 	for (int ii = 0; ii < BOARD_WIDTH; ii++)

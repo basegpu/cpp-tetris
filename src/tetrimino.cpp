@@ -3,27 +3,27 @@
 
 Tetrimino::Tetrimino(const unsigned char (&shape)[WIDTH][WIDTH])
 {
-	this->rotateRecursion<NROTATIONS-1>(shape);
+	this->RotateRecursion<NROTATIONS-1>(shape);
 }
 
-unsigned char Tetrimino::getShape(const int& rotation, const int& x, const int& y) const
+unsigned char Tetrimino::GetShape(const int& rotation, const int& x, const int& y) const
 {
 	return this->shapes[rotation % NROTATIONS][x][y];
 }
 
 template<>
-void Tetrimino::rotateRecursion<0>(const unsigned char (&shape)[WIDTH][WIDTH])
+void Tetrimino::RotateRecursion<0>(const unsigned char (&shape)[WIDTH][WIDTH])
 {
-	this->doRotation<0>(shape);
+	this->DoRotation<0>(shape);
 }
 
 template<>
-void Tetrimino::assetInitializationRecursion<0>(const unsigned char (&shape)[WIDTH][WIDTH], const int& rotation)
+void Tetrimino::AssetInitializationRecursion<0>(const unsigned char (&shape)[WIDTH][WIDTH], const int& rotation)
 {
-	this->doAssetInitialization<0>(shape, rotation);
+	this->DoAssetInitialization<0>(shape, rotation);
 }
 
-Tetrimino Tetrimino::make(const Tetrimino::Type& type)
+Tetrimino Tetrimino::Make(const Tetrimino::Type& type)
 {
 	switch (type)
 	{

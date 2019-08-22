@@ -17,6 +17,8 @@ public:
 
     Board(const int& pScreenHeight);
 
+    bool IsFreeBlock(const int& pX, const int& pY);
+
 
 private:
 

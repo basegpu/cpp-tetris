@@ -21,38 +21,38 @@ public:
 		LeftChair
 	};
 
-	static Tetrimino make(const Type& type);
+	static Tetrimino Make(const Type& type);
 
 	Tetrimino(const unsigned char (&shape)[WIDTH][WIDTH]);
 
-	unsigned char getShape(const int& rotation, const int& x, const int& y) const;
+	unsigned char GetShape(const int& rotation, const int& x, const int& y) const;
 
 private:
 
 	unsigned char shapes[NROTATIONS][WIDTH][WIDTH];
 
 	template<int ROTATION>
-	void rotateRecursion(const unsigned char (&shape)[WIDTH][WIDTH])
+	void RotateRecursion(const unsigned char (&shape)[WIDTH][WIDTH])
 	{
-		this->doRotation<ROTATION>(shape);
-		this->rotateRecursion<ROTATION-1>(shape);
+		this->DoRotation<ROTATION>(shape);
+		this->RotateRecursion<ROTATION-1>(shape);
 	}
 
 	template<int ROTATION>
-	void doRotation(const unsigned char (&shape)[WIDTH][WIDTH])
+	void DoRotation(const unsigned char (&shape)[WIDTH][WIDTH])
 	{
-		this->assetInitializationRecursion<WIDTH*WIDTH-1>(shape, ROTATION);
+		this->AssetInitializationRecursion<WIDTH*WIDTH-1>(shape, ROTATION);
 	}
 
 	template<int INDEX>
-	void assetInitializationRecursion(const unsigned char (&shape)[WIDTH][WIDTH], const int& rotation)
+	void AssetInitializationRecursion(const unsigned char (&shape)[WIDTH][WIDTH], const int& rotation)
 	{
-		this->doAssetInitialization<INDEX>(shape, rotation);
-		this->assetInitializationRecursion<INDEX-1>(shape, rotation);
+		this->DoAssetInitialization<INDEX>(shape, rotation);
+		this->AssetInitializationRecursion<INDEX-1>(shape, rotation);
 	}
 
 	template<int INDEX>
-	void doAssetInitialization(const unsigned char (&shape)[WIDTH][WIDTH], const int& rotation)
+	void DoAssetInitialization(const unsigned char (&shape)[WIDTH][WIDTH], const int& rotation)
 	{
 		// row and column indices
 		int ii = INDEX / WIDTH;

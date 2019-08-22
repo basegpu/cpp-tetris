@@ -7,9 +7,9 @@ add_subdirectory(../tests tests)
 
 file(GLOB sources *.cpp)
 list(REMOVE_ITEM sources main.cpp)
-add_library(tetrislib ${sources})
-target_compile_options(tetrislib PUBLIC -std=c++14 -O3 -Wall -Wfloat-conversion)
-
-add_executable(tetris main.cpp)
-target_link_libraries(tetris tetrislib)
+add_library(tetris ${sources})
 target_compile_options(tetris PUBLIC -std=c++14 -O3 -Wall -Wfloat-conversion)
+
+add_executable(game main.cpp)
+target_link_libraries(game tetris)
+target_compile_options(game PUBLIC -std=c++14 -O3 -Wall -Wfloat-conversion)
