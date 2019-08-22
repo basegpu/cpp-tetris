@@ -7,11 +7,13 @@ class TetriminoFactoryTest : public ::testing::Test
 protected:
 	// void SetUp() override {}
 	// void TearDown() override {}
-	Tetrimino square = makePiece(Tetrimino::Type::Square);
-	Tetrimino line = makePiece(Tetrimino::Type::Line);
-	Tetrimino rHook = makePiece(Tetrimino::Type::RightHook);
-	Tetrimino lHook = makePiece(Tetrimino::Type::LeftHook);
-	Tetrimino tee = makePiece(Tetrimino::Type::Tee);
+	Tetrimino square = makeTetrimino(Tetrimino::Type::Square);
+	Tetrimino line = makeTetrimino(Tetrimino::Type::Line);
+	Tetrimino rHook = makeTetrimino(Tetrimino::Type::RightHook);
+	Tetrimino lHook = makeTetrimino(Tetrimino::Type::LeftHook);
+	Tetrimino tee = makeTetrimino(Tetrimino::Type::Tee);
+	Tetrimino rChair = makeTetrimino(Tetrimino::Type::RightChair);
+	Tetrimino lChair = makeTetrimino(Tetrimino::Type::LeftChair);
 };
 
 TEST_F(TetriminoFactoryTest, Square)
@@ -52,4 +54,20 @@ TEST_F(TetriminoFactoryTest, Tee)
 	ASSERT_EQ(tee.getShape(1, 1, 1), 1);
 	ASSERT_EQ(tee.getShape(2, 1, 1), 1);
 	ASSERT_EQ(tee.getShape(3, 0, 2), 1);
+}
+
+TEST_F(TetriminoFactoryTest, RightChair)
+{
+	ASSERT_EQ(rChair.getShape(0, 1, 1), 1);
+	ASSERT_EQ(rChair.getShape(1, 2, 2), 1);
+	ASSERT_EQ(rChair.getShape(2, 1, 1), 1);
+	ASSERT_EQ(rChair.getShape(3, 0, 2), 1);
+}
+
+TEST_F(TetriminoFactoryTest, LeftChair)
+{
+	ASSERT_EQ(lChair.getShape(0, 2, 0), 1);
+	ASSERT_EQ(lChair.getShape(1, 1, 1), 1);
+	ASSERT_EQ(lChair.getShape(2, 2, 2), 1);
+	ASSERT_EQ(lChair.getShape(3, 2, 1), 1);
 }

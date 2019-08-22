@@ -15,7 +15,9 @@ public:
 		Line,
 		RightHook,
 		LeftHook,
-		Tee
+		Tee,
+		RightChair,
+		LeftChair
 	};
 
 	Tetrimino(const unsigned char (&shape)[WIDTH][WIDTH])
@@ -88,7 +90,7 @@ void Tetrimino::assetInitializationRecursion<0>(const unsigned char (&shape)[WID
 }
 
 
-Tetrimino makePiece(const Tetrimino::Type& type)
+Tetrimino makeTetrimino(const Tetrimino::Type& type)
 {
 	switch (type)
 	{
@@ -120,6 +122,19 @@ Tetrimino makePiece(const Tetrimino::Type& type)
 			{0,0,0,0},
 			{0,0,1,0},
 			{0,1,1,1},
+			{0,0,0,0},
+		});
+		case Tetrimino::Type::RightChair: return Tetrimino({
+			{0,0,0,0},
+			{0,1,1,0},
+			{0,0,1,1},
+			{0,0,0,0},
+		});
+
+		case Tetrimino::Type::LeftChair: return Tetrimino({
+			{0,0,0,0},
+			{0,1,1,0},
+			{1,1,0,0},
 			{0,0,0,0},
 		});
 	}
