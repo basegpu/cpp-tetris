@@ -1,8 +1,9 @@
 #pragma once
 
 #include <stdexcept>
+#include <algorithm>
 
-#define WIDTH 5
+#define WIDTH 4
 #define NROTATIONS 4
 
 
@@ -23,14 +24,7 @@ public:
 
 	unsigned char getShape(const int& rotation, const int& x, const int& y) const
 	{
-		if (rotation < NROTATIONS)
-		{
-			return this->assets[rotation][x][y];
-		}
-		else
-		{
-			throw std::runtime_error("bad rotation");
-		}
+		return this->assets[rotation % NROTATIONS][x][y];
 	}
 
 private:
@@ -60,26 +54,24 @@ private:
 	template<int INDEX>
 	void doAssetInitialization(const unsigned char (&asset)[WIDTH][WIDTH], const int& rotation)
 	{
+		// row and column indices
 		int ii = INDEX / WIDTH;
 		int jj = INDEX % WIDTH;
+		// reference value
 		unsigned char v = asset[ii][jj];
-		this->rotateIndices(ii, jj, rotation);
-		this->assets[rotation][ii][jj] = v;
-	}
-
-	void rotateIndices(int& x, int& y, const int& rotation)
-	{
-		int ii = x;
-		int jj = y;
-		switch (rotation)
+		// lambda function for inverse index
+		auto invIndex = [](int& index) { index = WIDTH-1-index; };
+		// do rotation
+		switch (rotation % NROTATIONS)
 		{
 			case 0: break;
-			case 1: x = jj; y = WIDTH-1-ii; break;
-			case 2: x = WIDTH-1-ii; y = WIDTH-1-jj; break;
-			case 3: x = WIDTH-1-jj, y = ii; break;
-			default: throw std::runtime_error("bad rotation");
+			case 1: std::swap(ii,jj); invIndex(jj); break;
+			case 2: invIndex(ii); invIndex(jj); break;
+			case 3: std::swap(ii,jj); invIndex(ii); break;
 		}
-	}	
+		// assign rotated values
+		this->assets[rotation][ii][jj] = v;
+	}
 };
 
 template<>
@@ -100,18 +92,16 @@ Piece makePiece(const Piece::Type& type)
 	switch (type)
 	{
 		case Piece::Type::Square: return Piece({
-			{0,0,0,0,0},
-			{0,0,0,0,0},
-			{0,0,2,1,0},
-			{0,0,1,1,0},
-			{0,0,0,0,0},
+			{0,0,0,0},
+			{0,1,1,0},
+			{0,1,1,0},
+			{0,0,0,0},
 		});
 		case Piece::Type::Line: return Piece({
-			{0,0,0,0,0},
-			{0,0,0,0,0},
-			{0,1,2,1,1},
-			{0,0,0,0,0},
-			{0,0,0,0,0},
+			{0,0,1,0},
+			{0,0,1,0},
+			{0,0,1,0},
+			{0,0,1,0},
 		});
 		default: throw std::runtime_error("piece type not known");
 	}
