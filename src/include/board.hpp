@@ -19,7 +19,7 @@ public:
     Board(const int& pScreenHeight);
     void AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation, const int& pX, const int& pY);
     bool IsFreeBlock(const int& pX, const int& pY);
-
+    bool IsGameOver();
 
 private:
 

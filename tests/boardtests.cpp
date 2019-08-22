@@ -50,3 +50,11 @@ TEST_F(BoardTest, tetriminoOutside)
 			0, 100),
 		std::out_of_range);
 }
+
+TEST_F(BoardTest, gameOver)
+{
+	board.AddTetrimino(Tetrimino::Type::Line, 1, 0, 0);
+	ASSERT_EQ(board.IsGameOver(), false);
+	board.AddTetrimino(Tetrimino::Type::Line, 0, 5, 0);
+	ASSERT_EQ(board.IsGameOver(), true);
+}

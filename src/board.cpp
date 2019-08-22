@@ -40,6 +40,19 @@ bool Board::IsFreeBlock(const int& pX, const int& pY)
     }
 }
 
+bool Board::IsGameOver()
+{
+    //If the first line has blocks, then, game over
+    for (int ii = 0; ii < BOARD_WIDTH; ii++)
+    {
+        if (this->mBoard[ii][0] == Position::Filled)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Board::Initialize()
 {
     for (int ii = 0; ii < BOARD_WIDTH; ii++)
