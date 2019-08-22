@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdexcept>
 #include <algorithm>
 
 #define WIDTH 4
@@ -12,10 +11,10 @@ class Tetrimino
 public:
 
 	enum class Type : unsigned char {
-		None,
 		Square,
 		Line,
-
+		RightHook,
+		LeftHook
 	};
 
 	Tetrimino(const unsigned char (&shape)[WIDTH][WIDTH])
@@ -104,6 +103,17 @@ Tetrimino makePiece(const Tetrimino::Type& type)
 			{0,0,1,0},
 			{0,0,1,0},
 		});
-		default: throw std::runtime_error("piece type not known");
+		case Tetrimino::Type::RightHook: return Tetrimino({
+			{0,1,0,0},
+			{0,1,0,0},
+			{0,1,1,0},
+			{0,0,0,0},
+		});
+		case Tetrimino::Type::LeftHook: return Tetrimino({
+			{0,0,1,0},
+			{0,0,1,0},
+			{0,1,1,0},
+			{0,0,0,0},
+		});
 	}
 }
