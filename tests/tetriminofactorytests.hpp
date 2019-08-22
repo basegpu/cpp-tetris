@@ -11,6 +11,7 @@ protected:
 	Tetrimino line = makePiece(Tetrimino::Type::Line);
 	Tetrimino rHook = makePiece(Tetrimino::Type::RightHook);
 	Tetrimino lHook = makePiece(Tetrimino::Type::LeftHook);
+	Tetrimino tee = makePiece(Tetrimino::Type::Tee);
 };
 
 TEST_F(TetriminoFactoryTest, Square)
@@ -43,4 +44,12 @@ TEST_F(TetriminoFactoryTest, LeftHook)
 	ASSERT_EQ(lHook.getShape(1, 2, 2), 1);
 	ASSERT_EQ(lHook.getShape(2, 1, 1), 1);
 	ASSERT_EQ(lHook.getShape(3, 2, 2), 1);
+}
+
+TEST_F(TetriminoFactoryTest, Tee)
+{
+	ASSERT_EQ(tee.getShape(0, 1, 2), 1);
+	ASSERT_EQ(tee.getShape(1, 1, 1), 1);
+	ASSERT_EQ(tee.getShape(2, 1, 1), 1);
+	ASSERT_EQ(tee.getShape(3, 0, 2), 1);
 }

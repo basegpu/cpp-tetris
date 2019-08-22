@@ -1,4 +1,10 @@
-add_executable(tetris_test main.cpp)
+add_subdirectory(../libs/googletest googletest)
+enable_testing()
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+file(GLOB sources *.cpp *.hpp)
+
+add_executable(tetris_test ${sources})
 
 target_link_libraries(tetris_test gtest)
 target_compile_options(tetris_test PUBLIC -std=c++14 -Wall -Wfloat-conversion)

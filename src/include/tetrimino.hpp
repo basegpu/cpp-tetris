@@ -14,7 +14,8 @@ public:
 		Square,
 		Line,
 		RightHook,
-		LeftHook
+		LeftHook,
+		Tee
 	};
 
 	Tetrimino(const unsigned char (&shape)[WIDTH][WIDTH])
@@ -113,6 +114,12 @@ Tetrimino makePiece(const Tetrimino::Type& type)
 			{0,0,1,0},
 			{0,0,1,0},
 			{0,1,1,0},
+			{0,0,0,0},
+		});
+		case Tetrimino::Type::Tee: return Tetrimino({
+			{0,0,0,0},
+			{0,0,1,0},
+			{0,1,1,1},
 			{0,0,0,0},
 		});
 	}
