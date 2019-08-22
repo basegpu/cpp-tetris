@@ -74,4 +74,4 @@ private:
 	}
 };
 
-#endif
+#endif // TETRIMINO_H
