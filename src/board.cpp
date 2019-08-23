@@ -3,8 +3,7 @@
 #include <stdexcept>
 
 
-Board::Board(const int& pScreenHeight) :
-    mScreenHeight(pScreenHeight)
+Board::Board()
 {
     this->Initialize();
 }
@@ -13,9 +12,9 @@ void Board::AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation,
 {
     Tetrimino piece = Tetrimino::Make(tetrimino);
     // Store each block of the piece into the board
-    for (int i1 = pX, i2 = 0; i1 < pX + TETRIMINO_WIDTH; i1++, i2++)
+    for (int i1 = pX, i2 = 0; i1 < pX + Tetrimino::BlocksPerPiece; i1++, i2++)
     {
-        for (int j1 = pY, j2 = 0; j1 < pY + TETRIMINO_WIDTH; j1++, j2++)
+        for (int j1 = pY, j2 = 0; j1 < pY + Tetrimino::BlocksPerPiece; j1++, j2++)
         {   
             // Store only the blocks of the piece that are not holes
             if (piece.GetShape(pRotation, j2, i2) != 0)

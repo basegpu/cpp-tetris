@@ -9,7 +9,7 @@ class BoardTest : public ::testing::Test
 protected:
 	// void SetUp() override {}
 	// void TearDown() override {}
-	Board board = Board(400);
+	Board board = Board();
 };
 
 TEST_F(BoardTest, EmptyBoard)

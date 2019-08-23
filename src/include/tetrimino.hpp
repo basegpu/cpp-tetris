@@ -22,13 +22,14 @@ public:
 	};
 
 	static Tetrimino Make(const Type& type);
+	static const size_t BlocksPerPiece;
 
 	Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH]);
-
 	unsigned char GetShape(const int& rotation, const int& x, const int& y) const;
 
 private:
 
+	const size_t nBlocks;
 	unsigned char shapes[TETRIMINO_NROTATIONS][TETRIMINO_WIDTH][TETRIMINO_WIDTH];
 
 	template<int ROTATION>

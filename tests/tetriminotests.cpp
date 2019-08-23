@@ -15,6 +15,11 @@ protected:
 	});
 };
 
+TEST_F(TetriminoTest, nBlocks)
+{
+	ASSERT_EQ(Tetrimino::BlocksPerPiece, 4);
+}
+
 TEST_F(TetriminoTest, noRotation)
 {
 	ASSERT_EQ(p.GetShape(0, 0, 0), 0);
