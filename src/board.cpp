@@ -26,7 +26,7 @@ void Board::AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation,
     }
 }
 
-bool Board::IsFreeBlock(const int& pX, const int& pY)
+bool Board::IsFreeBlock(const int& pX, const int& pY) const
 {
     this->CheckLimits(pX, pY);
     if (this->mBoard[pX][pY] == Position::Free)
@@ -39,7 +39,30 @@ bool Board::IsFreeBlock(const int& pX, const int& pY)
     }
 }
 
-bool Board::IsGameOver()
+void Board::DeletePossibleLines()
+{
+    // loop over all lines from the bottom
+    for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+    {
+        // check if all blocks are filled
+        int ii = 0;
+        while (ii < BOARD_WIDTH)
+        {
+            if (mBoard[ii][jj] != Position::Filled)
+            {
+                break;
+            }
+            ii++;
+        }
+        // then remove that line
+        if (ii == BOARD_WIDTH)
+        {
+            this->DeleteLine(jj);
+        }
+    }
+}
+
+bool Board::IsGameOver() const
 {
     //If the first line has blocks, then, game over
     for (int ii = 0; ii < BOARD_WIDTH; ii++)
@@ -63,7 +86,20 @@ void Board::Initialize()
     }
 }
 
-void Board::CheckLimits(const int& pX, const int& pY)
+void Board::DeleteLine(const int& pY)
+{
+    this->CheckLimits(0, pY);
+    // Moves all the upper lines one row down
+    for (int jj = pY; jj > 0; jj--)
+    {
+        for (int ii = 0; ii < BOARD_WIDTH; ii++)
+        {
+            this->mBoard[ii][jj] = this->mBoard[ii][jj-1];
+        }
+    }   
+}
+
+void Board::CheckLimits(const int& pX, const int& pY) const
 {
     if (pX >= BOARD_WIDTH || pY >= BOARD_HEIGHT)
     {

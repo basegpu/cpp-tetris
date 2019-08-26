@@ -20,7 +20,7 @@ TEST_F(TetriminoTest, nBlocks)
 	ASSERT_EQ(Tetrimino::BlocksPerPiece, 4);
 }
 
-TEST_F(TetriminoTest, noRotation)
+TEST_F(TetriminoTest, NoRotation)
 {
 	ASSERT_EQ(p.GetShape(0, 0, 0), 0);
 	ASSERT_EQ(p.GetShape(0, 1, 0), 1);
@@ -29,7 +29,7 @@ TEST_F(TetriminoTest, noRotation)
 	ASSERT_EQ(p.GetShape(0, 0, 3), 0);
 }
 
-TEST_F(TetriminoTest, rotation90)
+TEST_F(TetriminoTest, Rotation90)
 {
 	ASSERT_EQ(p.GetShape(1, 0, 0), 0);
 	ASSERT_EQ(p.GetShape(1, 0, 2), 1);
@@ -38,7 +38,7 @@ TEST_F(TetriminoTest, rotation90)
 	ASSERT_EQ(p.GetShape(1, 3, 3), 0);
 }
 
-TEST_F(TetriminoTest, rotation180)
+TEST_F(TetriminoTest, Rotation180)
 {
 	ASSERT_EQ(p.GetShape(2, 0, 0), 0);
 	ASSERT_EQ(p.GetShape(2, 2, 3), 1);
@@ -47,7 +47,7 @@ TEST_F(TetriminoTest, rotation180)
 	ASSERT_EQ(p.GetShape(2, 1, 0), 0);
 }
 
-TEST_F(TetriminoTest, rotation270)
+TEST_F(TetriminoTest, Rotation270)
 {
 	ASSERT_EQ(p.GetShape(3, 0, 0), 0);
 	ASSERT_EQ(p.GetShape(3, 3, 1), 1);
