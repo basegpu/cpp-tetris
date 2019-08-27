@@ -16,7 +16,6 @@ Board::Board()
 
 void Board::AddTetrimino(
     const Tetrimino* tetrimino,
-    const int& pRotation,
     const int& pX,
     const int& pY)
 {
@@ -28,12 +27,11 @@ void Board::AddTetrimino(
         // and return true to continue with looping
         return true;
     };
-    this->LoopOverTetrimino(tetrimino, pRotation, pX, pY, func);
+    this->LoopOverTetrimino(tetrimino, pX, pY, func);
 }
 
 bool Board::IsPossibleMove(
     const Tetrimino* tetrimino,
-    const int& pRotation,
     const int& pX,
     const int& pY)
 {
@@ -50,7 +48,7 @@ bool Board::IsPossibleMove(
         // continue with looping
         return true;
     };
-    this->LoopOverTetrimino(tetrimino, pRotation, pX, pY, func);
+    this->LoopOverTetrimino(tetrimino, pX, pY, func);
     return isPossible;
 }
 
@@ -140,7 +138,6 @@ void Board::DeleteLine(const int& pY)
 
 void Board::LoopOverTetrimino(
     const Tetrimino* tetrimino,
-    const int& pRotation,
     const int& pX,
     const int& pY,
     std::function<bool(const int&, const int&)> func)
@@ -151,7 +148,7 @@ void Board::LoopOverTetrimino(
         for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
         {   
             // Store only the blocks of the piece that are not holes
-            if (tetrimino->GetShape(pRotation, row, col) != 0)
+            if (tetrimino->GetShape(row, col) != 0)
             {
                 if(!func(x, y))
                 {

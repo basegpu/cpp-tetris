@@ -36,7 +36,7 @@ Tetrimino* Game::CreatePiece() const
 {
     int piece = this->GetRand(0, Tetrimino::NumberOfTypes - 1);
     int rotation = this->GetRand(0, Tetrimino::NumberOfRotations - 1);
-    return Tetrimino::Make(static_cast<Tetrimino::Type>(piece));
+    return Tetrimino::Make(static_cast<Tetrimino::Type>(piece), rotation);
 }
 
 int Game::GetRand(const int& pA, const int& pB) const

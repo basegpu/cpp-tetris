@@ -16,8 +16,10 @@ public:
 protected:
 
 	Board* board = nullptr;
-	Tetrimino* piece = nullptr; // the piece that is falling down
-    Tetrimino* nextPiece = nullptr; // the next piece
+	// the piece that is falling down
+	Tetrimino* piece = nullptr;
+	// the next piece
+    Tetrimino* nextPiece = nullptr;
 
     void AddNewPiece();
 

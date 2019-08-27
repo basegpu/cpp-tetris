@@ -19,24 +19,28 @@ public:
 		LeftChair
 	};
 
-	static Tetrimino* Make(const Type& type);
+	static Tetrimino* Make(const Type& type, const int& rotation);
 	static const size_t BlocksPerPiece;
 	static const size_t NumberOfRotations;
 	static const size_t NumberOfTypes;
 
-	unsigned char GetShape(const int& rotation, const int& x, const int& y) const;
-	int GetTopBlock(const int& rotation) const;
-	int GetLeftBlock(const int& rotation) const;
+	unsigned char GetShape(const int& x, const int& y) const;
+	int GetTopBlock() const;
+	int GetLeftBlock() const;
+	void Rotate();
+	void SetRotation(const int& rotation);
 
 protected:
 
-	Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH]);
+	Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation);
+	int GetRotation() const;
 
 
 private:
 
 	unsigned char shapes[TETRIMINO_NROTATIONS][TETRIMINO_WIDTH][TETRIMINO_WIDTH];
 	int topleftBlock[TETRIMINO_NROTATIONS][2];
+	int rotationState;
 
 	template<int ROTATION>
 	void RotateRecursion(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH])
