@@ -8,12 +8,4 @@
 #define BOARD_WIDTH 10              // Board width in blocks
 #define BOARD_HEIGHT 20             // Board height in blocks
 
-// typedefs
-
-enum class Position : unsigned char
-{
-    Free,   // free position of the board
-    Filled  // filled position of the board
-};
-
 #endif

@@ -15,9 +15,16 @@ public:
 
 protected:
 
+	typedef struct Position
+	{
+		int row;
+		int col;
+	} Position;
+
 	Board* board = nullptr;
 	// the piece that is falling down
 	Tetrimino* piece = nullptr;
+	Position currentPosition;
 	// the next piece
     Tetrimino* nextPiece = nullptr;
 

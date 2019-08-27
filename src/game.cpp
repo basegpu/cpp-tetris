@@ -10,10 +10,9 @@ Game::Game() :
 {
     // Init random numbers
     srand((unsigned int) time(NULL));
-    // First piece
-    this->piece = this->CreatePiece();
     // Next piece
     this->nextPiece = this->CreatePiece();
+    this->AddNewPiece();
 }
 
 Game::~Game()
@@ -25,9 +24,13 @@ Game::~Game()
 void Game::AddNewPiece()
 {
     // delete old piece
-    delete this->piece;
+    if (this->piece) delete this->piece;
     // The new piece
     this->piece = this->nextPiece;
+    this->currentPosition = {
+        0 - this->piece->GetTopBlock(),
+        (int)Board::Width/2 - this->piece->GetLeftBlock()
+    };
     // Random next piece
     this->nextPiece = this->CreatePiece();
 }

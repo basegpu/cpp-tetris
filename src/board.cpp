@@ -23,7 +23,7 @@ void Board::AddTetrimino(
         // Check if within the boundaries
         this->CheckLimits(x, y);
         // if ok, then set the position as filled
-        this->mBoard[x][y] = Position::Filled;
+        this->mBoard[x][y] = Block::Filled;
         // and return true to continue with looping
         return true;
     };
@@ -39,7 +39,7 @@ bool Board::IsPossibleMove(
     auto func = [this, &isPossible](const int& x, const int& y) mutable -> bool {
         // Check if the piece is outside the limits of the board
         // or the piece have collisioned with a block already stored in the map
-        if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Position::Filled)
+        if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Block::Filled)
         {
             isPossible = false;
             // stop looping
@@ -56,7 +56,7 @@ int Board::CountFilledBlocks()
 {
     int count = 0;
     auto func = [this, &count](const int& ii, const int& jj) -> bool {
-        count += (this->mBoard[ii][jj] == Position::Filled) ? 1 : 0;
+        count += (this->mBoard[ii][jj] == Block::Filled) ? 1 : 0;
         return true;
     };
     this->LoopOverBoard(func);
@@ -66,7 +66,7 @@ int Board::CountFilledBlocks()
 void Board::Reset()
 {
     auto func = [&, this](const int& ii, const int& jj) -> bool {
-        this->mBoard[ii][jj] = Position::Free;
+        this->mBoard[ii][jj] = Block::Free;
         return true;
     };
     this->LoopOverBoard(func);
@@ -75,7 +75,7 @@ void Board::Reset()
 bool Board::IsFreeBlock(const int& pX, const int& pY) const
 {
     this->CheckLimits(pX, pY);
-    if (this->mBoard[pX][pY] == Position::Free)
+    if (this->mBoard[pX][pY] == Block::Free)
     {
         return true;
     }
@@ -90,7 +90,7 @@ void Board::DeletePossibleLines()
     int counter = 0;
     auto func = [this, &counter](const int& ii, const int& jj) -> bool {
         // count filled blocks
-        if (this->mBoard[ii][jj] == Position::Filled)
+        if (this->mBoard[ii][jj] == Block::Filled)
         {
             counter++;
         }
@@ -117,7 +117,7 @@ bool Board::IsGameOver() const
     // If the first line has blocks, then, game over
     for (int ii = 0; ii < BOARD_WIDTH; ii++)
     {
-        if (this->mBoard[ii][0] == Position::Filled)
+        if (this->mBoard[ii][0] == Block::Filled)
         {
             return true;
         }

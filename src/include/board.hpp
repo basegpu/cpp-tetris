@@ -23,7 +23,13 @@ public:
 
 protected:
 
-    Position mBoard[BOARD_WIDTH][BOARD_HEIGHT]; // Board that contains the pieces
+    enum class Block : unsigned char
+    {
+        Free,   // free position of the board
+        Filled  // filled position of the board
+    };
+
+    Block mBoard[BOARD_WIDTH][BOARD_HEIGHT]; // Board that contains the pieces
 
     void DeleteLine(const int& pY);
     void LoopOverTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY, std::function<bool(const int&, const int&)> func);
