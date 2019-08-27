@@ -13,6 +13,7 @@ protected:
 
 TEST_F(BoardTest, EmptyBoard)
 {
+	this->Reset();
 	for (int ii = 0; ii < BOARD_WIDTH; ii++)
 	{
 		for (int jj = 0; jj < BOARD_HEIGHT; jj++)
@@ -29,6 +30,7 @@ TEST_F(BoardTest, BadBlockAccess)
 
 TEST_F(BoardTest, SingleTetrimino)
 {
+	this->Reset();
 	this->AddTetrimino(Tetrimino::Type::Square, 0, 0, 0);
 	ASSERT_EQ(this->IsFreeBlock(0, 0), true);
 	ASSERT_EQ(this->IsFreeBlock(1, 1), false);
@@ -52,6 +54,7 @@ TEST_F(BoardTest, TetriminoOutside)
 
 TEST_F(BoardTest, DeleteSingleLine)
 {
+	this->Reset();
 	this->AddTetrimino(Tetrimino::Type::Line, 1, 0, 0);
 	ASSERT_EQ(this->IsFreeBlock(0, 3), true);
 	this->DeleteLine(10);
@@ -65,8 +68,21 @@ TEST_F(BoardTest, DeleteLineOutisde)
 
 TEST_F(BoardTest, GameOver)
 {
+	this->Reset();
 	this->AddTetrimino(Tetrimino::Type::Line, 1, 0, 0);
 	ASSERT_EQ(this->IsGameOver(), false);
 	this->AddTetrimino(Tetrimino::Type::Line, 0, 5, 0);
 	ASSERT_EQ(this->IsGameOver(), true);
+}
+
+TEST_F(BoardTest, DeletePossibleLines)
+{
+	this->Reset();
+	this->AddTetrimino(Tetrimino::Type::Line, 1, 0, 17);
+	this->AddTetrimino(Tetrimino::Type::Line, 1, 4, 17);
+	this->AddTetrimino(Tetrimino::Type::Line, 0, 6, 16);
+	this->AddTetrimino(Tetrimino::Type::Line, 0, 7, 16);
+	ASSERT_EQ(this->CountFilledBlocks(), 16);
+	this->DeletePossibleLines();
+	ASSERT_EQ(this->CountFilledBlocks(), 6);
 }

@@ -5,7 +5,7 @@
 
 Board::Board()
 {
-    this->Initialize();
+    this->Reset();
 }
 
 void Board::AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation, const int& pX, const int& pY)
@@ -22,6 +22,30 @@ void Board::AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation,
                 this->CheckLimits(i1, j1);
                 this->mBoard[i1][j1] = Position::Filled;    
             }
+        }
+    }
+}
+
+int Board::CountFilledBlocks() const
+{
+    int count = 0;
+    for (int ii = 0; ii < BOARD_WIDTH; ii++)
+    {
+        for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+        {
+            count += (mBoard[ii][jj] == Position::Filled) ? 1 : 0;
+        }
+    }
+    return count;
+}
+
+void Board::Reset()
+{
+    for (int ii = 0; ii < BOARD_WIDTH; ii++)
+    {
+        for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+        {
+            mBoard[ii][jj] = Position::Free;
         }
     }
 }
@@ -73,17 +97,6 @@ bool Board::IsGameOver() const
         }
     }
     return false;
-}
-
-void Board::Initialize()
-{
-    for (int ii = 0; ii < BOARD_WIDTH; ii++)
-    {
-        for (int jj = 0; jj < BOARD_HEIGHT; jj++)
-        {
-            mBoard[ii][jj] = Position::Free;
-        }
-    }
 }
 
 void Board::DeleteLine(const int& pY)
