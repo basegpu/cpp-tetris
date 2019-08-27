@@ -13,6 +13,16 @@ unsigned char Tetrimino::GetShape(const int& rotation, const int& x, const int& 
 	return this->shapes[rotation % TETRIMINO_NROTATIONS][x][y];
 }
 
+int Tetrimino::GetTopBlock(const int& rotation) const
+{
+	return this->topleftBlock[rotation][0];
+}
+
+int Tetrimino::GetLeftBlock(const int& rotation) const
+{
+	return this->topleftBlock[rotation][1];
+}
+
 template<>
 void Tetrimino::RotateRecursion<0>(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH])
 {
@@ -29,20 +39,6 @@ template<>
 void Tetrimino::TopLeftPositionRecursion<0>(int& x, int& y, const int& rotation)
 {
 	this->CheckIfTopLeft<0>(x, y, rotation);
-}
-
-void Tetrimino::RotateIndices(int& ii, int& jj, const int& rotation)
-{
-	// lambda function for inverse index
-	auto invIndex = [](int& index) { index = TETRIMINO_WIDTH-1-index; };
-	// do rotation
-	switch (rotation % TETRIMINO_NROTATIONS)
-	{
-		case 0: break;
-		case 1: std::swap(ii,jj); invIndex(jj); break;
-		case 2: invIndex(ii); invIndex(jj); break;
-		case 3: std::swap(ii,jj); invIndex(ii); break;
-	}
 }
 
 Tetrimino Tetrimino::Make(const Tetrimino::Type& type)

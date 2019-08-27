@@ -23,6 +23,8 @@ public:
 	static const size_t BlocksPerPiece;
 
 	unsigned char GetShape(const int& rotation, const int& x, const int& y) const;
+	int GetTopBlock(const int& rotation) const;
+	int GetLeftBlock(const int& rotation) const;
 
 protected:
 
@@ -74,8 +76,16 @@ private:
 		this->Transform2XY<INDEX>(ii, jj);
 		// reference value
 		unsigned char v = shape[ii][jj];
-		// get rotated indices
-		this->RotateIndices(ii, jj, rotation);
+		// lambda function for inverse index
+		auto invIndex = [](int& index) { index = TETRIMINO_WIDTH-1-index; };
+		// do rotation
+		switch (rotation % TETRIMINO_NROTATIONS)
+		{
+			case 0: break;
+			case 1: std::swap(ii,jj); invIndex(jj); break;
+			case 2: invIndex(ii); invIndex(jj); break;
+			case 3: std::swap(ii,jj); invIndex(ii); break;
+		}
 		// assign rotated values
 		this->shapes[rotation][ii][jj] = v;
 	}
@@ -89,7 +99,6 @@ private:
 		// only check if not empty
 		if (this->shapes[rotation][ii][jj] != 0)
 		{
-			this->RotateIndices(ii, jj, rotation);
 			x = std::min(x, ii);
 			y = std::min(y, jj);
 		}
@@ -101,8 +110,6 @@ private:
 		x = INDEX / TETRIMINO_WIDTH;
 		y = INDEX % TETRIMINO_WIDTH;
 	}
-
-	void RotateIndices(int& ii, int& jj, const int& rotation);
 };
 
 #endif // TETRIMINO_H
