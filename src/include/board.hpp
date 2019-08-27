@@ -10,6 +10,7 @@ public:
 
     Board();
     void AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation, const int& pX, const int& pY);
+    bool IsPossibleMove(const Tetrimino::Type& tetrimino, const int& pRotation, const int& pX, const int& pY);
     int CountFilledBlocks() const;
     void Reset();
     bool IsFreeBlock(const int& pX, const int& pY) const;
@@ -22,6 +23,7 @@ protected:
 
     void DeleteLine(const int& pY);
     void CheckLimits(const int& pX, const int& pY) const;
+    bool ValidLimits(const int& pX, const int& pY) const;
 };
 
 #endif // BOARD_H

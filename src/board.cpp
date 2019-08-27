@@ -27,6 +27,31 @@ void Board::AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation,
     }
 }
 
+bool Board::IsPossibleMove(const Tetrimino::Type& tetrimino, const int& pRotation, const int& pX, const int& pY)
+{
+    Tetrimino piece = Tetrimino::Make(tetrimino);
+    // Checks collision with pieces already stored in the board or the board limits
+    // This is just to check the 5x5 blocks of a piece with the appropriate area in the board
+    for (int x = pX, col = 0; x < pX + Tetrimino::BlocksPerPiece; x++, col++)
+    {
+        for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
+        {   
+            // only do checks if block is filled
+            if (piece.GetShape(pRotation, row, col) != 0)
+            {
+                // Check if the piece is outside the limits of the board
+                // or the piece have collisioned with a block already stored in the map
+                if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Position::Filled)
+                {
+                    return false;
+                } 
+            }
+        }
+    }
+    // No collision
+    return true;
+}
+
 int Board::CountFilledBlocks() const
 {
     int count = 0;
@@ -34,7 +59,7 @@ int Board::CountFilledBlocks() const
     {
         for (int jj = 0; jj < BOARD_HEIGHT; jj++)
         {
-            count += (mBoard[ii][jj] == Position::Filled) ? 1 : 0;
+            count += (this->mBoard[ii][jj] == Position::Filled) ? 1 : 0;
         }
     }
     return count;
@@ -46,7 +71,7 @@ void Board::Reset()
     {
         for (int jj = 0; jj < BOARD_HEIGHT; jj++)
         {
-            mBoard[ii][jj] = Position::Free;
+            this->mBoard[ii][jj] = Position::Free;
         }
     }
 }
@@ -73,7 +98,7 @@ void Board::DeletePossibleLines()
         int ii = 0;
         while (ii < BOARD_WIDTH)
         {
-            if (mBoard[ii][jj] != Position::Filled)
+            if (this->mBoard[ii][jj] != Position::Filled)
             {
                 break;
             }
@@ -115,8 +140,17 @@ void Board::DeleteLine(const int& pY)
 
 void Board::CheckLimits(const int& pX, const int& pY) const
 {
-    if (pX >= BOARD_WIDTH || pY >= BOARD_HEIGHT)
+    if (!this->ValidLimits(pX, pY))
     {
         throw std::out_of_range("outside board");
     }
+}
+
+bool Board::ValidLimits(const int& pX, const int& pY) const
+{
+    if (pX >= BOARD_WIDTH || pY >= BOARD_HEIGHT)
+    {
+        return false;
+    }
+    return true;
 }

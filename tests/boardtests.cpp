@@ -86,3 +86,18 @@ TEST_F(BoardTest, DeletePossibleLines)
 	this->DeletePossibleLines();
 	ASSERT_EQ(this->CountFilledBlocks(), 6);
 }
+
+TEST_F(BoardTest, PossibleMoves)
+{
+	this->Reset();
+	this->AddTetrimino(Tetrimino::Type::Line, 1, 0, 17);
+	this->AddTetrimino(Tetrimino::Type::Line, 1, 4, 17);
+	this->AddTetrimino(Tetrimino::Type::Line, 1, 4, 16);
+	this->AddTetrimino(Tetrimino::Type::Line, 0, 6, 16);
+	this->AddTetrimino(Tetrimino::Type::Line, 0, 7, 16);
+	ASSERT_EQ(this->IsPossibleMove(Tetrimino::Type::Square, 0, 4, 4), true);
+	ASSERT_EQ(this->IsPossibleMove(Tetrimino::Type::Square, 0, 7, 13), true);
+	ASSERT_EQ(this->IsPossibleMove(Tetrimino::Type::Square, 0, 8, 13), false);
+	ASSERT_EQ(this->IsPossibleMove(Tetrimino::Type::Square, 0, 7, 14), false);
+	ASSERT_EQ(this->IsPossibleMove(Tetrimino::Type::LeftHook, 2, 6, 14), true);
+}
