@@ -13,15 +13,15 @@ void Board::AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation,
 {
     Tetrimino piece = Tetrimino::Make(tetrimino);
     // Store each block of the piece into the board
-    for (int i1 = pX, i2 = 0; i1 < pX + Tetrimino::BlocksPerPiece; i1++, i2++)
+    for (int x = pX, col = 0; x < pX + Tetrimino::BlocksPerPiece; x++, col++)
     {
-        for (int j1 = pY, j2 = 0; j1 < pY + Tetrimino::BlocksPerPiece; j1++, j2++)
+        for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
         {   
             // Store only the blocks of the piece that are not holes
-            if (piece.GetShape(pRotation, j2, i2) != 0)
+            if (piece.GetShape(pRotation, row, col) != 0)
             {
-                this->CheckLimits(i1, j1);
-                this->mBoard[i1][j1] = Position::Filled;    
+                this->CheckLimits(x, y);
+                this->mBoard[x][y] = Position::Filled;    
             }
         }
     }

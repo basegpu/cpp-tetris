@@ -8,9 +8,9 @@ Tetrimino::Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WID
 	this->RotateRecursion<TETRIMINO_NROTATIONS-1>(shape);
 }
 
-unsigned char Tetrimino::GetShape(const int& rotation, const int& x, const int& y) const
+unsigned char Tetrimino::GetShape(const int& rotation, const int& row, const int& col) const
 {
-	return this->shapes[rotation % TETRIMINO_NROTATIONS][x][y];
+	return this->shapes[rotation % TETRIMINO_NROTATIONS][row][col];
 }
 
 int Tetrimino::GetTopBlock(const int& rotation) const
@@ -36,9 +36,9 @@ void Tetrimino::AssetInitializationRecursion<0>(const unsigned char (&shape)[TET
 }
 
 template<>
-void Tetrimino::TopLeftPositionRecursion<0>(int& x, int& y, const int& rotation)
+void Tetrimino::TopLeftPositionRecursion<0>(int& top, int& left, const int& rotation)
 {
-	this->CheckIfTopLeft<0>(x, y, rotation);
+	this->CheckIfTopLeft<0>(top, left, rotation);
 }
 
 Tetrimino Tetrimino::Make(const Tetrimino::Type& type)

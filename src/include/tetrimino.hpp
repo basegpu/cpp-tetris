@@ -47,11 +47,11 @@ private:
 	void DoRotation(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH])
 	{
 		this->AssetInitializationRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(shape, ROTATION);
-		int x = TETRIMINO_WIDTH;
-		int y = TETRIMINO_WIDTH;
-		this->TopLeftPositionRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(x, y, ROTATION);
-		this->topleftBlock[ROTATION][0] = x;
-		this->topleftBlock[ROTATION][1] = y;
+		int top = TETRIMINO_WIDTH;
+		int left = TETRIMINO_WIDTH;
+		this->TopLeftPositionRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(top, left, ROTATION);
+		this->topleftBlock[ROTATION][0] = top;
+		this->topleftBlock[ROTATION][1] = left;
 	}
 
 	template<int INDEX>
@@ -62,53 +62,53 @@ private:
 	}
 
 	template<int INDEX>
-	void TopLeftPositionRecursion(int& x, int& y, const int& rotation)
+	void TopLeftPositionRecursion(int& top, int& left, const int& rotation)
 	{
-		this->CheckIfTopLeft<INDEX>(x, y, rotation);
-		this->TopLeftPositionRecursion<INDEX-1>(x, y, rotation);
+		this->CheckIfTopLeft<INDEX>(top, left, rotation);
+		this->TopLeftPositionRecursion<INDEX-1>(top, left, rotation);
 	}
 
 	template<int INDEX>
 	void DoAssetInitialization(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation)
 	{
 		// row and column indices
-		int ii, jj;
-		this->Transform2XY<INDEX>(ii, jj);
+		int row, col;
+		this->Transform2RowCol<INDEX>(row, col);
 		// reference value
-		unsigned char v = shape[ii][jj];
+		unsigned char v = shape[row][col];
 		// lambda function for inverse index
 		auto invIndex = [](int& index) { index = TETRIMINO_WIDTH-1-index; };
 		// do rotation
 		switch (rotation % TETRIMINO_NROTATIONS)
 		{
 			case 0: break;
-			case 1: std::swap(ii,jj); invIndex(jj); break;
-			case 2: invIndex(ii); invIndex(jj); break;
-			case 3: std::swap(ii,jj); invIndex(ii); break;
+			case 1: std::swap(row,col); invIndex(col); break;
+			case 2: invIndex(row); invIndex(col); break;
+			case 3: std::swap(row,col); invIndex(row); break;
 		}
 		// assign rotated values
-		this->shapes[rotation][ii][jj] = v;
+		this->shapes[rotation][row][col] = v;
 	}
 
 	template<int INDEX>
-	void CheckIfTopLeft(int& x, int& y, const int& rotation)
+	void CheckIfTopLeft(int& top, int& left, const int& rotation)
 	{
 		// row and column indices
-		int ii, jj;
-		this->Transform2XY<INDEX>(ii, jj);
+		int row, col;
+		this->Transform2RowCol<INDEX>(row, col);
 		// only check if not empty
-		if (this->shapes[rotation][ii][jj] != 0)
+		if (this->shapes[rotation][row][col] != 0)
 		{
-			x = std::min(x, ii);
-			y = std::min(y, jj);
+			top = std::min(top, row);
+			left = std::min(left, col);
 		}
 	}
 
 	template<int INDEX>
-	void Transform2XY(int& x, int& y)
+	void Transform2RowCol(int& row, int& col)
 	{
-		x = INDEX / TETRIMINO_WIDTH;
-		y = INDEX % TETRIMINO_WIDTH;
+		row = INDEX / TETRIMINO_WIDTH;
+		col = INDEX % TETRIMINO_WIDTH;
 	}
 };
 
