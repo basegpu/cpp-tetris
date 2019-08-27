@@ -19,8 +19,10 @@ public:
 		LeftChair
 	};
 
-	static Tetrimino Make(const Type& type);
+	static Tetrimino* Make(const Type& type);
 	static const size_t BlocksPerPiece;
+	static const size_t NumberOfRotations;
+	static const size_t NumberOfTypes;
 
 	unsigned char GetShape(const int& rotation, const int& x, const int& y) const;
 	int GetTopBlock(const int& rotation) const;

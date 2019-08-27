@@ -3,6 +3,10 @@
 
 const size_t Tetrimino::BlocksPerPiece = TETRIMINO_WIDTH;
 
+const size_t Tetrimino::NumberOfRotations = TETRIMINO_NROTATIONS;
+
+const size_t Tetrimino::NumberOfTypes = TETRIMINO_NTYPES;
+
 Tetrimino::Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH])
 {
 	this->RotateRecursion<TETRIMINO_NROTATIONS-1>(shape);
@@ -41,48 +45,48 @@ void Tetrimino::TopLeftPositionRecursion<0>(int& top, int& left, const int& rota
 	this->CheckIfTopLeft<0>(top, left, rotation);
 }
 
-Tetrimino Tetrimino::Make(const Tetrimino::Type& type)
+Tetrimino* Tetrimino::Make(const Tetrimino::Type& type)
 {
 	switch (type)
 	{
-		case Type::Square: return Tetrimino({
+		case Type::Square: return new Tetrimino({
 			{0,0,0,0},
 			{0,1,1,0},
 			{0,1,1,0},
 			{0,0,0,0},
 		});
-		case Type::Line: return Tetrimino({
+		case Type::Line: return new Tetrimino({
 			{0,0,1,0},
 			{0,0,1,0},
 			{0,0,1,0},
 			{0,0,1,0},
 		});
-		case Type::RightHook: return Tetrimino({
+		case Type::RightHook: return new Tetrimino({
 			{0,1,0,0},
 			{0,1,0,0},
 			{0,1,1,0},
 			{0,0,0,0},
 		});
-		case Type::LeftHook: return Tetrimino({
+		case Type::LeftHook: return new Tetrimino({
 			{0,0,1,0},
 			{0,0,1,0},
 			{0,1,1,0},
 			{0,0,0,0},
 		});
-		case Type::Tee: return Tetrimino({
+		case Type::Tee: return new Tetrimino({
 			{0,0,0,0},
 			{0,0,1,0},
 			{0,1,1,1},
 			{0,0,0,0},
 		});
-		case Type::RightChair: return Tetrimino({
+		case Type::RightChair: return new Tetrimino({
 			{0,0,0,0},
 			{0,1,1,0},
 			{0,0,1,1},
 			{0,0,0,0},
 		});
 
-		case Type::LeftChair: return Tetrimino({
+		case Type::LeftChair: return new Tetrimino({
 			{0,0,0,0},
 			{0,1,1,0},
 			{1,1,0,0},
