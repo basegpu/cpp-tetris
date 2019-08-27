@@ -86,30 +86,34 @@ bool Board::IsFreeBlock(const int& pX, const int& pY) const
 
 void Board::DeletePossibleLines()
 {
-    // loop over all lines from the bottom
-    for (int jj = 0; jj < BOARD_HEIGHT; jj++)
-    {
-        // check if all blocks are filled
-        int ii = 0;
-        while (ii < BOARD_WIDTH)
+    int counter = 0;
+    auto func = [this, &counter](const int& ii, const int& jj) -> bool {
+        // count filled blocks
+        if (this->mBoard[ii][jj] == Position::Filled)
         {
-            if (this->mBoard[ii][jj] != Position::Filled)
+            counter++;
+        }
+        // in case of last column
+        if (ii == BOARD_WIDTH - 1)
+        {
+            // check if the line is completely filled
+            if (counter == BOARD_WIDTH)
             {
-                break;
+                // then delete this line
+                this->DeleteLine(jj);
             }
-            ii++;
+            // reset counter
+            counter = 0;
         }
-        // then remove that line
-        if (ii == BOARD_WIDTH)
-        {
-            this->DeleteLine(jj);
-        }
-    }
+        // keep on going
+        return true;
+    };
+    this->LoopOverBoard(func);
 }
 
 bool Board::IsGameOver() const
 {
-    //If the first line has blocks, then, game over
+    // If the first line has blocks, then, game over
     for (int ii = 0; ii < BOARD_WIDTH; ii++)
     {
         if (this->mBoard[ii][0] == Position::Filled)
@@ -124,13 +128,11 @@ void Board::DeleteLine(const int& pY)
 {
     this->CheckLimits(0, pY);
     // Moves all the upper lines one row down
-    for (int jj = pY; jj > 0; jj--)
-    {
-        for (int ii = 0; ii < BOARD_WIDTH; ii++)
-        {
-            this->mBoard[ii][jj] = this->mBoard[ii][jj-1];
-        }
-    }   
+    auto func = [&, this](const int& ii, const int& jj) -> bool {
+        this->mBoard[ii][jj] = this->mBoard[ii][jj-1];
+        return true;
+    };
+    this->LoopOverBoard(func, pY, 1);
 }
 
 void Board::LoopOverTetrimino(
@@ -151,7 +153,7 @@ void Board::LoopOverTetrimino(
             {
                 if(!func(x, y))
                 {
-                    break;
+                    return;
                 }  
             }
         }
@@ -159,15 +161,18 @@ void Board::LoopOverTetrimino(
 }
 
 void Board::LoopOverBoard(
-    std::function<bool(const int&, const int&)> func)
+    std::function<bool(const int&, const int&)> func,
+    const int& bottomRow,
+    const int& topRow)
 {
-    for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+    // from bottom to top
+    for (int jj = bottomRow; jj >= topRow; jj--)
     {
         for (int ii = 0; ii < BOARD_WIDTH; ii++)
         {
             if(!func(ii, jj))
             {
-                break;
+                return;
             }
         }
     }
