@@ -28,12 +28,11 @@ public:
 	int GetTopBlock() const;
 	int GetLeftBlock() const;
 	void Rotate();
-	void SetRotation(const int& rotation);
 
 protected:
 
 	Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation);
-	int GetRotation() const;
+	void SetRotation(const int& rotation);
 
 
 private:

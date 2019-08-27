@@ -27,20 +27,15 @@ void Tetrimino::Rotate()
 	this->SetRotation(this->rotationState + 1);
 }
 
-void Tetrimino::SetRotation(const int& rotation)
-{
-	this->rotationState = rotation % TETRIMINO_NROTATIONS;
-}
-
 Tetrimino::Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation) :
 	rotationState(rotation)
 {
 	this->RotateRecursion<TETRIMINO_NROTATIONS-1>(shape);
 }
 
-int Tetrimino::GetRotation() const
+void Tetrimino::SetRotation(const int& rotation)
 {
-	return this->rotationState;
+	this->rotationState = rotation % TETRIMINO_NROTATIONS;
 }
 
 template<>
