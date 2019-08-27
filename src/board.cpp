@@ -1,5 +1,6 @@
-#include "Board.hpp"
-#include "Tetrimino.hpp"
+#include "board.hpp"
+#include "globals.hpp"
+#include "tetrimino.hpp"
 #include <stdexcept>
 
 

@@ -1,11 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "Tetrimino.hpp"
-
-#define BOARD_WIDTH 10              // Board width in blocks
-#define BOARD_HEIGHT 20             // Board height in blocks
-
+#include "globals.hpp"
+#include "tetrimino.hpp"
 
 class Board
 {
@@ -21,10 +18,6 @@ public:
 
 protected:
 
-    enum class Position : unsigned char {
-        Free,   // free position of the board
-        Filled  // filled position of the board
-    };
     Position mBoard[BOARD_WIDTH][BOARD_HEIGHT]; // Board that contains the pieces
 
     void DeleteLine(const int& pY);
