@@ -12,14 +12,17 @@ public:
     Game();
     ~Game();
 
-    Tetrimino* piece = nullptr; // the piece that is falling down
+
+protected:
+
+	Board* board = nullptr;
+	Tetrimino* piece = nullptr; // the piece that is falling down
+    Tetrimino* nextPiece = nullptr; // the next piece
 
     void AddNewPiece();
 
 
-protected:
-
-    Tetrimino* nextPiece = nullptr; // the next piece
+private:
 
     Tetrimino* CreatePiece() const;
     int GetRand(const int& pA, const int& pB) const;

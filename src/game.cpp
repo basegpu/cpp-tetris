@@ -5,7 +5,8 @@
 #include <ctime>
 #include <cstdlib>
 
-Game::Game()
+Game::Game() :
+    board(new Board())
 {
     // Init random numbers
     srand((unsigned int) time(NULL));

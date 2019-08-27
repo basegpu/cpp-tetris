@@ -11,7 +11,9 @@ protected:
 
 TEST_F(GameTest, Init)
 {
+	ASSERT_NE(this->board, nullptr);
 	ASSERT_NE(this->piece, nullptr);
+	ASSERT_NE(this->nextPiece, nullptr);
 }
 
 TEST_F(GameTest, NewPiece)
