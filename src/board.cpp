@@ -1,7 +1,9 @@
 #include "board.hpp"
 #include "globals.hpp"
 #include "tetrimino.hpp"
+#include <functional>
 #include <stdexcept>
+#include <iostream>
 
 
 Board::Board()
@@ -9,71 +11,64 @@ Board::Board()
     this->Reset();
 }
 
-void Board::AddTetrimino(const Tetrimino::Type& tetrimino, const int& pRotation, const int& pX, const int& pY)
+void Board::AddTetrimino(
+    const Tetrimino::Type& tetrimino,
+    const int& pRotation,
+    const int& pX,
+    const int& pY)
 {
-    Tetrimino piece = Tetrimino::Make(tetrimino);
-    // Store each block of the piece into the board
-    for (int x = pX, col = 0; x < pX + Tetrimino::BlocksPerPiece; x++, col++)
-    {
-        for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
-        {   
-            // Store only the blocks of the piece that are not holes
-            if (piece.GetShape(pRotation, row, col) != 0)
-            {
-                this->CheckLimits(x, y);
-                this->mBoard[x][y] = Position::Filled;    
-            }
-        }
-    }
+    auto func = [&, this](const int& x, const int& y) -> bool {
+        // Check if within the boundaries
+        this->CheckLimits(x, y);
+        // if ok, then set the position as filled
+        this->mBoard[x][y] = Position::Filled;
+        // and return true to continue with looping
+        return true;
+    };
+    this->LoopOverTetrimino(tetrimino, pRotation, pX, pY, func);
 }
 
-bool Board::IsPossibleMove(const Tetrimino::Type& tetrimino, const int& pRotation, const int& pX, const int& pY)
+bool Board::IsPossibleMove(
+    const Tetrimino::Type& tetrimino,
+    const int& pRotation,
+    const int& pX,
+    const int& pY)
 {
-    Tetrimino piece = Tetrimino::Make(tetrimino);
-    // Checks collision with pieces already stored in the board or the board limits
-    // This is just to check the 5x5 blocks of a piece with the appropriate area in the board
-    for (int x = pX, col = 0; x < pX + Tetrimino::BlocksPerPiece; x++, col++)
-    {
-        for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
-        {   
-            // only do checks if block is filled
-            if (piece.GetShape(pRotation, row, col) != 0)
-            {
-                // Check if the piece is outside the limits of the board
-                // or the piece have collisioned with a block already stored in the map
-                if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Position::Filled)
-                {
-                    return false;
-                } 
-            }
+    bool isPossible = true;
+    auto func = [this, &isPossible](const int& x, const int& y) mutable -> bool {
+        // Check if the piece is outside the limits of the board
+        // or the piece have collisioned with a block already stored in the map
+        if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Position::Filled)
+        {
+            isPossible = false;
+            // stop looping
+            return false;
         }
-    }
-    // No collision
-    return true;
+        // continue with looping
+        return true;
+    };
+    this->LoopOverTetrimino(tetrimino, pRotation, pX, pY, func);
+    return isPossible;
 }
 
-int Board::CountFilledBlocks() const
+int Board::CountFilledBlocks()
 {
     int count = 0;
-    for (int ii = 0; ii < BOARD_WIDTH; ii++)
-    {
-        for (int jj = 0; jj < BOARD_HEIGHT; jj++)
-        {
-            count += (this->mBoard[ii][jj] == Position::Filled) ? 1 : 0;
-        }
-    }
+    auto func = [this, &count](const int& ii, const int& jj) -> bool {
+        count += (this->mBoard[ii][jj] == Position::Filled) ? 1 : 0;
+        return true;
+    };
+    this->LoopOverBoard(func);
     return count;
 }
 
 void Board::Reset()
 {
-    for (int ii = 0; ii < BOARD_WIDTH; ii++)
-    {
-        for (int jj = 0; jj < BOARD_HEIGHT; jj++)
-        {
-            this->mBoard[ii][jj] = Position::Free;
-        }
-    }
+    auto func = [&, this](const int& ii, const int& jj) -> bool {
+        this->mBoard[ii][jj] = Position::Free;
+        return true;
+    };
+    this->LoopOverBoard(func);
 }
 
 bool Board::IsFreeBlock(const int& pX, const int& pY) const
@@ -136,6 +131,46 @@ void Board::DeleteLine(const int& pY)
             this->mBoard[ii][jj] = this->mBoard[ii][jj-1];
         }
     }   
+}
+
+void Board::LoopOverTetrimino(
+    const Tetrimino::Type& tetrimino,
+    const int& pRotation,
+    const int& pX,
+    const int& pY,
+    std::function<bool(const int&, const int&)> func)
+{
+    Tetrimino piece = Tetrimino::Make(tetrimino);
+    // Store each block of the piece into the board
+    for (int x = pX, col = 0; x < pX + Tetrimino::BlocksPerPiece; x++, col++)
+    {
+        for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
+        {   
+            // Store only the blocks of the piece that are not holes
+            if (piece.GetShape(pRotation, row, col) != 0)
+            {
+                if(!func(x, y))
+                {
+                    break;
+                }  
+            }
+        }
+    }
+}
+
+void Board::LoopOverBoard(
+    std::function<bool(const int&, const int&)> func)
+{
+    for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+    {
+        for (int ii = 0; ii < BOARD_WIDTH; ii++)
+        {
+            if(!func(ii, jj))
+            {
+                break;
+            }
+        }
+    }
 }
 
 void Board::CheckLimits(const int& pX, const int& pY) const
