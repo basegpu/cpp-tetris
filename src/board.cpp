@@ -14,6 +14,26 @@ Board::Board()
     this->Reset();
 }
 
+void Board::Print(std::ostream& out)
+{
+    out << std::endl;
+    for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+    {
+        out << "I";
+        for (int ii = 0; ii < BOARD_WIDTH + 1; ii++)
+        {
+            if (this->mBoard[ii][jj] == Block::Filled)
+                out << " O";
+            else
+                out << "  ";
+        }
+        out << " I" << std::endl;
+    }
+    for (int ii = 0; ii < BOARD_WIDTH + 1; ii++)
+        out << "I ";
+    out << "I" << std::endl;
+}
+
 void Board::AddTetrimino(
     const Tetrimino* tetrimino,
     const int& pX,

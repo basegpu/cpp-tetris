@@ -4,6 +4,7 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include "board.hpp"
+#include <iostream>
 
 class Game
 {
@@ -12,6 +13,14 @@ public:
     Game();
     ~Game();
 
+    void Print(std::ostream& out) const;
+    bool On() const;
+
+    void MoveDown();
+    void MoveLeft();
+    void MoveRight();
+    void Rotate();
+    void Advance();
 
 protected:
 
@@ -32,6 +41,8 @@ protected:
 
 
 private:
+
+	bool gameIsOn;
 
     Tetrimino* CreatePiece() const;
     int GetRand(const int& pA, const int& pB) const;
