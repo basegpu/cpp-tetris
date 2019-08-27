@@ -3,8 +3,7 @@
 
 const size_t Tetrimino::BlocksPerPiece = TETRIMINO_WIDTH;
 
-Tetrimino::Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH]) :
-	nBlocks(TETRIMINO_WIDTH)
+Tetrimino::Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH])
 {
 	this->RotateRecursion<TETRIMINO_NROTATIONS-1>(shape);
 }
