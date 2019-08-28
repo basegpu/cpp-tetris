@@ -17,7 +17,7 @@ public:
     int CountFilledBlocks();
     void Reset();
     bool IsFreeBlock(const int& pX, const int& pY) const;
-    void DeletePossibleLines();
+    int DeletePossibleLines();
     bool IsGameOver() const;
 
 protected:

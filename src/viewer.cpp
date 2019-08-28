@@ -10,6 +10,7 @@ const std::string Viewer::piece = "\033[32mX\033[0m";
 std::string Viewer::Print(const Game* game)
 {
     std::ostringstream out;
+    out << std::endl << "SCORE: " << game->GetScore() << std::endl << std::endl;
     for (int jj = 0; jj < Board::Height; jj++)
     {
         out << border;
@@ -34,6 +35,7 @@ std::string Viewer::Print(const Game* game)
     out << border;
     for (int ii = 0; ii < Board::Width + 1; ii++)
         out << " " << border;
+    out << std::endl;
     return out.str();
 }
 

@@ -129,7 +129,7 @@ void Game::Advance()
         this->currentPosition.col,
         this->currentPosition.row);
     // delete all possible lines above
-    this->board->DeletePossibleLines();
+    this->score += this->board->DeletePossibleLines();
     // check for game over or advance with new piece
     if (!this->board->IsGameOver())
     {

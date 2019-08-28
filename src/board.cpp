@@ -85,8 +85,9 @@ bool Board::IsFreeBlock(const int& pX, const int& pY) const
     }
 }
 
-void Board::DeletePossibleLines()
+int Board::DeletePossibleLines()
 {
+    int lineCounter = 0;
     for (int jj = 0; jj < BOARD_HEIGHT; jj++)
     {
         int ii = 0;
@@ -101,8 +102,10 @@ void Board::DeletePossibleLines()
         if (ii == BOARD_WIDTH)
         {
             DeleteLine (jj);
+            lineCounter++;
         }
     }
+    return lineCounter;
 }
 
 bool Board::IsGameOver() const
