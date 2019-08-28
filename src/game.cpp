@@ -14,7 +14,8 @@ Game::Game() :
 
 Game::Game(const bool& random) :
     board(new Board()),
-    gameIsOn(true)
+    gameIsOn(true),
+    score(0)
 {
     // eventually seed random numbers
     if (random)
@@ -36,6 +37,29 @@ Game::~Game()
 bool Game::On() const
 {
     return this->gameIsOn;
+}
+
+int Game::GetScore() const
+{
+    return this->score;
+}
+
+void Game::MakeMove(const Moves& move)
+{
+    switch (move)
+    {
+        case Moves::Advance: this->Advance();   break;
+        case Moves::Rotate:  this->Rotate();    break;
+        case Moves::Down:    this->MoveDown();  break;
+        case Moves::Left:    this->MoveLeft();  break;
+        case Moves::Right:   this->MoveRight(); break;
+        default: break;
+    }
+}
+
+void Game::PlaySequence(const std::vector<Moves>& seq)
+{
+    ;
 }
 
 void Game::MoveDown()

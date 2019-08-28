@@ -2,12 +2,21 @@
 #include "board.hpp"
 #include "viewer.hpp"
 #include <iostream>
+#include <map>
 
 #define KEY_ROTATE 105
 #define KEY_LEFT 106
 #define KEY_DOWN 107
 #define KEY_RIGHT 108
 #define KEY_ADVANCE 109
+
+const std::map<int, Game::Moves> commands = {
+    {KEY_ADVANCE, Game::Moves::Advance},
+    {KEY_ROTATE,  Game::Moves::Rotate },
+    {KEY_DOWN,    Game::Moves::Down   },
+    {KEY_LEFT,    Game::Moves::Left   },
+    {KEY_RIGHT,   Game::Moves::Right  },
+};
 
 int main(int argc, char* argv[])
 {
@@ -25,14 +34,9 @@ int main(int argc, char* argv[])
         // read key
         char M;
         std::cin >> M;
-        switch ((int)M)
+        if (commands.count((int)M))
         {
-            case(KEY_LEFT): game->MoveLeft(); break;
-            case(KEY_ROTATE): game->Rotate(); break;
-            case(KEY_RIGHT): game->MoveRight(); break;
-            case(KEY_DOWN): game->MoveDown(); break;
-            case(KEY_ADVANCE): game->Advance(); break;
-            default: break;
+            game->MakeMove(commands.at((int)M));
         }
     }
     delete game;

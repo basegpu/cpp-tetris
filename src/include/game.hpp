@@ -4,6 +4,7 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include "board.hpp"
+#include <vector>
 
 class Game
 {
@@ -13,12 +14,18 @@ public:
     ~Game();
 
     bool On() const;
+    int GetScore() const;
 
-    void MoveDown();
-    void MoveLeft();
-    void MoveRight();
-    void Rotate();
-    void Advance();
+    enum class Moves : int {
+        Advance,
+        Rotate,
+        Down,
+        Left,
+        Right
+    };
+
+    void MakeMove(const Moves& move);
+    void PlaySequence(const std::vector<Moves>& seq);
 
     friend class Viewer;
 
@@ -40,6 +47,13 @@ protected:
 
 private:
     bool gameIsOn;
+    int score;
+
+    void MoveDown();
+    void MoveLeft();
+    void MoveRight();
+    void Rotate();
+    void Advance();
 
     Tetrimino* CreatePiece() const;
     int GetRand(const int& pA, const int& pB) const;
