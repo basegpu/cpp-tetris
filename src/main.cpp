@@ -2,12 +2,15 @@
 #include "board.hpp"
 #include "viewer.hpp"
 #include <iostream>
-#include <sstream>
-#include <cstdlib>
+
+#define KEY_ROTATE 105
+#define KEY_LEFT 106
+#define KEY_DOWN 107
+#define KEY_RIGHT 108
 
 int main(int argc, char* argv[])
 {
-    int M;
+    char M;
     Game* game = new Game();
     while (game->On())
     {
@@ -16,12 +19,13 @@ int main(int argc, char* argv[])
         std::cout << Viewer::Print(game);
         // read key
         std::cin >> M;
-        switch (M)
+        //std::cout << (int)M << std::endl;
+        switch ((int)M)
         {
-            case(1): game->MoveLeft(); break;
-            case(2): game->Rotate(); break;
-            case(3): game->MoveRight(); break;
-            case(4): game->Advance(); break;
+            case(KEY_LEFT): game->MoveLeft(); break;
+            case(KEY_ROTATE): game->Rotate(); break;
+            case(KEY_RIGHT): game->MoveRight(); break;
+            case(KEY_DOWN): game->Advance(); break;
             default: break;
         }
     }
