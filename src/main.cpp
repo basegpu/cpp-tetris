@@ -3,6 +3,7 @@
 #include "viewer.hpp"
 #include <iostream>
 #include <map>
+#include <vector>
 
 #define KEY_ROTATE 105
 #define KEY_LEFT 106
@@ -20,12 +21,26 @@ const std::map<int, Game::Moves> commands = {
 
 int main(int argc, char* argv[])
 {
+    // parse command line
     bool random = true;
-    if (argc >= 2)
+    std::vector<Game::Moves> moves;
+    if (argc == 2)
     {
         random = false;
+        std::string seq = std::string(argv[1]);
+        for (const char& c : seq)
+        {
+            if (commands.count((int)c))
+            {
+                moves.push_back(commands.at((int)c));
+            }
+        }
     }
+    // create game
     Game* game = new Game(random);
+    // eventually play given sequence first
+    game->PlaySequence(moves);
+    // then go gon with user input
     while (game->On())
     {
         // CSI[2J clears screen, CSI[H moves the cursor to top-left corner

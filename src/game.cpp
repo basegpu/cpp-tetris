@@ -59,7 +59,10 @@ void Game::MakeMove(const Moves& move)
 
 void Game::PlaySequence(const std::vector<Moves>& seq)
 {
-    ;
+    for (const Moves& move : seq)
+    {
+        this->MakeMove(move);
+    }
 }
 
 void Game::MoveDown()
