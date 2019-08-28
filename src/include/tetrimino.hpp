@@ -20,9 +20,9 @@ public:
     };
 
     static Tetrimino* Make(const Type& type, const int& rotation);
-    static const size_t BlocksPerPiece;
-    static const size_t NumberOfRotations;
-    static const size_t NumberOfTypes;
+    static const int BlocksPerPiece;
+    static const int NumberOfRotations;
+    static const int NumberOfTypes;
 
     unsigned char GetShape(const int& x, const int& y) const;
     int GetTopBlock() const;

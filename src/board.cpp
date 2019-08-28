@@ -3,7 +3,7 @@
 #include "tetrimino.hpp"
 #include <functional>
 #include <stdexcept>
-#include <sstream>
+#include <iostream>
 
 const size_t Board::Width = BOARD_WIDTH;
 
@@ -37,6 +37,8 @@ bool Board::IsPossibleMove(
 {
     bool isPossible = true;
     auto func = [this, &isPossible](const int& x, const int& y) mutable -> bool {
+
+        std::cout << x << "/" << y << std::endl;
         // Check if the piece is outside the limits of the board
         // or the piece have collisioned with a block already stored in the map
         if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Block::Filled)
@@ -146,8 +148,7 @@ void Board::LoopOverTetrimino(
     for (int x = pX, col = 0; x < pX + Tetrimino::BlocksPerPiece; x++, col++)
     {
         for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
-        {   
-            // Store only the blocks of the piece that are not holes
+        {
             if (tetrimino->GetShape(row, col) != 0)
             {
                 if(!func(x, y))
@@ -187,7 +188,7 @@ void Board::CheckLimits(const int& pX, const int& pY) const
 
 bool Board::ValidLimits(const int& pX, const int& pY) const
 {
-    if (pX >= BOARD_WIDTH || pY >= BOARD_HEIGHT)
+    if (pX >= BOARD_WIDTH || pX < 0 || pY >= BOARD_HEIGHT || pY < 0)
     {
         return false;
     }

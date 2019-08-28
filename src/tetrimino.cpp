@@ -1,11 +1,11 @@
 #include "tetrimino.hpp"
 
 
-const size_t Tetrimino::BlocksPerPiece = TETRIMINO_WIDTH;
+const int Tetrimino::BlocksPerPiece = TETRIMINO_WIDTH;
 
-const size_t Tetrimino::NumberOfRotations = TETRIMINO_NROTATIONS;
+const int Tetrimino::NumberOfRotations = TETRIMINO_NROTATIONS;
 
-const size_t Tetrimino::NumberOfTypes = TETRIMINO_NTYPES;
+const int Tetrimino::NumberOfTypes = TETRIMINO_NTYPES;
 
 unsigned char Tetrimino::GetShape(const int& row, const int& col) const
 {

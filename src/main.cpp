@@ -7,6 +7,7 @@
 #define KEY_LEFT 106
 #define KEY_DOWN 107
 #define KEY_RIGHT 108
+#define KEY_ADVANCE 109
 
 int main(int argc, char* argv[])
 {
@@ -19,13 +20,13 @@ int main(int argc, char* argv[])
         std::cout << Viewer::Print(game);
         // read key
         std::cin >> M;
-        //std::cout << (int)M << std::endl;
         switch ((int)M)
         {
             case(KEY_LEFT): game->MoveLeft(); break;
             case(KEY_ROTATE): game->Rotate(); break;
             case(KEY_RIGHT): game->MoveRight(); break;
-            case(KEY_DOWN): game->Advance(); break;
+            case(KEY_DOWN): game->MoveDown(); break;
+            case(KEY_ADVANCE): game->Advance(); break;
             default: break;
         }
     }
