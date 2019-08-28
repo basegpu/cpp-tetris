@@ -7,11 +7,20 @@
 #include <sstream>
 
 Game::Game() :
+    Game(true)
+{
+    ;
+}
+
+Game::Game(const bool& random) :
     board(new Board()),
     gameIsOn(true)
 {
-    // Init random numbers
-    srand((unsigned int) time(NULL));
+    // eventually seed random numbers
+    if (random)
+    {
+        srand((unsigned int) time(NULL));
+    }
     // Next piece
     this->nextPiece = this->CreatePiece();
     this->AddNewPiece();

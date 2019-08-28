@@ -37,8 +37,6 @@ bool Board::IsPossibleMove(
 {
     bool isPossible = true;
     auto func = [this, &isPossible](const int& x, const int& y) mutable -> bool {
-
-        std::cout << x << "/" << y << std::endl;
         // Check if the piece is outside the limits of the board
         // or the piece have collisioned with a block already stored in the map
         if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Block::Filled)
@@ -89,29 +87,22 @@ bool Board::IsFreeBlock(const int& pX, const int& pY) const
 
 void Board::DeletePossibleLines()
 {
-    int counter = 0;
-    auto func = [this, &counter](const int& ii, const int& jj) -> bool {
-        // count filled blocks
-        if (this->mBoard[ii][jj] == Block::Filled)
+    for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+    {
+        int ii = 0;
+        while (ii < BOARD_WIDTH)
         {
-            counter++;
-        }
-        // in case of last column
-        if (ii == BOARD_WIDTH - 1)
-        {
-            // check if the line is completely filled
-            if (counter == BOARD_WIDTH)
+            if (mBoard[ii][jj] != Block::Filled)
             {
-                // then delete this line
-                this->DeleteLine(jj);
+                break;
             }
-            // reset counter
-            counter = 0;
+            ii++;
         }
-        // keep on going
-        return true;
-    };
-    this->LoopOverBoard(func);
+        if (ii == BOARD_WIDTH)
+        {
+            DeleteLine (jj);
+        }
+    }
 }
 
 bool Board::IsGameOver() const

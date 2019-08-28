@@ -9,6 +9,7 @@ class Game
 {
 public:
     Game();
+    Game(const bool& random);
     ~Game();
 
     bool On() const;

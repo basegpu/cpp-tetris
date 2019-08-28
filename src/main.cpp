@@ -11,14 +11,19 @@
 
 int main(int argc, char* argv[])
 {
-    char M;
-    Game* game = new Game();
+    bool random = true;
+    if (argc >= 2)
+    {
+        random = false;
+    }
+    Game* game = new Game(random);
     while (game->On())
     {
         // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
         std::cout << "\x1B[2J\x1B[H";
         std::cout << Viewer::Print(game);
         // read key
+        char M;
         std::cin >> M;
         switch ((int)M)
         {
