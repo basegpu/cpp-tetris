@@ -5,20 +5,20 @@
 class GameTest : public ::testing::Test, public Game
 {
 protected:
-	// void SetUp() override {}
-	// void TearDown() override {}
+    // void SetUp() override {}
+    // void TearDown() override {}
 };
 
 TEST_F(GameTest, Init)
 {
-	ASSERT_NE(this->board, nullptr);
-	ASSERT_NE(this->piece, nullptr);
-	ASSERT_NE(this->nextPiece, nullptr);
+    ASSERT_NE(this->board, nullptr);
+    ASSERT_NE(this->piece, nullptr);
+    ASSERT_NE(this->nextPiece, nullptr);
 }
 
 TEST_F(GameTest, NewPiece)
 {
-	Tetrimino* p = this->nextPiece;
-	this->AddNewPiece();
-	ASSERT_EQ(this->piece, p);
+    Tetrimino* p = this->nextPiece;
+    this->AddNewPiece();
+    ASSERT_EQ(this->piece, p);
 }

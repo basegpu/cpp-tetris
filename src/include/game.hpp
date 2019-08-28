@@ -4,16 +4,13 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include "board.hpp"
-#include <iostream>
 
 class Game
 {
 public:
-
     Game();
     ~Game();
 
-    void Print(std::ostream& out) const;
     bool On() const;
 
     void MoveDown();
@@ -22,27 +19,26 @@ public:
     void Rotate();
     void Advance();
 
+    friend class Viewer;
+
 protected:
+    typedef struct Position
+    {
+        int row;
+        int col;
+    } Position;
 
-	typedef struct Position
-	{
-		int row;
-		int col;
-	} Position;
-
-	Board* board = nullptr;
-	// the piece that is falling down
-	Tetrimino* piece = nullptr;
-	Position currentPosition;
-	// the next piece
+    Board* board = nullptr;
+    // the piece that is falling down
+    Tetrimino* piece = nullptr;
+    Position currentPosition;
+    // the next piece
     Tetrimino* nextPiece = nullptr;
 
     void AddNewPiece();
 
-
 private:
-
-	bool gameIsOn;
+    bool gameIsOn;
 
     Tetrimino* CreatePiece() const;
     int GetRand(const int& pA, const int& pB) const;

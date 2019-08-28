@@ -4,17 +4,14 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include <functional>
-#include <iostream>
 
 class Board
 {
 public:
-
     static const size_t Width;
     static const size_t Height;
 
     Board();
-    void Print(std::ostream& out);
     void AddTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY);
     bool IsPossibleMove(const Tetrimino* tetrimino, const int& pX, const int& pY);
     int CountFilledBlocks();
@@ -24,7 +21,6 @@ public:
     bool IsGameOver() const;
 
 protected:
-
     enum class Block : unsigned char
     {
         Free,   // free position of the board

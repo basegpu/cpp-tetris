@@ -4,6 +4,7 @@
 #include "board.hpp"
 #include <ctime>
 #include <cstdlib>
+#include <sstream>
 
 Game::Game() :
     board(new Board()),
@@ -21,11 +22,6 @@ Game::~Game()
     delete this->nextPiece;
     delete this->piece;
     delete this->board;
-}
-
-void Game::Print(std::ostream& out) const
-{
-    this->board->Print(out);
 }
 
 bool Game::On() const

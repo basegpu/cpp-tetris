@@ -3,92 +3,92 @@
 
 
 class TetriminoTest :
-	public ::testing::Test,
-	public Tetrimino
+    public ::testing::Test,
+    public Tetrimino
 {
 public:
-	TetriminoTest() :
-		Tetrimino({
-			{0,0,0,0},
-			{1,0,0,0},
-			{0,0,2,0},
-			{0,3,0,0}
-		}, 0)
-	{}
+    TetriminoTest() :
+        Tetrimino({
+            {0,0,0,0},
+            {1,0,0,0},
+            {0,0,2,0},
+            {0,3,0,0}
+        }, 0)
+    {}
 protected:
-	// void SetUp() override {}
-	// void TearDown() override {}
+    // void SetUp() override {}
+    // void TearDown() override {}
 };
 
 TEST_F(TetriminoTest, nBlocks)
 {
-	ASSERT_EQ(Tetrimino::BlocksPerPiece, 4);
+    ASSERT_EQ(Tetrimino::BlocksPerPiece, 4);
 }
 
 TEST_F(TetriminoTest, NoRotationShape)
 {
-	this->SetRotation(0);
-	ASSERT_EQ(this->GetShape(0, 0), 0);
-	ASSERT_EQ(this->GetShape(1, 0), 1);
-	ASSERT_EQ(this->GetShape(2, 2), 2);
-	ASSERT_EQ(this->GetShape(3, 1), 3);
-	ASSERT_EQ(this->GetShape(0, 3), 0);
+    this->SetRotation(0);
+    ASSERT_EQ(this->GetShape(0, 0), 0);
+    ASSERT_EQ(this->GetShape(1, 0), 1);
+    ASSERT_EQ(this->GetShape(2, 2), 2);
+    ASSERT_EQ(this->GetShape(3, 1), 3);
+    ASSERT_EQ(this->GetShape(0, 3), 0);
 }
 
 TEST_F(TetriminoTest, NoRotationTopLeft)
 {
-	this->SetRotation(0);
-	ASSERT_EQ(this->GetTopBlock(), 1);
-	ASSERT_EQ(this->GetLeftBlock(), 0);
+    this->SetRotation(0);
+    ASSERT_EQ(this->GetTopBlock(), 1);
+    ASSERT_EQ(this->GetLeftBlock(), 0);
 }
 
 TEST_F(TetriminoTest, Rotation90Shape)
 {
-	this->SetRotation(1);
-	ASSERT_EQ(this->GetShape(0, 0), 0);
-	ASSERT_EQ(this->GetShape(0, 2), 1);
-	ASSERT_EQ(this->GetShape(2, 1), 2);
-	ASSERT_EQ(this->GetShape(1, 0), 3);
-	ASSERT_EQ(this->GetShape(3, 3), 0);
+    this->SetRotation(1);
+    ASSERT_EQ(this->GetShape(0, 0), 0);
+    ASSERT_EQ(this->GetShape(0, 2), 1);
+    ASSERT_EQ(this->GetShape(2, 1), 2);
+    ASSERT_EQ(this->GetShape(1, 0), 3);
+    ASSERT_EQ(this->GetShape(3, 3), 0);
 }
 
 TEST_F(TetriminoTest, Rotation90TopLeft)
 {
-	this->SetRotation(1);
-	ASSERT_EQ(this->GetTopBlock(), 0);
-	ASSERT_EQ(this->GetLeftBlock(), 0);
+    this->SetRotation(1);
+    ASSERT_EQ(this->GetTopBlock(), 0);
+    ASSERT_EQ(this->GetLeftBlock(), 0);
 }
 
 TEST_F(TetriminoTest, Rotation180Shape)
 {
-	this->SetRotation(2);
-	ASSERT_EQ(this->GetShape(0, 0), 0);
-	ASSERT_EQ(this->GetShape(2, 3), 1);
-	ASSERT_EQ(this->GetShape(1, 1), 2);
-	ASSERT_EQ(this->GetShape(0, 2), 3);
-	ASSERT_EQ(this->GetShape(1, 0), 0);
+    this->SetRotation(2);
+    ASSERT_EQ(this->GetShape(0, 0), 0);
+    ASSERT_EQ(this->GetShape(2, 3), 1);
+    ASSERT_EQ(this->GetShape(1, 1), 2);
+    ASSERT_EQ(this->GetShape(0, 2), 3);
+    ASSERT_EQ(this->GetShape(1, 0), 0);
 }
 
 TEST_F(TetriminoTest, Rotation180TopLeft)
 {
-	this->SetRotation(2);
-	ASSERT_EQ(this->GetTopBlock(), 0);
-	ASSERT_EQ(this->GetLeftBlock(), 1);
+    this->SetRotation(2);
+    ASSERT_EQ(this->GetTopBlock(), 0);
+    ASSERT_EQ(this->GetLeftBlock(), 1);
 }
 
 TEST_F(TetriminoTest, Rotation270Shape)
 {
-	this->SetRotation(3);
-	ASSERT_EQ(this->GetShape(0, 0), 0);
-	ASSERT_EQ(this->GetShape(3, 1), 1);
-	ASSERT_EQ(this->GetShape(1, 2), 2);
-	ASSERT_EQ(this->GetShape(2, 3), 3);
-	ASSERT_EQ(this->GetShape(1, 0), 0);
+    this->SetRotation(3);
+    ASSERT_EQ(this->GetShape(0, 0), 0);
+    ASSERT_EQ(this->GetShape(3, 1), 1);
+    ASSERT_EQ(this->GetShape(1, 2), 2);
+    ASSERT_EQ(this->GetShape(2, 3), 3);
+    ASSERT_EQ(this->GetShape(1, 0), 0);
 }
 
 TEST_F(TetriminoTest, Rotation270TopLeft)
 {
-	this->SetRotation(3);
-	ASSERT_EQ(this->GetTopBlock(), 1);
-	ASSERT_EQ(this->GetLeftBlock(), 1);
+    this->SetRotation(3);
+    ASSERT_EQ(this->GetTopBlock(), 1);
+    ASSERT_EQ(this->GetLeftBlock(), 1);
 }
