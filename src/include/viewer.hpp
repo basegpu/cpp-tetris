@@ -13,6 +13,8 @@ private:
     static const char filled;
     static const char piece;
 
+    static bool IsPiece(const Game* game, const int& col, const int& row);
+
 };
 
 #endif

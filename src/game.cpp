@@ -113,7 +113,7 @@ void Game::AddNewPiece()
     this->piece = this->nextPiece;
     this->currentPosition = {
         0 - this->piece->GetTopBlock(),
-        (int)Board::Width/2 - this->piece->GetLeftBlock()
+        (int)Board::Width/2 - this->piece->GetLeftBlock() - 1
     };
     // Random next piece
     this->nextPiece = this->CreatePiece();
