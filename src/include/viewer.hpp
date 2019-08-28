@@ -9,9 +9,9 @@ public:
     static std::string Print(const Game* game);
 
 private:
-    static const char border;
-    static const char filled;
-    static const char piece;
+    static const std::string border;
+    static const std::string filled;
+    static const std::string piece;
 
     static bool IsPiece(const Game* game, const int& col, const int& row);
 

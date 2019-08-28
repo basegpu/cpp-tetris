@@ -3,9 +3,9 @@
 #include "tetrimino.hpp"
 #include <sstream>
 
-const char Viewer::border = 'I';
-const char Viewer::filled = 'O';
-const char Viewer::piece = 'X';
+const std::string Viewer::border = "\033[31mI\033[0m";
+const std::string Viewer::filled = "\033[34mO\033[0m";
+const std::string Viewer::piece = "\033[32mX\033[0m";
 
 std::string Viewer::Print(const Game* game)
 {
