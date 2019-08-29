@@ -41,9 +41,13 @@ bool Board::IsPossibleMove(
         // or the piece have collisioned with a block already stored in the map
         if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Block::Filled)
         {
-            isPossible = false;
-            // stop looping
-            return false;
+            // allow being above the board (may happen while rotating)
+            if (y >= 0)
+            {
+                isPossible = false;
+                // stop looping
+                return false;
+            }
         }
         // continue with looping
         return true;
