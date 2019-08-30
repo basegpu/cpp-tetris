@@ -35,11 +35,13 @@ TEST_F(TetriminoTest, NoRotationShape)
     ASSERT_EQ(this->GetShape(0, 3), 0);
 }
 
-TEST_F(TetriminoTest, NoRotationTopLeft)
+TEST_F(TetriminoTest, NoRotationCorner)
 {
     this->SetRotation(0);
     ASSERT_EQ(this->GetTopBlock(), 1);
     ASSERT_EQ(this->GetLeftBlock(), 0);
+    ASSERT_EQ(this->GetBottomBlock(), 3);
+    ASSERT_EQ(this->GetRightBlock(), 2);
 }
 
 TEST_F(TetriminoTest, Rotation90Shape)
@@ -52,11 +54,13 @@ TEST_F(TetriminoTest, Rotation90Shape)
     ASSERT_EQ(this->GetShape(3, 3), 0);
 }
 
-TEST_F(TetriminoTest, Rotation90TopLeft)
+TEST_F(TetriminoTest, Rotation90Corner)
 {
     this->SetRotation(1);
     ASSERT_EQ(this->GetTopBlock(), 0);
     ASSERT_EQ(this->GetLeftBlock(), 0);
+    ASSERT_EQ(this->GetBottomBlock(), 2);
+    ASSERT_EQ(this->GetRightBlock(), 2);
 }
 
 TEST_F(TetriminoTest, Rotation180Shape)
@@ -69,11 +73,13 @@ TEST_F(TetriminoTest, Rotation180Shape)
     ASSERT_EQ(this->GetShape(1, 0), 0);
 }
 
-TEST_F(TetriminoTest, Rotation180TopLeft)
+TEST_F(TetriminoTest, Rotation180Corner)
 {
     this->SetRotation(2);
     ASSERT_EQ(this->GetTopBlock(), 0);
     ASSERT_EQ(this->GetLeftBlock(), 1);
+    ASSERT_EQ(this->GetBottomBlock(), 2);
+    ASSERT_EQ(this->GetRightBlock(), 3);
 }
 
 TEST_F(TetriminoTest, Rotation270Shape)
@@ -86,9 +92,11 @@ TEST_F(TetriminoTest, Rotation270Shape)
     ASSERT_EQ(this->GetShape(1, 0), 0);
 }
 
-TEST_F(TetriminoTest, Rotation270TopLeft)
+TEST_F(TetriminoTest, Rotation270Corner)
 {
     this->SetRotation(3);
     ASSERT_EQ(this->GetTopBlock(), 1);
     ASSERT_EQ(this->GetLeftBlock(), 1);
+    ASSERT_EQ(this->GetBottomBlock(), 3);
+    ASSERT_EQ(this->GetRightBlock(), 3);
 }

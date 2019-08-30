@@ -27,6 +27,8 @@ public:
     unsigned char GetShape(const int& x, const int& y) const;
     int GetTopBlock() const;
     int GetLeftBlock() const;
+    int GetBottomBlock() const;
+    int GetRightBlock() const;
     void Rotate();
 
 protected:
@@ -38,7 +40,7 @@ protected:
 private:
 
     unsigned char shapes[TETRIMINO_NROTATIONS][TETRIMINO_WIDTH][TETRIMINO_WIDTH];
-    int topleftBlock[TETRIMINO_NROTATIONS][2];
+    int cornerBlocks[TETRIMINO_NROTATIONS][4];
     int rotationState;
 
     template<int ROTATION>
@@ -52,11 +54,13 @@ private:
     void DoRotation(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH])
     {
         this->AssetInitializationRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(shape, ROTATION);
-        int top = TETRIMINO_WIDTH;
-        int left = TETRIMINO_WIDTH;
-        this->TopLeftPositionRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(top, left, ROTATION);
-        this->topleftBlock[ROTATION][0] = top;
-        this->topleftBlock[ROTATION][1] = left;
+        // init corner positions: top, left, bottom , right
+        int corners[4] = {TETRIMINO_WIDTH, TETRIMINO_WIDTH, 0, 0};
+        this->CornerPositionRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(corners, ROTATION);
+        for (int ii = 0; ii < 4; ii++)
+        {
+            this->cornerBlocks[ROTATION][ii] = corners[ii];
+        }
     }
 
     template<int INDEX>
@@ -67,10 +71,10 @@ private:
     }
 
     template<int INDEX>
-    void TopLeftPositionRecursion(int& top, int& left, const int& rotation)
+    void CornerPositionRecursion(int (&corners)[4], const int& rotation)
     {
-        this->CheckIfTopLeft<INDEX>(top, left, rotation);
-        this->TopLeftPositionRecursion<INDEX-1>(top, left, rotation);
+        this->UpdateCorners<INDEX>(corners, rotation);
+        this->CornerPositionRecursion<INDEX-1>(corners, rotation);
     }
 
     template<int INDEX>
@@ -96,7 +100,7 @@ private:
     }
 
     template<int INDEX>
-    void CheckIfTopLeft(int& top, int& left, const int& rotation)
+    void UpdateCorners(int (&corners)[4], const int& rotation)
     {
         // row and column indices
         int row, col;
@@ -104,8 +108,10 @@ private:
         // only check if not empty
         if (this->shapes[rotation][row][col] != 0)
         {
-            top = std::min(top, row);
-            left = std::min(left, col);
+            corners[0] = std::min(corners[0], row);
+            corners[1] = std::min(corners[1], col);
+            corners[2] = std::max(corners[2], row);
+            corners[3] = std::max(corners[3], col);
         }
     }
 

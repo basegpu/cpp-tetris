@@ -14,12 +14,22 @@ unsigned char Tetrimino::GetShape(const int& row, const int& col) const
 
 int Tetrimino::GetTopBlock() const
 {
-    return this->topleftBlock[this->rotationState][0];
+    return this->cornerBlocks[this->rotationState][0];
 }
 
 int Tetrimino::GetLeftBlock() const
 {
-    return this->topleftBlock[this->rotationState][1];
+    return this->cornerBlocks[this->rotationState][1];
+}
+
+int Tetrimino::GetBottomBlock() const
+{
+    return this->cornerBlocks[this->rotationState][2];
+}
+
+int Tetrimino::GetRightBlock() const
+{
+    return this->cornerBlocks[this->rotationState][3];
 }
 
 void Tetrimino::Rotate()
@@ -51,9 +61,9 @@ void Tetrimino::AssetInitializationRecursion<0>(const unsigned char (&shape)[TET
 }
 
 template<>
-void Tetrimino::TopLeftPositionRecursion<0>(int& top, int& left, const int& rotation)
+void Tetrimino::CornerPositionRecursion<0>(int (&corners)[4], const int& rotation)
 {
-    this->CheckIfTopLeft<0>(top, left, rotation);
+    this->UpdateCorners<0>(corners, rotation);
 }
 
 Tetrimino* Tetrimino::Make(const Tetrimino::Type& type, const int& rotation)
