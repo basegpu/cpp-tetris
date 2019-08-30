@@ -28,7 +28,8 @@ TEST(NonRandomGameTest, PlaySequence)
 {
 	Game* game = new Game(false);
 	ASSERT_EQ(game->GetScore(), 0);
-	// moves represented by console input 'jjjjmillllmlmiijmijjjjjmimlmlmijmiillllmiiilllmijjjm'
+	// moves represented by console input:
+	// jjjjmillllmlmiijmijjjjjmimlmlmijmiillllmiiilllmijjjm
 	std::vector<Game::Moves> moves = {
 		Game::Moves::Left,
 		Game::Moves::Left,

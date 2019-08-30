@@ -25,6 +25,11 @@ TEST_F(TetriminoTest, nBlocks)
     ASSERT_EQ(Tetrimino::BlocksPerPiece, 4);
 }
 
+TEST_F(TetriminoTest, Symmetry)
+{
+    ASSERT_EQ(Tetrimino::Symmetry::None, this->GetSymmetry());
+}
+
 TEST_F(TetriminoTest, NoRotationShape)
 {
     this->SetRotation(0);

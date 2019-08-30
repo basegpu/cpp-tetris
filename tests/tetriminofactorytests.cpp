@@ -12,6 +12,7 @@ protected:
 TEST_F(TetriminoFactoryTest, SquareShape)
 {
     Tetrimino* square = Tetrimino::Make(Tetrimino::Type::Square, 0);
+    ASSERT_EQ(square->GetSymmetry(), Tetrimino::Symmetry::Point);
     ASSERT_EQ(square->GetShape(2, 2), 1);
     square->Rotate();
     ASSERT_EQ(square->GetShape(2, 1), 1);
@@ -42,6 +43,7 @@ TEST_F(TetriminoFactoryTest, SquareTopLeft)
 TEST_F(TetriminoFactoryTest, LinePosition)
 {
     Tetrimino* line = Tetrimino::Make(Tetrimino::Type::Line, 0);
+    ASSERT_EQ(line->GetSymmetry(), Tetrimino::Symmetry::Line);
     ASSERT_EQ(line->GetShape(2, 2), 1);
     line->Rotate();
     ASSERT_EQ(line->GetShape(2, 1), 1);
@@ -72,6 +74,7 @@ TEST_F(TetriminoFactoryTest, LineTopLeft)
 TEST_F(TetriminoFactoryTest, RightHookShape)
 {
     Tetrimino* rHook = Tetrimino::Make(Tetrimino::Type::RightHook, 0);
+    ASSERT_EQ(rHook->GetSymmetry(), Tetrimino::Symmetry::None);
     ASSERT_EQ(rHook->GetShape(0, 1), 1);
     rHook->Rotate();
     ASSERT_EQ(rHook->GetShape(1, 2), 1);
@@ -102,6 +105,7 @@ TEST_F(TetriminoFactoryTest, RightHookTopLeft)
 TEST_F(TetriminoFactoryTest, LeftHookShape)
 {
     Tetrimino* lHook = Tetrimino::Make(Tetrimino::Type::LeftHook, 0);
+    ASSERT_EQ(lHook->GetSymmetry(), Tetrimino::Symmetry::None);
     ASSERT_EQ(lHook->GetShape(0, 2), 1);
     lHook->Rotate();
     ASSERT_EQ(lHook->GetShape(2, 2), 1);
@@ -132,6 +136,7 @@ TEST_F(TetriminoFactoryTest, LeftHookTopLeft)
 TEST_F(TetriminoFactoryTest, TeeShape)
 {
     Tetrimino* tee = Tetrimino::Make(Tetrimino::Type::Tee, 0);
+    ASSERT_EQ(tee->GetSymmetry(), Tetrimino::Symmetry::None);
     ASSERT_EQ(tee->GetShape(1, 2), 1);
     tee->Rotate();
     ASSERT_EQ(tee->GetShape(1, 1), 1);
@@ -162,6 +167,7 @@ TEST_F(TetriminoFactoryTest, TeeTopLeft)
 TEST_F(TetriminoFactoryTest, RightChairShape)
 {
     Tetrimino* rChair = Tetrimino::Make(Tetrimino::Type::RightChair, 0);
+    ASSERT_EQ(rChair->GetSymmetry(), Tetrimino::Symmetry::Line);
     ASSERT_EQ(rChair->GetShape(1, 1), 1);
     rChair->Rotate();
     ASSERT_EQ(rChair->GetShape(2, 2), 1);
@@ -192,6 +198,7 @@ TEST_F(TetriminoFactoryTest, RightChairTopLeft)
 TEST_F(TetriminoFactoryTest, LeftChairShape)
 {
     Tetrimino* lChair = Tetrimino::Make(Tetrimino::Type::LeftChair, 0);
+    ASSERT_EQ(lChair->GetSymmetry(), Tetrimino::Symmetry::Line);
     ASSERT_EQ(lChair->GetShape(2, 0), 1);
     lChair->Rotate();
     ASSERT_EQ(lChair->GetShape(1, 1), 1);
