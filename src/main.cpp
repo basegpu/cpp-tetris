@@ -2,21 +2,17 @@
 #include "board.hpp"
 #include "viewer.hpp"
 #include <iostream>
+#include <sstream>
 #include <map>
 #include <vector>
+#include <string>
 
-#define KEY_ROTATE 105
-#define KEY_LEFT 106
-#define KEY_DOWN 107
-#define KEY_RIGHT 108
-#define KEY_ADVANCE 109
-
-const std::map<int, Game::Moves> commands = {
-    {KEY_ADVANCE, Game::Moves::Advance},
-    {KEY_ROTATE,  Game::Moves::Rotate },
-    {KEY_DOWN,    Game::Moves::Down   },
-    {KEY_LEFT,    Game::Moves::Left   },
-    {KEY_RIGHT,   Game::Moves::Right  },
+const std::map<char, Game::Moves> commands = {
+    {'m', Game::Moves::Advance},
+    {'i', Game::Moves::Rotate },
+    {'k', Game::Moves::Down   },
+    {'j', Game::Moves::Left   },
+    {'l', Game::Moves::Right  },
 };
 
 const std::vector<Game::Moves> parseCommandLineArguments(int argc, char* argv[])
@@ -36,6 +32,26 @@ const std::vector<Game::Moves> parseCommandLineArguments(int argc, char* argv[])
     return moves;
 }
 
+const std::string printUsage()
+{
+    std::ostringstream out;
+    out << "j -> move left" << std::endl;
+    out << "l -> move right" << std::endl;
+    out << "k -> move down" << std::endl;
+    out << "i -> rotate" << std::endl;
+    out << "m -> drop" << std::endl;
+    return out.str();
+}
+
+void viewGame(const Game* game)
+{
+    // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
+    std::cout << "\x1B[2J\x1B[H";
+    std::cout << Viewer::Print(game);
+    std::cout << std::endl << printUsage();
+}
+
+
 int main(int argc, char* argv[])
 {
     Game* game = nullptr;
@@ -53,18 +69,18 @@ int main(int argc, char* argv[])
         game = new Game(true);
     }
     // then go gon with user input
+    char M;
     while (game->On())
     {
-        // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
-        std::cout << "\x1B[2J\x1B[H";
-        std::cout << Viewer::Print(game);
+        viewGame(game);
         // read key
-        char M;
         std::cin >> M;
-        if (commands.count((int)M))
+        // try to make a move
+        try
         {
-            game->MakeMove(commands.at((int)M));
+            game->MakeMove(commands.at(M));
         }
+        catch (...) {} // bad key
     }
     delete game;
     return 1;
