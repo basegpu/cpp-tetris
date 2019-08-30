@@ -19,14 +19,11 @@ const std::map<int, Game::Moves> commands = {
     {KEY_RIGHT,   Game::Moves::Right  },
 };
 
-int main(int argc, char* argv[])
+const std::vector<Game::Moves> parseCommandLineArguments(int argc, char* argv[])
 {
-    // parse command line
-    bool random = true;
     std::vector<Game::Moves> moves;
     if (argc == 2)
     {
-        random = false;
         std::string seq = std::string(argv[1]);
         for (const char& c : seq)
         {
@@ -36,10 +33,25 @@ int main(int argc, char* argv[])
             }
         }
     }
+    return moves;
+}
+
+int main(int argc, char* argv[])
+{
+    Game* game = nullptr;
+    // parse command line
+    auto moves = parseCommandLineArguments(argc, argv);
     // create game
-    Game* game = new Game(random);
-    // eventually play given sequence first
-    game->PlaySequence(moves);
+    if (moves.size())
+    {
+        // play given deterministic sequence first
+        game = new Game(false);
+        game->PlaySequence(moves);
+    }
+    else
+    {
+        game = new Game(true);
+    }
     // then go gon with user input
     while (game->On())
     {
