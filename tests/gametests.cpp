@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <vector>
 #include "game.hpp"
 
 
@@ -21,4 +22,67 @@ TEST_F(GameTest, NewPiece)
     Tetrimino* p = this->nextPiece;
     this->AddNewPiece();
     ASSERT_EQ(this->piece, p);
+}
+
+TEST(NonRandomGameTest, PlaySequence)
+{
+	Game* game = new Game(false);
+	ASSERT_EQ(game->GetScore(), 0);
+	std::vector<Game::Moves> moves = {
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Advance,
+		Game::Moves::Right,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Rotate,
+		Game::Moves::Left,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Advance,
+		Game::Moves::Right,
+		Game::Moves::Advance,
+		Game::Moves::Right,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Left,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Rotate,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Rotate,
+		Game::Moves::Rotate,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Right,
+		Game::Moves::Advance,
+		Game::Moves::Rotate,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Left,
+		Game::Moves::Advance
+	};
+	game->PlaySequence(moves);
+	ASSERT_EQ(game->GetScore(), 2);
+	delete game;
 }

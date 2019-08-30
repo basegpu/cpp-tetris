@@ -22,6 +22,10 @@ Game::Game(const bool& random) :
     {
         srand((unsigned int) time(NULL));
     }
+    else
+    {
+        srand(1);
+    }
     // Next piece
     this->nextPiece = this->CreatePiece();
     this->AddNewPiece();
