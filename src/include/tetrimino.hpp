@@ -19,11 +19,18 @@ public:
         LeftChair
     };
 
+    enum class Symmetry : unsigned char {
+        None,
+        Line,
+        Point
+    };
+
     static Tetrimino* Make(const Type& type, const int& rotation);
     static const int BlocksPerPiece;
     static const int NumberOfRotations;
     static const int NumberOfTypes;
 
+    Symmetry GetSymmetry() const;
     unsigned char GetShape(const int& x, const int& y) const;
     int GetTopBlock() const;
     int GetLeftBlock() const;
@@ -33,7 +40,10 @@ public:
 
 protected:
 
-    Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation);
+    Tetrimino(
+        const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH],
+        const Symmetry& symmetry,
+        const int& rotation);
     void SetRotation(const int& rotation);
 
 
@@ -41,6 +51,7 @@ private:
 
     unsigned char shapes[TETRIMINO_NROTATIONS][TETRIMINO_WIDTH][TETRIMINO_WIDTH];
     int cornerBlocks[TETRIMINO_NROTATIONS][4];
+    const Symmetry symmetry;
     int rotationState;
 
     template<int ROTATION>

@@ -7,6 +7,11 @@ const int Tetrimino::NumberOfRotations = TETRIMINO_NROTATIONS;
 
 const int Tetrimino::NumberOfTypes = TETRIMINO_NTYPES;
 
+Tetrimino::Symmetry Tetrimino::GetSymmetry() const
+{
+    return this->symmetry;
+}
+
 unsigned char Tetrimino::GetShape(const int& row, const int& col) const
 {
     return this->shapes[this->rotationState][row][col];
@@ -37,7 +42,11 @@ void Tetrimino::Rotate()
     this->SetRotation(this->rotationState + 1);
 }
 
-Tetrimino::Tetrimino(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation) :
+Tetrimino::Tetrimino(
+    const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH],
+    const Symmetry& sym,
+    const int& rotation) :
+    symmetry(sym),
     rotationState(rotation)
 {
     this->RotateRecursion<TETRIMINO_NROTATIONS-1>(shape);
@@ -75,43 +84,43 @@ Tetrimino* Tetrimino::Make(const Tetrimino::Type& type, const int& rotation)
             {0,1,1,0},
             {0,1,1,0},
             {0,0,0,0},
-        }, rotation);
+        }, Symmetry::Point, rotation);
         case Type::Line: return new Tetrimino({
             {0,0,1,0},
             {0,0,1,0},
             {0,0,1,0},
             {0,0,1,0},
-        }, rotation);
+        }, Symmetry::Line, rotation);
         case Type::RightHook: return new Tetrimino({
             {0,1,0,0},
             {0,1,0,0},
             {0,1,1,0},
             {0,0,0,0},
-        }, rotation);
+        }, Symmetry::None, rotation);
         case Type::LeftHook: return new Tetrimino({
             {0,0,1,0},
             {0,0,1,0},
             {0,1,1,0},
             {0,0,0,0},
-        }, rotation);
+        }, Symmetry::None, rotation);
         case Type::Tee: return new Tetrimino({
             {0,0,0,0},
             {0,0,1,0},
             {0,1,1,1},
             {0,0,0,0},
-        }, rotation);
+        }, Symmetry::None, rotation);
         case Type::RightChair: return new Tetrimino({
             {0,0,0,0},
             {0,1,1,0},
             {0,0,1,1},
             {0,0,0,0},
-        }, rotation);
-
+        }, Symmetry::Line, rotation);
         case Type::LeftChair: return new Tetrimino({
             {0,0,0,0},
             {0,1,1,0},
             {1,1,0,0},
             {0,0,0,0},
-        }, rotation);
+        }, Symmetry::Line, rotation);
+        default: return nullptr;
     }
 }
