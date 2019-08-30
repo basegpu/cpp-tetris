@@ -3,6 +3,7 @@
 #include "tetrimino.hpp"
 #include <sstream>
 #include <string>
+#include <iomanip>
 
 const std::string Viewer::border = "\033[31mI\033[0m";
 const std::string Viewer::filled = "\033[34mO\033[0m";
@@ -22,18 +23,15 @@ std::string Viewer::Header(const Game* game)
 {
     std::ostringstream out;
     out << LineWith(" ", "-");
-    out << "|                ";
-    out << PieceForRow(game, 0) << "|" << std::endl;
-    out << "|   SCORE: " << game->GetScore() << "  ";
-    out << PieceForRow(game, 1) << "|" << std::endl;
-    out << "|                ";
-    out << PieceForRow(game, 2) << "|" << std::endl;
-    out << "|   by sjp, 2019 ";
-    out << PieceForRow(game, 3) << "|" << std::endl;
+    out << Viewer::LineWithPiece(game, 0, "              ");
+    char score[15];
+    sprintf(score, "  SCORE:%6i", game->GetScore());
+    out << Viewer::LineWithPiece(game, 1, std::string(score));
+    out << Viewer::LineWithPiece(game, 2, "              ");
+    out << Viewer::LineWithPiece(game, 3, "  by sjp, 2019");
     for (int row = 4; row < Tetrimino::BlocksPerPiece; row++)
     {
-        out << "|                ";
-        out << PieceForRow(game, row) << "|" << std::endl;
+        out << Viewer::LineWithPiece(game, row, "              ");
     }
     out << LineWith(" ", "-");
     return out.str();
@@ -75,11 +73,20 @@ std::string Viewer::LineWith(const std::string& frame, const std::string& fill)
 {
     std::ostringstream out;
     out << frame;
-    for (int ii = 0; ii < width - 2; ii++)
-    {
-        out << fill << fill;
-    }
-    out << fill << frame << std::endl;
+    out << std::setfill(fill.c_str()[0]) << std::setw(2*(width-1)) << frame;
+    out << std::endl;
+    return out.str();
+}
+
+std::string Viewer::LineWithPiece(const Game* game, const int&row, const std::string& prefix)
+{
+    const int pieceMargin = 4;
+    const int gab = 2*width - 1 - pieceMargin - 2*Tetrimino::BlocksPerPiece - prefix.size();
+    std::ostringstream out;
+    out << "|" << prefix;
+    out << std::setfill(' ') << std::setw(gab-1) << " "; // -1 because string length of formatted piece
+    out << PieceForRow(game, row);
+    out << std::setfill(' ') << std::setw(pieceMargin) << "|" << std::endl;
     return out.str();
 }
 
