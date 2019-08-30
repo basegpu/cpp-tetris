@@ -1,4 +1,5 @@
 #include "tetrimino.hpp"
+#include <bitset>
 
 
 const int Tetrimino::BlocksPerPiece = TETRIMINO_WIDTH;
@@ -10,6 +11,15 @@ const int Tetrimino::NumberOfTypes = TETRIMINO_NTYPES;
 Tetrimino::Symmetry Tetrimino::GetSymmetry() const
 {
     return this->symmetry;
+}
+
+Tetrimino::Hash Tetrimino::GetHash() const
+{
+    Hash hash;
+    this->HashRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(hash);
+    if (this->rotationState / 2) hash.set(TETRIMINO_HASHSIZE-2);
+    if (this->rotationState % 2) hash.set(TETRIMINO_HASHSIZE-1);
+    return hash;
 }
 
 unsigned char Tetrimino::GetShape(const int& row, const int& col) const
@@ -73,6 +83,12 @@ template<>
 void Tetrimino::CornerPositionRecursion<0>(int (&corners)[4], const int& rotation)
 {
     this->UpdateCorners<0>(corners, rotation);
+}
+
+template<>
+void Tetrimino::HashRecursion<0>(Hash& hash) const
+{
+    this->AssignBit<0>(hash);
 }
 
 Tetrimino* Tetrimino::Make(const Tetrimino::Type& type, const int& rotation)

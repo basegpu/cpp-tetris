@@ -3,6 +3,7 @@
 
 #include "globals.hpp"
 #include <algorithm>
+#include <bitset>
 
 
 class Tetrimino
@@ -31,6 +32,7 @@ public:
     static const int NumberOfTypes;
 
     Symmetry GetSymmetry() const;
+    std::bitset<TETRIMINO_HASHSIZE> GetHash() const;
     unsigned char GetShape(const int& x, const int& y) const;
     int GetTopBlock() const;
     int GetLeftBlock() const;
@@ -48,6 +50,8 @@ protected:
 
 
 private:
+
+    typedef std::bitset<TETRIMINO_HASHSIZE> Hash;
 
     unsigned char shapes[TETRIMINO_NROTATIONS][TETRIMINO_WIDTH][TETRIMINO_WIDTH];
     int cornerBlocks[TETRIMINO_NROTATIONS][4];
@@ -89,6 +93,13 @@ private:
     }
 
     template<int INDEX>
+    void HashRecursion(Hash& hash) const
+    {
+        this->AssignBit<INDEX>(hash);
+        this->HashRecursion<INDEX-1>(hash);
+    }
+
+    template<int INDEX>
     void DoAssetInitialization(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation)
     {
         // row and column indices
@@ -127,7 +138,20 @@ private:
     }
 
     template<int INDEX>
-    void Transform2RowCol(int& row, int& col)
+    void AssignBit(Hash& hash) const
+    {
+        // row and column indices
+        int row, col;
+        this->Transform2RowCol<INDEX>(row, col);
+        // eventually assign bit
+        if (this->shapes[this->rotationState][row][col])
+        {
+            hash.set(INDEX);
+        }
+    }
+
+    template<int INDEX>
+    void Transform2RowCol(int& row, int& col) const
     {
         row = INDEX / TETRIMINO_WIDTH;
         col = INDEX % TETRIMINO_WIDTH;

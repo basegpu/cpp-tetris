@@ -30,6 +30,12 @@ TEST_F(TetriminoTest, Symmetry)
     ASSERT_EQ(Tetrimino::Symmetry::None, this->GetSymmetry());
 }
 
+TEST_F(TetriminoTest, Hash)
+{
+    this->SetRotation(0);
+    ASSERT_EQ(this->GetHash(), 000010010000010000);
+}
+
 TEST_F(TetriminoTest, NoRotationShape)
 {
     this->SetRotation(0);
