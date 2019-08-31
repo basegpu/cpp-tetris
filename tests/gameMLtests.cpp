@@ -19,5 +19,5 @@ TEST_F(GameMLTest, NoActions)
 {
 	Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
 	ASSERT_EQ(this->GetScore(), 0);
-	ASSERT_EQ(this->GetActions(t).size(), 0);
+	ASSERT_EQ(this->GetActions(t).size(), 1);
 }

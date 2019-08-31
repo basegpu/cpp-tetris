@@ -30,14 +30,38 @@ protected:
         return this->actions.at(hash);
     }
 
-    Actions CreateActions(Tetrimino* tetrimino)
-    {
-        Actions acts;
-        return acts;
-    }
-
 private:
     std::map<size_t, Actions> actions;
+
+    Actions CreateActions(Tetrimino* tetrimino)
+    {
+        // check th possible enumber of rotations
+        int nRot;
+        switch (tetrimino->GetSymmetry())
+        {
+            case (Tetrimino::Symmetry::None): nRot = 4; break;
+            case (Tetrimino::Symmetry::Line): nRot = 2; break;
+            case (Tetrimino::Symmetry::Point): nRot = 1; break;
+            default: nRot = 0;
+        }
+
+        Actions acts;
+        // loop over all rotational variations
+        for (int iRot = 0; iRot < nRot; iRot++)
+        {
+            // check the possible moves sideways
+
+            // generate the action
+            Action a;
+            for (int ii = 0; ii < iRot; ii++)
+            {
+                a.push_back(Game::Moves::Rotate);
+            }
+            // add the action to the list of all possible actions
+            acts.push_back(a);
+        }
+        return acts;
+    }
 };
 
 #endif // GAME_ML_H
