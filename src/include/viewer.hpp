@@ -13,7 +13,6 @@ private:
     static const std::string border;
     static const std::string filled;
     static const std::string piece;
-    static const int width;
 
     static std::string Header(const Game* game);
     static std::string Board(const Game* game);
