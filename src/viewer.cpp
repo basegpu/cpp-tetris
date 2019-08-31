@@ -1,4 +1,5 @@
 #include "viewer.hpp"
+#include "globals.hpp"
 #include "game.hpp"
 #include "tetrimino.hpp"
 #include <sstream>
@@ -8,7 +9,6 @@
 const std::string Viewer::border = "\033[31mI\033[0m";
 const std::string Viewer::filled = "\033[34mO\033[0m";
 const std::string Viewer::piece = "\033[32mX\033[0m";
-const int Viewer::width = 20;
 
 std::string Viewer::Print(const Game* game)
 {
@@ -39,7 +39,7 @@ std::string Viewer::Header(const Game* game)
 
 std::string Viewer::Board(const Game* game)
 {
-    std::string margin((width - Board::Width - 2), ' ');
+    std::string margin((VIEWER_WIDTH - Board::Width - 2), ' ');
     std::ostringstream out;
     for (int jj = 0; jj < Board::Height; jj++)
     {
@@ -73,7 +73,7 @@ std::string Viewer::LineWith(const std::string& frame, const std::string& fill)
 {
     std::ostringstream out;
     out << frame;
-    out << std::setfill(fill.c_str()[0]) << std::setw(2*(width-1)) << frame;
+    out << std::setfill(fill.c_str()[0]) << std::setw(2*(VIEWER_WIDTH-1)) << frame;
     out << std::endl;
     return out.str();
 }
@@ -81,7 +81,7 @@ std::string Viewer::LineWith(const std::string& frame, const std::string& fill)
 std::string Viewer::LineWithPiece(const Game* game, const int&row, const std::string& prefix)
 {
     const int pieceMargin = 4;
-    const int gab = 2*width - 1 - pieceMargin - 2*Tetrimino::BlocksPerPiece - prefix.size();
+    const int gab = 2*VIEWER_WIDTH - 1 - pieceMargin - 2*Tetrimino::BlocksPerPiece - prefix.size();
     std::ostringstream out;
     out << "|" << prefix;
     out << std::setfill(' ') << std::setw(gab-1) << " "; // -1 because string length of formatted piece
