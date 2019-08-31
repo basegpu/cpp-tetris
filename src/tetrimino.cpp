@@ -13,13 +13,13 @@ Tetrimino::Symmetry Tetrimino::GetSymmetry() const
     return this->symmetry;
 }
 
-Tetrimino::Hash Tetrimino::GetHash() const
+size_t Tetrimino::GetHash() const
 {
     Hash hash;
     this->HashRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(hash);
     if (this->rotationState / 2) hash.set(TETRIMINO_HASHSIZE-2);
     if (this->rotationState % 2) hash.set(TETRIMINO_HASHSIZE-1);
-    return hash;
+    return hash.to_ullong();
 }
 
 unsigned char Tetrimino::GetShape(const int& row, const int& col) const

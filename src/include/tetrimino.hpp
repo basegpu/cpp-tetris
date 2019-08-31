@@ -32,7 +32,7 @@ public:
     static const int NumberOfTypes;
 
     Symmetry GetSymmetry() const;
-    std::bitset<TETRIMINO_HASHSIZE> GetHash() const;
+    size_t GetHash() const;
     unsigned char GetShape(const int& x, const int& y) const;
     int GetTopBlock() const;
     int GetLeftBlock() const;
@@ -50,7 +50,7 @@ protected:
 
 
 private:
-
+    
     typedef std::bitset<TETRIMINO_HASHSIZE> Hash;
 
     unsigned char shapes[TETRIMINO_NROTATIONS][TETRIMINO_WIDTH][TETRIMINO_WIDTH];

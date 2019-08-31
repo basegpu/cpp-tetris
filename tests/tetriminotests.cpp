@@ -33,7 +33,8 @@ TEST_F(TetriminoTest, Symmetry)
 TEST_F(TetriminoTest, Hash)
 {
     this->SetRotation(0);
-    ASSERT_EQ(this->GetHash().to_string(), "000010010000010000");
+    ASSERT_EQ(this->GetHash(),
+        std::bitset<TETRIMINO_HASHSIZE>("000010010000010000").to_ullong());
 }
 
 TEST_F(TetriminoTest, NoRotationShape)

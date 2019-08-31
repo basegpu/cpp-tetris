@@ -1,11 +1,17 @@
 #include <gtest/gtest.h>
 #include "tetrimino.hpp"
 
+template<int N>
+size_t bitstring2ullong(const std::string& bits)
+{
+    return std::bitset<N>(bits).to_ullong();
+}
+
 TEST(TetriminoFactoryTest, SquareProps)
 {
     Tetrimino* square = Tetrimino::Make(Tetrimino::Type::Square, 0);
     ASSERT_EQ(square->GetSymmetry(), Tetrimino::Symmetry::Point);
-    ASSERT_EQ(square->GetHash().to_string(), "000000011001100000");
+    ASSERT_EQ(square->GetHash(), bitstring2ullong<TETRIMINO_HASHSIZE>("000000011001100000"));
     delete square;
 }
 
@@ -43,7 +49,7 @@ TEST(TetriminoFactoryTest, LineProps)
 {
     Tetrimino* line = Tetrimino::Make(Tetrimino::Type::Line, 0);
     ASSERT_EQ(line->GetSymmetry(), Tetrimino::Symmetry::Line);
-    ASSERT_EQ(line->GetHash().to_string(), "000100010001000100");
+    ASSERT_EQ(line->GetHash(), bitstring2ullong<TETRIMINO_HASHSIZE>("000100010001000100"));
     delete line;
 }
 
@@ -81,7 +87,7 @@ TEST(TetriminoFactoryTest, RightHookProps)
 {
     Tetrimino* rHook = Tetrimino::Make(Tetrimino::Type::RightHook, 0);
     ASSERT_EQ(rHook->GetSymmetry(), Tetrimino::Symmetry::None);
-    ASSERT_EQ(rHook->GetHash().to_string(), "000000011000100010");
+    ASSERT_EQ(rHook->GetHash(), bitstring2ullong<TETRIMINO_HASHSIZE>("000000011000100010"));
     delete rHook;
 }
 
@@ -119,7 +125,7 @@ TEST(TetriminoFactoryTest, LeftHookProps)
 {
     Tetrimino* lHook = Tetrimino::Make(Tetrimino::Type::LeftHook, 0);
     ASSERT_EQ(lHook->GetSymmetry(), Tetrimino::Symmetry::None);
-    ASSERT_EQ(lHook->GetHash().to_string(), "000000011001000100");
+    ASSERT_EQ(lHook->GetHash(), bitstring2ullong<TETRIMINO_HASHSIZE>("000000011001000100"));
     delete lHook;
 }
 
@@ -157,7 +163,7 @@ TEST(TetriminoFactoryTest, TeeProps)
 {
     Tetrimino* tee = Tetrimino::Make(Tetrimino::Type::Tee, 0);
     ASSERT_EQ(tee->GetSymmetry(), Tetrimino::Symmetry::None);
-    ASSERT_EQ(tee->GetHash().to_string(), "000000111001000000");
+    ASSERT_EQ(tee->GetHash(), bitstring2ullong<TETRIMINO_HASHSIZE>("000000111001000000"));
     delete tee;
 }
 
@@ -195,7 +201,7 @@ TEST(TetriminoFactoryTest, RightChairProps)
 {
     Tetrimino* rChair = Tetrimino::Make(Tetrimino::Type::RightChair, 0);
     ASSERT_EQ(rChair->GetSymmetry(), Tetrimino::Symmetry::Line);
-    ASSERT_EQ(rChair->GetHash().to_string(), "000000110001100000");
+    ASSERT_EQ(rChair->GetHash(), bitstring2ullong<TETRIMINO_HASHSIZE>("000000110001100000"));
     delete rChair;
 }
 
@@ -233,7 +239,7 @@ TEST(TetriminoFactoryTest, LeftChairProps)
 {
     Tetrimino* lChair = Tetrimino::Make(Tetrimino::Type::LeftChair, 0);
     ASSERT_EQ(lChair->GetSymmetry(), Tetrimino::Symmetry::Line);
-    ASSERT_EQ(lChair->GetHash().to_string(), "000000001101100000");
+    ASSERT_EQ(lChair->GetHash(), bitstring2ullong<TETRIMINO_HASHSIZE>("000000001101100000"));
     delete lChair;
 }
 
