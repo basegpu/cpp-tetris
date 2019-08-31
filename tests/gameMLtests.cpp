@@ -19,5 +19,7 @@ TEST_F(GameMLTest, NoActions)
 {
 	Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
 	ASSERT_EQ(this->GetScore(), 0);
+	size_t hash_ref = t->GetHash();
 	ASSERT_EQ(this->GetActions(t).size(), 1);
+	ASSERT_EQ(t->GetHash(), hash_ref);
 }

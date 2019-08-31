@@ -25,7 +25,6 @@ protected:
             // we have to generate all possible actions
             // and add them to hash table
             this->actions[hash] = this->CreateActions(tetrimino);
-
         }
         return this->actions.at(hash);
     }
@@ -47,7 +46,7 @@ private:
 
         Actions acts;
         // loop over all rotational variations
-        for (int iRot = 0; iRot < nRot; iRot++)
+        for (int iRot = 0; iRot < nRot; iRot++, tetrimino->Rotate())
         {
             // check the possible moves sideways
 
@@ -59,6 +58,11 @@ private:
             }
             // add the action to the list of all possible actions
             acts.push_back(a);
+        }
+        // rotate back to original position
+        for (int ii = nRot; ii < 4; ii++)
+        {
+            tetrimino->Rotate();
         }
         return acts;
     }
