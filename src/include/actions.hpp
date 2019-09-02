@@ -24,20 +24,16 @@ public:
             case (Tetrimino::Symmetry::Point): nRot = 1; break;
             default: nRot = 0;
         }
-        // keep the initial left/right positions as reference
-        const int initialLeft = tetrimino->GetLeftBlock();
-        const int initialRight = tetrimino->GetRightBlock();
-        // initial horizontal moves
-        int nLeft = position.col + initialLeft;
-        int nRight = Board::Width - position.col - initialRight - 1;
-        // ...
+        // horizontal moves
+        int nLeft, nRight;
         Actions acts;
         // loop over all rotational variations
         for (int iRot = 0; iRot < nRot; iRot++, tetrimino->Rotate())
         {
             // update the possible moves sideways
-            nLeft += tetrimino->GetLeftBlock() - initialLeft;
-            nRight += initialRight - tetrimino->GetRightBlock();
+            nLeft = position.col + tetrimino->GetLeftBlock();
+            nRight = Board::Width - position.col  - 1 - tetrimino->GetRightBlock();
+            TETRIS_MESSAGE(iRot << "/" << nLeft << "/" << nRight);
             // loop over all variations of horizontal moves
             for (int iMove = 0; iMove < nLeft+nRight+1; iMove++)
             {

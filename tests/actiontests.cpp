@@ -2,23 +2,77 @@
 #include "tetrimino.hpp"
 #include "actions.hpp"
 #include "board.hpp"
+#include <numeric>
 
 
-TEST(ActionsTest, SquareActions)
+class ActionsTest :
+    public ::testing::Test
 {
-    Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
-    Actions a = Actions::CreateFor(t, {0, (int)Board::Width/2});
-    ASSERT_EQ(a.size(), Board::Width - 2 + 1);
-    delete t;
+protected:
+
+    Tetrimino* t = nullptr;
+
+    // void SetUp() override {}
+    void Init(const Tetrimino::Type& type)
+    {
+        this->t = Tetrimino::Make(type, 0);
+    }
+    void Check(const std::vector<int>& widths)
+    {
+        int nActions = widths.size() * (Board::Width + 1)
+                        - std::accumulate(widths.begin(), widths.end(), 0);
+        Actions a;
+        for (int ii = 0; ii < widths.size(); ii++)
+        {
+            a = Actions::CreateFor(this->t, {0, (int)Board::Width/2-1});
+            ASSERT_EQ(a.size(), nActions);
+            this->t->Rotate();
+        }
+    }
+    void TearDown() override
+    {
+        if (t) delete t;
+    }
+};
+
+TEST_F(ActionsTest, SquareActions)
+{
+    this->Init(Tetrimino::Type::Square);
+    this->Check({2});
 }
 
-TEST(ActionsTest, LineActions)
+TEST_F(ActionsTest, LineActions)
 {
-    Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Line, 0);
-    Actions a = Actions::CreateFor(t, {0, (int)Board::Width/2});
-    int nActions = 2*Board::Width + 2 - 1 - 4;
-    ASSERT_EQ(a.size(), nActions);
-    t->Rotate();
-    ASSERT_EQ(a.size(), nActions);
-    delete t;
+    this->Init(Tetrimino::Type::Line);
+    this->Check({1, 4});
+}
+
+TEST_F(ActionsTest, RightHookActions)
+{
+    this->Init(Tetrimino::Type::RightHook);
+    this->Check({2, 3, 2, 3});
+}
+
+TEST_F(ActionsTest, LeftHookActions)
+{
+    this->Init(Tetrimino::Type::LeftHook);
+    this->Check({2, 3, 2, 3});
+}
+
+TEST_F(ActionsTest, TeeActions)
+{
+    this->Init(Tetrimino::Type::Tee);
+    this->Check({3, 2, 3, 2});
+}
+
+TEST_F(ActionsTest, RightChairActions)
+{
+    this->Init(Tetrimino::Type::RightChair);
+    this->Check({3, 2});
+}
+
+TEST_F(ActionsTest, LeftChairActions)
+{
+    this->Init(Tetrimino::Type::LeftChair);
+    this->Check({3, 2});
 }
