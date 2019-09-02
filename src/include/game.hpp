@@ -27,15 +27,15 @@ public:
     void MakeMove(const Moves& move);
     void PlaySequence(const std::vector<Moves>& seq);
 
-    friend class Viewer;
-
-protected:
     typedef struct Position
     {
         int row;
         int col;
     } Position;
 
+    friend class Viewer;
+
+protected:
     Board* board = nullptr;
     // the piece that is falling down
     Tetrimino* piece = nullptr;
