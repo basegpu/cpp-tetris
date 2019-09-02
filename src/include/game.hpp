@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 
+// forward declaration
 class Actions;
 
 class Game
@@ -26,15 +27,16 @@ public:
         Left,
         Right
     };
-
-    void MakeMove(const Moves& move);
-    void PlaySequence(const std::vector<Moves>& seq);
-
     typedef struct Position
     {
         int row;
         int col;
     } Position;
+    typedef std::vector<Moves> Action;
+
+    void MakeMove(const Moves& move);
+    void PlaySequence(const Action& seq);
+    void PlayRandom();
 
     friend class Viewer;
 

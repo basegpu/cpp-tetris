@@ -7,6 +7,8 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <chrono>
+#include <thread>
 
 
 const std::map<char, Game::Moves> Controller::commands = {
@@ -70,15 +72,24 @@ void Controller::RunGame()
     char M;
     while (this->game->On())
     {
-        this->ViewGame();
-        // read key
-        std::cin >> M;
-        // try to make a move
-        try
+        if (this->autoPlay)
         {
-            this->game->MakeMove(commands.at(M));
+            this->ViewGame(false);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            this->game->PlayRandom();
         }
-        catch (...) {} // bad key
+        else
+        {
+            this->ViewGame(true);
+            // read key
+            std::cin >> M;
+            // try to make a move
+            try
+            {
+                this->game->MakeMove(commands.at(M));
+            }
+            catch (...) {} // bad key
+        }
     }
 }
 
@@ -102,10 +113,13 @@ void Controller::ParseCommandLine(int argc, char* argv[])
     }
 }
 
-void Controller::ViewGame() const
+void Controller::ViewGame(const bool& withUsage) const
 {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
     std::cout << "\x1B[2J\x1B[H";
     std::cout << Viewer::Print(this->game);
-    std::cout << std::endl << this->PrintUsage();
+    if (withUsage)
+    {
+        std::cout << std::endl << this->PrintUsage();
+    }
 }

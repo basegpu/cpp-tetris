@@ -7,9 +7,7 @@
 #include "board.hpp"
 #include <vector>
 
-typedef std::vector<Game::Moves> Action;
-
-class Actions : public std::vector<const Action>
+class Actions : public std::vector<const Game::Action>
 {
 public:
     static Actions CreateFor(Tetrimino* tetrimino, const Game::Position& position)
@@ -37,7 +35,7 @@ public:
             for (int iMove = 0; iMove < nLeft+nRight+1; iMove++)
             {
                 // generate the action
-                Action a;
+                Game::Action a;
                 for (int ii = 0; ii < iRot; ii++) a.push_back(Game::Moves::Rotate);
                 if (iMove <= nLeft)
                 {

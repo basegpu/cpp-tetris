@@ -62,9 +62,19 @@ void Game::MakeMove(const Moves& move)
     }
 }
 
-void Game::PlaySequence(const std::vector<Moves>& seq)
+void Game::PlaySequence(const Action& seq)
 {
     for (const Moves& move : seq)
+    {
+        this->MakeMove(move);
+    }
+}
+
+void Game::PlayRandom()
+{
+    const Actions acts = this->GetPossibleActions();
+    const int index = this->GetRand(0, acts.size() - 1);
+    for (const Moves& move : acts.at(index))
     {
         this->MakeMove(move);
     }

@@ -24,7 +24,7 @@ private:
 
     static const std::string PrintUsage();
     void ParseCommandLine(int argc, char* argv[]);
-    void ViewGame() const;
+    void ViewGame(const bool& withUsage) const;
 };
 
 #endif
