@@ -85,7 +85,7 @@ void Controller::ParseCommandLine(int argc, char* argv[])
 {
     try
     {
-        TCLAP::CmdLine cmd("This is a tetris game engine");
+        TCLAP::CmdLine cmd("This is a tetris game engine", ' ', "0.9");
         TCLAP::ValueArg<std::string> sequenceArg("s", "sequence", "play sequence of commands initially", false, "", "string", cmd);
         TCLAP::SwitchArg reproArg("r", "reproducible", "non-random, reproducible game", cmd, false);
         cmd.parse(argc, argv);
