@@ -26,65 +26,72 @@ TEST_F(GameTest, NewPiece)
 
 TEST(NonRandomGameTest, PlaySequence)
 {
-	Game* game = new Game(false);
-	ASSERT_EQ(game->GetScore(), 0);
-	// moves represented by console input:
-	// jjjjmillllmlmiijmijjjjjmimlmlmijmiillllmiiilllmijjjm
-	std::vector<Game::Moves> moves = {
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Advance,
-		Game::Moves::Right,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Rotate,
-		Game::Moves::Left,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Advance,
-		Game::Moves::Right,
-		Game::Moves::Advance,
-		Game::Moves::Right,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Left,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Rotate,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Rotate,
-		Game::Moves::Rotate,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Right,
-		Game::Moves::Advance,
-		Game::Moves::Rotate,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Left,
-		Game::Moves::Advance
-	};
-	game->PlaySequence(moves);
-	ASSERT_EQ(game->GetScore(), 2);
-	delete game;
+    if (Board::Width == 10)
+    {
+        Game* game = new Game(false);
+        ASSERT_EQ(game->GetScore(), 0);
+        // moves represented by console input:
+        // jjjjmillllmlmiijmijjjjjmimlmlmijmiillllmiiilllmijjjm
+        std::vector<Game::Moves> moves = {
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Advance,
+            Game::Moves::Right,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Rotate,
+            Game::Moves::Left,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Advance,
+            Game::Moves::Right,
+            Game::Moves::Advance,
+            Game::Moves::Right,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Left,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Rotate,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Rotate,
+            Game::Moves::Rotate,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Right,
+            Game::Moves::Advance,
+            Game::Moves::Rotate,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Left,
+            Game::Moves::Advance
+        };
+        game->PlaySequence(moves);
+        ASSERT_EQ(game->GetScore(), 2);
+        delete game;
+    }
+    else
+    {
+        FAIL() << "This test passes only for board width = 10, not for " << Board::Width << ".";
+    }
 }

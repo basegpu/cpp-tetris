@@ -29,9 +29,9 @@ protected:
 TEST_F(BoardTest, EmptyBoard)
 {
     this->Reset();
-    for (int ii = 0; ii < BOARD_WIDTH; ii++)
+    for (int ii = 0; ii < Board::Width; ii++)
     {
-        for (int jj = 0; jj < BOARD_HEIGHT; jj++)
+        for (int jj = 0; jj < Board::Height; jj++)
         {
             ASSERT_EQ(this->IsFreeBlock(ii, jj), true);
         }
@@ -58,7 +58,7 @@ TEST_F(BoardTest, TetriminoOutside)
     ASSERT_THROW(
         this->AddTetrimino(
             this->line90,
-            BOARD_WIDTH-TETRIMINO_WIDTH+1, 0),
+            Board::Width-Tetrimino::BlocksPerPiece+1, 0),
         std::out_of_range);
     ASSERT_THROW(
         this->AddTetrimino(
@@ -78,7 +78,7 @@ TEST_F(BoardTest, DeleteSingleLine)
 
 TEST_F(BoardTest, DeleteLineOutisde)
 {
-    ASSERT_THROW(this->DeleteLine(BOARD_HEIGHT), std::out_of_range);
+    ASSERT_THROW(this->DeleteLine(Board::Height), std::out_of_range);
 }
 
 TEST_F(BoardTest, GameOver)
@@ -92,27 +92,41 @@ TEST_F(BoardTest, GameOver)
 
 TEST_F(BoardTest, DeletePossibleLines)
 {
-    this->Reset();
-    this->AddTetrimino(this->line90, 0, 17);
-    this->AddTetrimino(this->line90, 4, 17);
-    this->AddTetrimino(this->line0, 6, 16);
-    this->AddTetrimino(this->line0, 7, 16);
-    ASSERT_EQ(this->CountFilledBlocks(), 16);
-    this->DeletePossibleLines();
-    ASSERT_EQ(this->CountFilledBlocks(), 6);
+    if (Board::Width == 10)
+    {
+        this->Reset();
+        this->AddTetrimino(this->line90, 0, 17);
+        this->AddTetrimino(this->line90, 4, 17);
+        this->AddTetrimino(this->line0, 6, 16);
+        this->AddTetrimino(this->line0, 7, 16);
+        ASSERT_EQ(this->CountFilledBlocks(), 16);
+        this->DeletePossibleLines();
+        ASSERT_EQ(this->CountFilledBlocks(), 6);
+    }
+    else
+    {
+        FAIL() << "This test passes only for board width = 10, not for " << Board::Width << ".";
+    }
 }
 
 TEST_F(BoardTest, PossibleMoves)
 {
-    this->Reset();
-    this->AddTetrimino(this->line90, 0, 17);
-    this->AddTetrimino(this->line90, 4, 17);
-    this->AddTetrimino(this->line90, 4, 16);
-    this->AddTetrimino(this->line0, 6, 16);
-    this->AddTetrimino(this->line0, 7, 16);
-    ASSERT_EQ(this->IsPossibleMove(this->square, 4, 4), true);
-    ASSERT_EQ(this->IsPossibleMove(this->square, 7, 13), true);
-    ASSERT_EQ(this->IsPossibleMove(this->square, 8, 13), false);
-    ASSERT_EQ(this->IsPossibleMove(this->square, 7, 14), false);
-    ASSERT_EQ(this->IsPossibleMove(this->lHook, 6, 14), true);
+    if (Board::Width == 10)
+    {
+        this->Reset();
+        this->AddTetrimino(this->line90, 0, 17);
+        this->AddTetrimino(this->line90, 4, 17);
+        this->AddTetrimino(this->line90, 4, 16);
+        this->AddTetrimino(this->line0, 6, 16);
+        this->AddTetrimino(this->line0, 7, 16);
+        ASSERT_EQ(this->IsPossibleMove(this->square, 4, 4), true);
+        ASSERT_EQ(this->IsPossibleMove(this->square, 7, 13), true);
+        ASSERT_EQ(this->IsPossibleMove(this->square, 8, 13), false);
+        ASSERT_EQ(this->IsPossibleMove(this->square, 7, 14), false);
+        ASSERT_EQ(this->IsPossibleMove(this->lHook, 6, 14), true);
+    }
+    else
+    {
+        FAIL() << "This test passes only for board width = 10, not for " << Board::Width << ".";
+    }
 }

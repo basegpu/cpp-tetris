@@ -20,6 +20,8 @@ protected:
     typedef std::vector<Moves> Action;
     typedef std::vector<Action> Actions;
 
+    std::map<size_t, Actions> actions;
+
     const Actions& GetActions(Tetrimino* tetrimino)
     {
         size_t hash = tetrimino->GetHash();
@@ -33,7 +35,6 @@ protected:
     }
 
 private:
-    std::map<size_t, Actions> actions;
 
     Actions CreateActions(Tetrimino* tetrimino)
     {
