@@ -14,7 +14,7 @@ class Actions : public std::vector<const Action>
 public:
     static Actions CreateFor(Tetrimino* tetrimino, const Game::Position& position)
     {
-        TETRIS_MESSAGE("creating new action for tetrimino <" << tetrimino->GetHash() << ">");
+        TETRIS_MESSAGE("creating new actions for tetrimino <" << tetrimino->GetHash() << ">");
         // check th possible enumber of rotations
         int nRot;
         switch (tetrimino->GetSymmetry())
@@ -33,7 +33,6 @@ public:
             // update the possible moves sideways
             nLeft = position.col + tetrimino->GetLeftBlock();
             nRight = Board::Width - position.col  - 1 - tetrimino->GetRightBlock();
-            TETRIS_MESSAGE(iRot << "/" << nLeft << "/" << nRight);
             // loop over all variations of horizontal moves
             for (int iMove = 0; iMove < nLeft+nRight+1; iMove++)
             {

@@ -33,21 +33,21 @@ TEST_F(GameTest, SameState)
     this->GetPossibleActions();
     ASSERT_EQ(t->GetHash(), hash_ref);
 }
-/*
+
 TEST_F(GameTest, ActionGeneration)
 {
     Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
     ASSERT_EQ(this->actionsRegistry.size(), 0);
-    this->GetActions(t);
+    this->piece = t;
+    this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
-    this->GetActions(t);
+    this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
     t->Rotate();
-    this->GetActions(t);
+    this->piece = t;
+    this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 2);
-    delete t;
 }
-*/
 
 TEST(NonRandomGameTest, PlaySequence)
 {
