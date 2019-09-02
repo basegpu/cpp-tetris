@@ -15,11 +15,27 @@ protected:
     // void TearDown() override {}
 };
 
-TEST_F(GameMLTest, NoActions)
+TEST_F(GameMLTest, SameState)
 {
 	Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
-	ASSERT_EQ(this->GetScore(), 0);
 	size_t hash_ref = t->GetHash();
-	ASSERT_EQ(this->GetActions(t).size(), 1);
+	this->GetActions(t);
 	ASSERT_EQ(t->GetHash(), hash_ref);
+	delete t;
+}
+
+TEST_F(GameMLTest, SquareActions)
+{
+	Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
+	Actions a = this->GetActions(t);
+	ASSERT_EQ(a.size(), 9);
+	delete t;
+}
+
+TEST_F(GameMLTest, LineActions)
+{
+	Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Line, 0);
+	Actions a = this->GetActions(t);
+	ASSERT_EQ(a.size(), 10+7);
+	delete t;
 }

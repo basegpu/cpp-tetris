@@ -22,5 +22,8 @@ static_assert(BOARD_HEIGHT >= TETRIMINO_WIDTH,
 static_assert(VIEWER_WIDTH >= BOARD_WIDTH+2,
     "Viewer width must be at least the board width plus border (+2)");
 
+// some debugging utilities
+#include <iostream>
+#define TETRIS_MESSAGE(msg) {std::cout << "Tetris> " << msg << std::endl;}
 
 #endif
