@@ -17,9 +17,12 @@ public:
 
 private:
     static const std::map<char, Game::Moves> commands;
+    bool isRandom;
+    std::string initSequence;
     Game* game;
 
     static const std::string PrintUsage();
+    void ParseCommandLine(int argc, char* argv[]);
     void ViewGame() const;
 };
 

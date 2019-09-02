@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 project(cpp-tetris)
 
-include_directories(include)
+include_directories(
+	include
+	../libs/tclap/include
+)
 
 add_subdirectory(../tests tests)
 

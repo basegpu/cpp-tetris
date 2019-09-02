@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "controller.hpp"
 #include "viewer.hpp"
+#include <tclap/CmdLine.h>
 #include <iostream>
 #include <sstream>
 #include <map>
@@ -28,6 +29,8 @@ const std::string Controller::PrintUsage()
 }
 
 Controller::Controller() :
+    isRandom(true),
+    initSequence(""),
     game(nullptr)
 {
     ;
@@ -40,31 +43,24 @@ Controller::~Controller()
 
 void Controller::CreateGame(int argc, char* argv[])
 {
+    this->ParseCommandLine(argc, argv);
     std::vector<Game::Moves> moves;
-    if (argc == 2)
+    for (const char& c : this->initSequence)
     {
-        std::string seq = std::string(argv[1]);
-        for (const char& c : seq)
+        try
         {
-            try
-            {
-                moves.push_back(commands.at(c));
-            }
-            catch (...) {} // bad char
+            moves.push_back(commands.at(c));
         }
+        catch (...) {} // bad char
     }
     // create game
+    this->game = new Game(this->isRandom);
+    // eventually play a given sequence first
     if (moves.size())
     {
-        // play given deterministic sequence first
-        this->game = new Game(false);
         this->game->PlaySequence(moves);
     }
-    else
-    {
-        // regular randomized game
-        this->game = new Game(true);
-    }
+
 }
 
 void Controller::RunGame()
@@ -82,6 +78,24 @@ void Controller::RunGame()
             this->game->MakeMove(commands.at(M));
         }
         catch (...) {} // bad key
+    }
+}
+
+void Controller::ParseCommandLine(int argc, char* argv[])
+{
+    try
+    {
+        TCLAP::CmdLine cmd("This is a tetris game engine");
+        TCLAP::ValueArg<std::string> sequenceArg("s", "sequence", "play sequence of commands initially", false, "", "string", cmd);
+        TCLAP::SwitchArg reproArg("r", "reproducible", "non-random, reproducible game", cmd, false);
+        cmd.parse(argc, argv);
+        // Get the value parsed by each arg.
+        this->initSequence = sequenceArg.getValue();
+        this->isRandom = !reproArg.getValue();
+    }
+    catch (TCLAP::ArgException &e)
+    {
+        TETRIS_ERROR(e.error() << " for arg " << e.argId());
     }
 }
 

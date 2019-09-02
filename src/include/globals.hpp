@@ -25,5 +25,6 @@ static_assert(VIEWER_WIDTH >= BOARD_WIDTH+2,
 // some debugging utilities
 #include <iostream>
 #define TETRIS_MESSAGE(msg) {std::cout << "Tetris> " << msg << std::endl;}
+#define TETRIS_ERROR(msg) {std::cerr << "Tetris - error> " << msg << std::endl;}
 
 #endif
