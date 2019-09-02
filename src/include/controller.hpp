@@ -18,6 +18,7 @@ public:
 private:
     static const std::map<char, Game::Moves> commands;
     bool isRandom;
+    bool autoPlay;
     std::string initSequence;
     Game* game;
 

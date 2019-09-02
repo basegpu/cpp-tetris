@@ -24,6 +24,31 @@ TEST_F(GameTest, NewPiece)
     ASSERT_EQ(this->piece, p);
 }
 
+
+TEST_F(GameTest, SameState)
+{
+    Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
+    size_t hash_ref = t->GetHash();
+    this->piece = t;
+    this->GetPossibleActions();
+    ASSERT_EQ(t->GetHash(), hash_ref);
+}
+/*
+TEST_F(GameTest, ActionGeneration)
+{
+    Tetrimino* t = Tetrimino::Make(Tetrimino::Type::Square, 0);
+    ASSERT_EQ(this->actionsRegistry.size(), 0);
+    this->GetActions(t);
+    ASSERT_EQ(this->actionsRegistry.size(), 1);
+    this->GetActions(t);
+    ASSERT_EQ(this->actionsRegistry.size(), 1);
+    t->Rotate();
+    this->GetActions(t);
+    ASSERT_EQ(this->actionsRegistry.size(), 2);
+    delete t;
+}
+*/
+
 TEST(NonRandomGameTest, PlaySequence)
 {
     if (Board::Width == 10)
@@ -95,3 +120,4 @@ TEST(NonRandomGameTest, PlaySequence)
         FAIL() << "This test passes only for board width = 10, not for " << Board::Width << ".";
     }
 }
+

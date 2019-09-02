@@ -2,6 +2,7 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include "board.hpp"
+#include "actions.hpp"
 #include <ctime>
 #include <cstdlib>
 #include <sstream>
@@ -157,6 +158,18 @@ void Game::AddNewPiece()
     };
     // Random next piece
     this->nextPiece = this->CreatePiece();
+}
+
+const Actions& Game::GetPossibleActions()
+{
+    size_t hash = this->piece->GetHash();
+    if (this->actionsRegistry.count(hash) == 0)
+    { 
+        // we have to generate all possible actions
+        // and add them to hash table
+        this->actionsRegistry[hash] = Actions::CreateFor(this->piece, this->currentPosition);
+    }
+    return this->actionsRegistry.at(hash);
 }
 
 Tetrimino* Game::CreatePiece() const

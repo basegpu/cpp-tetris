@@ -5,6 +5,9 @@
 #include "tetrimino.hpp"
 #include "board.hpp"
 #include <vector>
+#include <map>
+
+class Actions;
 
 class Game
 {
@@ -42,8 +45,11 @@ protected:
     Position currentPosition;
     // the next piece
     Tetrimino* nextPiece = nullptr;
+    // registry of all possible actions for given tetrimino
+    std::map<size_t, Actions> actionsRegistry;
 
     void AddNewPiece();
+    const Actions& GetPossibleActions();
 
 private:
     bool gameIsOn;
