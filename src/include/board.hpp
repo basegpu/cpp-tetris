@@ -19,6 +19,7 @@ public:
     int CountFilledBlocks();
     int CountHoles();
     int MaxLevel();
+    int MinMaxLevel();
     bool IsFreeBlock(const int& pX, const int& pY) const;
     int DeletePossibleLines();
     bool IsGameOver() const;
