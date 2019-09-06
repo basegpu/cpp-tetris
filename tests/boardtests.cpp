@@ -13,7 +13,8 @@ protected:
         line0 = Tetrimino::Make(Tetrimino::Type::Line, 0);
         line90 = Tetrimino::Make(Tetrimino::Type::Line, 1);
         line270 = Tetrimino::Make(Tetrimino::Type::Line, 3);
-        lHook = Tetrimino::Make(Tetrimino::Type::LeftHook, 2);
+        lHook180 = Tetrimino::Make(Tetrimino::Type::LeftHook, 2);
+        tee180 = Tetrimino::Make(Tetrimino::Type::Tee, 2);
     }
     void TearDown() override
     {
@@ -21,9 +22,9 @@ protected:
         delete line0;
         delete line90;
         delete line270;
-        delete lHook;
+        delete lHook180;
     }
-    Tetrimino *square, *line0, *line90, *line270, *lHook;
+    Tetrimino *square, *line0, *line90, *line270, *lHook180, *tee180;
 };
 
 TEST_F(BoardTest, EmptyBoard)
@@ -90,21 +91,31 @@ TEST_F(BoardTest, GameOver)
     ASSERT_EQ(this->IsGameOver(), true);
 }
 
-TEST_F(BoardTest, OneHole)
+TEST_F(BoardTest, SingleHoles)
 {
     this->Reset();
-    this->AddTetrimino(this->lHook, 0, 16);
+    this->AddTetrimino(this->tee180, 0, Board::Height - 3);
+    //TETRIS_MESSAGE(this->Print());
     ASSERT_EQ(this->CountHoles(), 2);
 }
 
-TEST_F(BoardTest, ManyHole)
+TEST_F(BoardTest, MultipleHole)
 {
     this->Reset();
-    this->AddTetrimino(this->line0, -2, 16);
-    this->AddTetrimino(this->line0, 1, 16);
+    this->AddTetrimino(this->line0, -2, Board::Height - 4);
+    this->AddTetrimino(this->line0, 1, Board::Height - 4);
     this->AddTetrimino(this->line90, 0, 13);
     ASSERT_EQ(this->CountFilledBlocks(), 12);
     ASSERT_EQ(this->CountHoles(), 8);
+}
+
+TEST_F(BoardTest, ManyHoles)
+{
+    this->Reset();
+    this->AddTetrimino(this->lHook180, Board::Width - 3, Board::Height - 4);
+    this->AddTetrimino(this->lHook180, Board::Width - 3, Board::Height - 7);
+    //TETRIS_MESSAGE(this->Print());
+    ASSERT_EQ(this->CountHoles(), 4);
 }
 
 TEST_F(BoardTest, DeletePossibleLines)
@@ -112,11 +123,11 @@ TEST_F(BoardTest, DeletePossibleLines)
     if (Board::Width == 10)
     {
         this->Reset();
-        this->AddTetrimino(this->line90, 0, 17);
-        this->AddTetrimino(this->line90, 4, 17);
-        this->AddTetrimino(this->line0, 6, 16);
-        this->AddTetrimino(this->line0, 7, 16);
-        ASSERT_EQ(this->CountFilledBlocks(), 16);
+        this->AddTetrimino(this->line90, 0, Board::Height - 3);
+        this->AddTetrimino(this->line90, 4, Board::Height - 3);
+        this->AddTetrimino(this->line0, 6, Board::Height - 4);
+        this->AddTetrimino(this->line0, 7, Board::Height - 4);
+        ASSERT_EQ(this->CountFilledBlocks(), Board::Height - 4);
         this->DeletePossibleLines();
         ASSERT_EQ(this->CountFilledBlocks(), 6);
     }
@@ -131,16 +142,16 @@ TEST_F(BoardTest, PossibleMoves)
     if (Board::Width == 10)
     {
         this->Reset();
-        this->AddTetrimino(this->line90, 0, 17);
-        this->AddTetrimino(this->line90, 4, 17);
-        this->AddTetrimino(this->line90, 4, 16);
-        this->AddTetrimino(this->line0, 6, 16);
-        this->AddTetrimino(this->line0, 7, 16);
+        this->AddTetrimino(this->line90, 0, Board::Height - 3);
+        this->AddTetrimino(this->line90, 4, Board::Height - 3);
+        this->AddTetrimino(this->line90, 4, Board::Height - 4);
+        this->AddTetrimino(this->line0, 6, Board::Height - 4);
+        this->AddTetrimino(this->line0, 7, Board::Height - 4);
         ASSERT_EQ(this->IsPossibleMove(this->square, 4, 4), true);
-        ASSERT_EQ(this->IsPossibleMove(this->square, 7, 13), true);
-        ASSERT_EQ(this->IsPossibleMove(this->square, 8, 13), false);
-        ASSERT_EQ(this->IsPossibleMove(this->square, 7, 14), false);
-        ASSERT_EQ(this->IsPossibleMove(this->lHook, 6, 14), true);
+        ASSERT_EQ(this->IsPossibleMove(this->square, 7, Board::Height - 7), true);
+        ASSERT_EQ(this->IsPossibleMove(this->square, 8, Board::Height - 7), false);
+        ASSERT_EQ(this->IsPossibleMove(this->square, 7, Board::Height - 6), false);
+        ASSERT_EQ(this->IsPossibleMove(this->lHook180, 6, Board::Height - 6), true);
     }
     else
     {
