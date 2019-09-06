@@ -102,16 +102,32 @@ int Board::CountHoles()
 
 int Board::MaxLevel()
 {
-    int level = BOARD_HEIGHT - 1;
-    auto func = [this, &level](const int& ii, const int& jj) -> bool {
+    int minLevel = BOARD_HEIGHT - 1;
+    auto func = [this, &minLevel](const int& ii, const int& jj) -> bool {
         if (this->mBoard[ii][jj] == Block::Filled)
         {
-            level = std::min(level, jj);
+            minLevel = std::min(minLevel, jj);
         }
         return true;
     };
     this->LoopOverBoard(func);
-    return BOARD_HEIGHT - level;
+    return BOARD_HEIGHT - minLevel;
+}
+
+int Board::MinMaxLevel()
+{
+    int minLevel = BOARD_HEIGHT - 1;
+    int maxLevel = 0;
+    auto func = [this, &minLevel, &maxLevel](const int& ii, const int& jj) -> bool {
+        if (this->mBoard[ii][jj] == Block::Filled)
+        {
+            minLevel = std::min(minLevel, jj);
+            maxLevel = std::max(maxLevel, jj);
+        }
+        return true;
+    };
+    this->LoopOverBoard(func);
+    return maxLevel - minLevel;
 }
 
 bool Board::IsFreeBlock(const int& pX, const int& pY) const

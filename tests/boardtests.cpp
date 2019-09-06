@@ -127,6 +127,17 @@ TEST_F(BoardTest, MaxLevel)
     ASSERT_EQ(this->MaxLevel(), 5);
 }
 
+TEST_F(BoardTest, MinMaxLevel)
+{
+    this->Reset();
+    this->AddTetrimino(this->line0, 0, Board::Height - 4);
+    ASSERT_EQ(this->MinMaxLevel(), 3);
+    this->AddTetrimino(this->line0, Board::Width - 3, Board::Height - 4);
+    ASSERT_EQ(this->MinMaxLevel(), 3);
+    this->AddTetrimino(this->line0, 0, Board::Height - 8);
+    ASSERT_EQ(this->MinMaxLevel(), 7);
+}
+
 TEST_F(BoardTest, DeletePossibleLines)
 {
     if (Board::Width == 10)
