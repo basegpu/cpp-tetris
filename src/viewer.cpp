@@ -13,9 +13,19 @@ const std::string Viewer::piece = "\033[32mX\033[0m";
 std::string Viewer::Print(const Game* game)
 {
     std::ostringstream out;
+    out << Rewards(game) << std::endl << std::endl;
     out << Header(game);
     out << std::endl << std::endl;
     out << Board(game);
+    return out.str();
+}
+
+std::string Viewer::Rewards(const Game* game)
+{
+    std::ostringstream out;
+    out << "holes: " << game->board->GetHoles();
+    out << ", max: " << game->board->GetMaxLevel();
+    out << ", min-max: " << game->board->GetMinMaxLevel();
     return out.str();
 }
 
