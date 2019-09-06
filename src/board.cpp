@@ -4,6 +4,7 @@
 #include <functional>
 #include <stdexcept>
 #include <iostream>
+#include <string>
 
 const size_t Board::Width = BOARD_WIDTH;
 
@@ -67,6 +68,29 @@ int Board::CountFilledBlocks()
     return count;
 }
 
+int Board::CountHoles()
+{
+    int nEmptyBlocks[BOARD_WIDTH] = {0};
+    int nHoles = 0;
+    auto func = [this, &nHoles, &nEmptyBlocks](const int& ii, const int& jj) -> bool {
+        if (this->mBoard[ii][jj] == Block::Filled)
+        {
+            if (nEmptyBlocks[ii] > 0)
+            {
+                nHoles += nEmptyBlocks[ii];
+                nEmptyBlocks[ii] = 0;
+            }
+        }
+        else
+        {
+            nEmptyBlocks[ii]++;
+        }
+        return true;
+    };
+    this->LoopOverBoard(func);
+    return nHoles;
+}
+
 void Board::Reset()
 {
     auto func = [&, this](const int& ii, const int& jj) -> bool {
@@ -123,6 +147,22 @@ bool Board::IsGameOver() const
         }
     }
     return false;
+}
+
+std::string Board::Print()
+{
+    std::string out = "\n";
+    auto func = [this, &out](const int& ii, const int& jj) -> bool {
+        out += this->mBoard[ii][jj] == Block::Filled ? "x" : " ";
+        if (ii == BOARD_WIDTH - 1)
+        {
+            out += "\n";
+
+        }
+        return true;
+    };
+    this->LoopOverBoard(func);
+    return out;
 }
 
 void Board::DeleteLine(const int& pY)

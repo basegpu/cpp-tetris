@@ -4,6 +4,7 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include <functional>
+#include <string>
 
 class Board
 {
@@ -15,10 +16,12 @@ public:
     void AddTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY);
     bool IsPossibleMove(const Tetrimino* tetrimino, const int& pX, const int& pY);
     int CountFilledBlocks();
+    int CountHoles();
     void Reset();
     bool IsFreeBlock(const int& pX, const int& pY) const;
     int DeletePossibleLines();
     bool IsGameOver() const;
+    std::string Print();
 
 protected:
     enum class Block : unsigned char
