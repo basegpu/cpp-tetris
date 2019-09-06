@@ -118,6 +118,15 @@ TEST_F(BoardTest, ManyHoles)
     ASSERT_EQ(this->CountHoles(), 4);
 }
 
+TEST_F(BoardTest, MaxLevel)
+{
+    this->Reset();
+    this->AddTetrimino(this->line90, 0, Board::Height - 3);
+    ASSERT_EQ(this->MaxLevel(), 1);
+    this->AddTetrimino(this->line0, 0, Board::Height - 5);
+    ASSERT_EQ(this->MaxLevel(), 5);
+}
+
 TEST_F(BoardTest, DeletePossibleLines)
 {
     if (Board::Width == 10)
