@@ -13,11 +13,12 @@ public:
     static const size_t Height;
 
     Board();
+    void Reset();
     void AddTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY);
     bool IsPossibleMove(const Tetrimino* tetrimino, const int& pX, const int& pY);
     int CountFilledBlocks();
     int CountHoles();
-    void Reset();
+    int MaxLevel();
     bool IsFreeBlock(const int& pX, const int& pY) const;
     int DeletePossibleLines();
     bool IsGameOver() const;

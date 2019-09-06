@@ -15,6 +15,15 @@ Board::Board()
     this->Reset();
 }
 
+void Board::Reset()
+{
+    auto func = [&, this](const int& ii, const int& jj) -> bool {
+        this->mBoard[ii][jj] = Block::Free;
+        return true;
+    };
+    this->LoopOverBoard(func);
+}
+
 void Board::AddTetrimino(
     const Tetrimino* tetrimino,
     const int& pX,
@@ -91,13 +100,18 @@ int Board::CountHoles()
     return nHoles;
 }
 
-void Board::Reset()
+int Board::MaxLevel()
 {
-    auto func = [&, this](const int& ii, const int& jj) -> bool {
-        this->mBoard[ii][jj] = Block::Free;
+    int level = BOARD_HEIGHT - 1;
+    auto func = [this, &level](const int& ii, const int& jj) -> bool {
+        if (this->mBoard[ii][jj] == Block::Filled)
+        {
+            level = std::min(level, jj);
+        }
         return true;
     };
     this->LoopOverBoard(func);
+    return BOARD_HEIGHT - level;
 }
 
 bool Board::IsFreeBlock(const int& pX, const int& pY) const
