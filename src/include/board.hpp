@@ -17,9 +17,9 @@ public:
     void AddTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY);
     bool IsPossibleMove(const Tetrimino* tetrimino, const int& pX, const int& pY);
     int CountFilledBlocks();
-    int CountHoles();
-    int MaxLevel();
-    int MinMaxLevel();
+    int GetHoles();
+    int GetMaxLevel();
+    int GetMinMaxLevel();
     bool IsFreeBlock(const int& pX, const int& pY) const;
     int DeletePossibleLines();
     bool IsGameOver() const;
@@ -33,7 +33,9 @@ protected:
     };
 
     Block mBoard[BOARD_WIDTH][BOARD_HEIGHT]; // Board that contains the pieces
+    int stats[3]; // nHoles, max level, min-max level
 
+    void CalcStatistics();
     void DeleteLine(const int& pY);
     void LoopOverTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY, std::function<bool(const int&, const int&)> func);
     void LoopOverBoard(std::function<bool(const int&, const int&)> func, const int& bottomRow = BOARD_HEIGHT - 1, const int& topRow = 0);
