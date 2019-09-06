@@ -22,6 +22,7 @@ void Board::Reset()
         return true;
     };
     this->LoopOverBoard(func);
+    this->CalcStatistics();
 }
 
 void Board::AddTetrimino(
@@ -77,57 +78,19 @@ int Board::CountFilledBlocks()
     return count;
 }
 
-int Board::CountHoles()
+int Board::GetHoles()
 {
-    int nEmptyBlocks[BOARD_WIDTH] = {0};
-    int nHoles = 0;
-    auto func = [this, &nHoles, &nEmptyBlocks](const int& ii, const int& jj) -> bool {
-        if (this->mBoard[ii][jj] == Block::Filled)
-        {
-            if (nEmptyBlocks[ii] > 0)
-            {
-                nHoles += nEmptyBlocks[ii];
-                nEmptyBlocks[ii] = 0;
-            }
-        }
-        else
-        {
-            nEmptyBlocks[ii]++;
-        }
-        return true;
-    };
-    this->LoopOverBoard(func);
-    return nHoles;
+    return this->stats[0];
 }
 
-int Board::MaxLevel()
+int Board::GetMaxLevel()
 {
-    int minLevel = BOARD_HEIGHT - 1;
-    auto func = [this, &minLevel](const int& ii, const int& jj) -> bool {
-        if (this->mBoard[ii][jj] == Block::Filled)
-        {
-            minLevel = std::min(minLevel, jj);
-        }
-        return true;
-    };
-    this->LoopOverBoard(func);
-    return BOARD_HEIGHT - minLevel;
+    return this->stats[1];
 }
 
-int Board::MinMaxLevel()
+int Board::GetMinMaxLevel()
 {
-    int minLevel = BOARD_HEIGHT - 1;
-    int maxLevel = 0;
-    auto func = [this, &minLevel, &maxLevel](const int& ii, const int& jj) -> bool {
-        if (this->mBoard[ii][jj] == Block::Filled)
-        {
-            minLevel = std::min(minLevel, jj);
-            maxLevel = std::max(maxLevel, jj);
-        }
-        return true;
-    };
-    this->LoopOverBoard(func);
-    return maxLevel - minLevel;
+    return this->stats[2];
 }
 
 bool Board::IsFreeBlock(const int& pX, const int& pY) const
@@ -163,6 +126,8 @@ int Board::DeletePossibleLines()
             lineCounter++;
         }
     }
+    // recalculate the statistics of the board
+    this->CalcStatistics();
     return lineCounter;
 }
 
@@ -194,6 +159,35 @@ std::string Board::Print()
     };
     this->LoopOverBoard(func);
     return out;
+}
+
+void Board::CalcStatistics()
+{
+    int nEmptyBlocks[BOARD_WIDTH] = {0};
+    int nHoles = 0;
+    int minLevel = BOARD_HEIGHT;
+    int maxLevel = 0;
+    auto func = [this, &nHoles, &nEmptyBlocks, &minLevel, &maxLevel](const int& ii, const int& jj) -> bool {
+        if (this->mBoard[ii][jj] == Block::Filled)
+        {
+            minLevel = std::min(minLevel, jj);
+            maxLevel = std::max(maxLevel, jj);
+            if (nEmptyBlocks[ii] > 0)
+            {
+                nHoles += nEmptyBlocks[ii];
+                nEmptyBlocks[ii] = 0;
+            }
+        }
+        else
+        {
+            nEmptyBlocks[ii]++;
+        }
+        return true;
+    };
+    this->LoopOverBoard(func);
+    this->stats[0] = nHoles;
+    this->stats[1] = BOARD_HEIGHT - minLevel;
+    this->stats[2] = std::max(0, maxLevel - minLevel);
 }
 
 void Board::DeleteLine(const int& pY)

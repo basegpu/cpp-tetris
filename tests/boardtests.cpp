@@ -91,12 +91,21 @@ TEST_F(BoardTest, GameOver)
     ASSERT_EQ(this->IsGameOver(), true);
 }
 
+TEST_F(BoardTest, InitStats)
+{
+    this->Reset();
+    ASSERT_EQ(this->GetHoles(), 0);
+    ASSERT_EQ(this->GetMaxLevel(), 0);
+    ASSERT_EQ(this->GetMinMaxLevel(), 0);
+}
+
 TEST_F(BoardTest, SingleHoles)
 {
     this->Reset();
     this->AddTetrimino(this->tee180, 0, Board::Height - 3);
     //TETRIS_MESSAGE(this->Print());
-    ASSERT_EQ(this->CountHoles(), 2);
+    this->CalcStatistics();
+    ASSERT_EQ(this->GetHoles(), 2);
 }
 
 TEST_F(BoardTest, MultipleHole)
@@ -105,8 +114,9 @@ TEST_F(BoardTest, MultipleHole)
     this->AddTetrimino(this->line0, -2, Board::Height - 4);
     this->AddTetrimino(this->line0, 1, Board::Height - 4);
     this->AddTetrimino(this->line90, 0, 13);
+    this->CalcStatistics();
     ASSERT_EQ(this->CountFilledBlocks(), 12);
-    ASSERT_EQ(this->CountHoles(), 8);
+    ASSERT_EQ(this->GetHoles(), 8);
 }
 
 TEST_F(BoardTest, ManyHoles)
@@ -115,27 +125,33 @@ TEST_F(BoardTest, ManyHoles)
     this->AddTetrimino(this->lHook180, Board::Width - 3, Board::Height - 4);
     this->AddTetrimino(this->lHook180, Board::Width - 3, Board::Height - 7);
     //TETRIS_MESSAGE(this->Print());
-    ASSERT_EQ(this->CountHoles(), 4);
+    this->CalcStatistics();
+    ASSERT_EQ(this->GetHoles(), 4);
 }
 
 TEST_F(BoardTest, MaxLevel)
 {
     this->Reset();
     this->AddTetrimino(this->line90, 0, Board::Height - 3);
-    ASSERT_EQ(this->MaxLevel(), 1);
+    this->CalcStatistics();
+    ASSERT_EQ(this->GetMaxLevel(), 1);
     this->AddTetrimino(this->line0, 0, Board::Height - 5);
-    ASSERT_EQ(this->MaxLevel(), 5);
+    this->CalcStatistics();
+    ASSERT_EQ(this->GetMaxLevel(), 5);
 }
 
 TEST_F(BoardTest, MinMaxLevel)
 {
     this->Reset();
     this->AddTetrimino(this->line0, 0, Board::Height - 4);
-    ASSERT_EQ(this->MinMaxLevel(), 3);
+    this->CalcStatistics();
+    ASSERT_EQ(this->GetMinMaxLevel(), 3);
     this->AddTetrimino(this->line0, Board::Width - 3, Board::Height - 4);
-    ASSERT_EQ(this->MinMaxLevel(), 3);
+    this->CalcStatistics();
+    ASSERT_EQ(this->GetMinMaxLevel(), 3);
     this->AddTetrimino(this->line0, 0, Board::Height - 8);
-    ASSERT_EQ(this->MinMaxLevel(), 7);
+    this->CalcStatistics();
+    ASSERT_EQ(this->GetMinMaxLevel(), 7);
 }
 
 TEST_F(BoardTest, DeletePossibleLines)
