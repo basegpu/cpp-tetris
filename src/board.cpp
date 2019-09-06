@@ -151,13 +151,14 @@ bool Board::IsGameOver() const
 
 std::string Board::Print()
 {
-    std::string out = "\n";
-    auto func = [this, &out](const int& ii, const int& jj) -> bool {
-        out += this->mBoard[ii][jj] == Block::Filled ? "x" : " ";
+    std::string out = "";
+    std::string line = "";
+    auto func = [this, &out, &line](const int& ii, const int& jj) -> bool {
+        line += (this->mBoard[ii][jj] == Block::Filled ? "x" : " ");
         if (ii == BOARD_WIDTH - 1)
         {
-            out += "\n";
-
+            out = "\n|" + line + "|" + out;
+            line = "";
         }
         return true;
     };
