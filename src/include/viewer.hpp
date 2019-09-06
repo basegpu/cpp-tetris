@@ -14,6 +14,7 @@ private:
     static const std::string filled;
     static const std::string piece;
 
+    static std::string Rewards(const Game* game);
     static std::string Header(const Game* game);
     static std::string Board(const Game* game);
     static std::string LineWith(const std::string& frame, const std::string& fill);
