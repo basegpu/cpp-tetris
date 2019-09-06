@@ -90,6 +90,23 @@ TEST_F(BoardTest, GameOver)
     ASSERT_EQ(this->IsGameOver(), true);
 }
 
+TEST_F(BoardTest, OneHole)
+{
+    this->Reset();
+    this->AddTetrimino(this->lHook, 0, 16);
+    ASSERT_EQ(this->CountHoles(), 2);
+}
+
+TEST_F(BoardTest, ManyHole)
+{
+    this->Reset();
+    this->AddTetrimino(this->line0, -2, 16);
+    this->AddTetrimino(this->line0, 1, 16);
+    this->AddTetrimino(this->line90, 0, 13);
+    ASSERT_EQ(this->CountFilledBlocks(), 12);
+    ASSERT_EQ(this->CountHoles(), 8);
+}
+
 TEST_F(BoardTest, DeletePossibleLines)
 {
     if (Board::Width == 10)
