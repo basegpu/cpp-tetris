@@ -140,18 +140,34 @@ TEST_F(BoardTest, MaxLevel)
     ASSERT_EQ(this->GetMaxLevel(), 5);
 }
 
-TEST_F(BoardTest, MinMaxLevel)
+TEST_F(BoardTest, MinMaxLevelSimple)
 {
     this->Reset();
-    this->AddTetrimino(this->line0, 0, Board::Height - 4);
+    this->AddTetrimino(this->line0, -2, Board::Height - 4);
     this->CalcStatistics();
-    ASSERT_EQ(this->GetMinMaxLevel(), 3);
-    this->AddTetrimino(this->line0, Board::Width - 3, Board::Height - 4);
+    ASSERT_EQ(this->GetMinMaxLevel(), 4);
+    this->AddTetrimino(this->line90, Board::Width - 4, Board::Height - 3);
     this->CalcStatistics();
-    ASSERT_EQ(this->GetMinMaxLevel(), 3);
-    this->AddTetrimino(this->line0, 0, Board::Height - 8);
-    this->CalcStatistics();
-    ASSERT_EQ(this->GetMinMaxLevel(), 7);
+    ASSERT_EQ(this->GetMinMaxLevel(), 4);
+}
+
+TEST_F(BoardTest, MinMaxLevel)
+{
+    if (Board::Width == 10)
+    {
+        this->Reset();
+        this->AddTetrimino(this->line0, -2, Board::Height - 4);
+        this->AddTetrimino(this->line0, -1, Board::Height - 4);
+        this->AddTetrimino(this->line90, Board::Width - 4, Board::Height - 3);
+        this->AddTetrimino(this->line90, 2, Board::Height - 5);
+        this->CalcStatistics();
+        //TETRIS_MESSAGE(this->Print());
+        ASSERT_EQ(this->GetMinMaxLevel(), 3);
+    }
+    else
+    {
+        FAIL() << "This test passes only for board width = 10, not for " << Board::Width << ".";
+    }
 }
 
 TEST_F(BoardTest, DeletePossibleLines)

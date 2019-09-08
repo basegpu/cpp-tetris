@@ -2,6 +2,7 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include <functional>
+#include <algorithm>
 #include <stdexcept>
 #include <iostream>
 #include <string>
@@ -163,15 +164,15 @@ std::string Board::Print()
 
 void Board::CalcStatistics()
 {
-    int nEmptyBlocks[BOARD_WIDTH] = {0};
     int nHoles = 0;
-    int minLevel = BOARD_HEIGHT;
-    int maxLevel = 0;
-    auto func = [this, &nHoles, &nEmptyBlocks, &minLevel, &maxLevel](const int& ii, const int& jj) -> bool {
+    int nEmptyBlocks[BOARD_WIDTH];
+    std::fill_n(nEmptyBlocks, BOARD_WIDTH, 0);
+    int minLevels[BOARD_WIDTH];
+    std::fill_n(minLevels, BOARD_WIDTH, BOARD_HEIGHT);
+    auto func = [this, &nHoles, &nEmptyBlocks, &minLevels](const int& ii, const int& jj) -> bool {
         if (this->mBoard[ii][jj] == Block::Filled)
         {
-            minLevel = std::min(minLevel, jj);
-            maxLevel = std::max(maxLevel, jj);
+            minLevels[ii] = jj;
             if (nEmptyBlocks[ii] > 0)
             {
                 nHoles += nEmptyBlocks[ii];
@@ -185,9 +186,16 @@ void Board::CalcStatistics()
         return true;
     };
     this->LoopOverBoard(func);
+    int min = BOARD_HEIGHT;
+    int max = 0;
+    for (int ii = 0; ii < BOARD_WIDTH; ii++)
+    {
+        min = std::min(min, minLevels[ii]);
+        max = std::max(max, minLevels[ii]);
+    }
     this->stats[0] = nHoles;
-    this->stats[1] = BOARD_HEIGHT - minLevel;
-    this->stats[2] = std::max(0, maxLevel - minLevel);
+    this->stats[1] = BOARD_HEIGHT - min;
+    this->stats[2] = max - min;
 }
 
 void Board::DeleteLine(const int& pY)
