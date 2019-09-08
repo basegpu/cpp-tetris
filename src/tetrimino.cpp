@@ -1,5 +1,6 @@
 #include "tetrimino.hpp"
 #include <bitset>
+#include <stdexcept>
 
 
 const int Tetrimino::BlocksPerPiece = TETRIMINO_WIDTH;
@@ -7,6 +8,17 @@ const int Tetrimino::BlocksPerPiece = TETRIMINO_WIDTH;
 const int Tetrimino::NumberOfRotations = TETRIMINO_NROTATIONS;
 
 const int Tetrimino::NumberOfTypes = TETRIMINO_NTYPES;
+
+Tetrimino::Tetrimino() :
+Tetrimino({{},{},{},{}}, Symmetry::None, 0)
+{
+    ;
+}
+
+bool Tetrimino::operator==(const Tetrimino& other) const
+{
+    return true;
+}
 
 Tetrimino::Symmetry Tetrimino::GetSymmetry() const
 {
@@ -91,52 +103,52 @@ void Tetrimino::HashRecursion<0>(Hash& hash) const
     this->AssignBit<0>(hash);
 }
 
-Tetrimino* Tetrimino::Make(const Tetrimino::Type& type, const int& rotation)
+Tetrimino Tetrimino::Make(const Tetrimino::Type& type, const int& rotation)
 {
     switch (type)
     {
-        case Type::Square: return new Tetrimino({
+        case Type::Square: return Tetrimino({
             {0,0,0,0},
             {0,1,1,0},
             {0,1,1,0},
             {0,0,0,0},
         }, Symmetry::Point, rotation);
-        case Type::Line: return new Tetrimino({
+        case Type::Line: return Tetrimino({
             {0,0,1,0},
             {0,0,1,0},
             {0,0,1,0},
             {0,0,1,0},
         }, Symmetry::Line, rotation);
-        case Type::RightHook: return new Tetrimino({
+        case Type::RightHook: return Tetrimino({
             {0,1,0,0},
             {0,1,0,0},
             {0,1,1,0},
             {0,0,0,0},
         }, Symmetry::None, rotation);
-        case Type::LeftHook: return new Tetrimino({
+        case Type::LeftHook: return Tetrimino({
             {0,0,1,0},
             {0,0,1,0},
             {0,1,1,0},
             {0,0,0,0},
         }, Symmetry::None, rotation);
-        case Type::Tee: return new Tetrimino({
+        case Type::Tee: return Tetrimino({
             {0,0,0,0},
             {0,0,1,0},
             {0,1,1,1},
             {0,0,0,0},
         }, Symmetry::None, rotation);
-        case Type::RightChair: return new Tetrimino({
+        case Type::RightChair: return Tetrimino({
             {0,0,0,0},
             {0,1,1,0},
             {0,0,1,1},
             {0,0,0,0},
         }, Symmetry::Line, rotation);
-        case Type::LeftChair: return new Tetrimino({
+        case Type::LeftChair: return Tetrimino({
             {0,0,0,0},
             {0,1,1,0},
             {1,1,0,0},
             {0,0,0,0},
         }, Symmetry::Line, rotation);
-        default: return nullptr;
+        default: throw std::invalid_argument("unknown Tetrimino type.");
     }
 }

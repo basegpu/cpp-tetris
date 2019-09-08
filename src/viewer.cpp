@@ -10,7 +10,7 @@ const std::string Viewer::border = "\033[31mI\033[0m";
 const std::string Viewer::filled = "\033[34mO\033[0m";
 const std::string Viewer::piece = "\033[32mX\033[0m";
 
-std::string Viewer::Print(const Game* game)
+std::string Viewer::Print(const Game& game)
 {
     std::ostringstream out;
     out << Rewards(game) << std::endl << std::endl;
@@ -20,22 +20,22 @@ std::string Viewer::Print(const Game* game)
     return out.str();
 }
 
-std::string Viewer::Rewards(const Game* game)
+std::string Viewer::Rewards(const Game& game)
 {
     std::ostringstream out;
-    out << "holes: " << game->board->GetHoles();
-    out << ", max: " << game->board->GetMaxLevel();
-    out << ", min-max: " << game->board->GetMinMaxLevel();
+    out << "holes: " << game.board.GetHoles();
+    out << ", max: " << game.board.GetMaxLevel();
+    out << ", min-max: " << game.board.GetMinMaxLevel();
     return out.str();
 }
 
-std::string Viewer::Header(const Game* game)
+std::string Viewer::Header(const Game& game)
 {
     std::ostringstream out;
     out << LineWith(" ", "-");
     out << Viewer::LineWithPiece(game, 0, "              ");
     char score[15];
-    sprintf(score, "  SCORE:%6i", game->GetScore());
+    sprintf(score, "  SCORE:%6i", game.GetScore());
     out << Viewer::LineWithPiece(game, 1, std::string(score));
     out << Viewer::LineWithPiece(game, 2, "              ");
     out << Viewer::LineWithPiece(game, 3, "  by sjp, 2019");
@@ -47,7 +47,7 @@ std::string Viewer::Header(const Game* game)
     return out.str();
 }
 
-std::string Viewer::Board(const Game* game)
+std::string Viewer::Board(const Game& game)
 {
     std::string margin((VIEWER_WIDTH - Board::Width - 2), ' ');
     std::ostringstream out;
@@ -57,7 +57,7 @@ std::string Viewer::Board(const Game* game)
         for (int ii = 0; ii < Board::Width; ii++)
         {
             out << " ";
-            if (!game->board->IsFreeBlock(ii, jj))
+            if (!game.board.IsFreeBlock(ii, jj))
             {
                 out << filled;
             }
@@ -88,7 +88,7 @@ std::string Viewer::LineWith(const std::string& frame, const std::string& fill)
     return out.str();
 }
 
-std::string Viewer::LineWithPiece(const Game* game, const int&row, const std::string& prefix)
+std::string Viewer::LineWithPiece(const Game& game, const int&row, const std::string& prefix)
 {
     const int pieceMargin = 4;
     const int gab = 2*VIEWER_WIDTH - 1 - pieceMargin - 2*Tetrimino::BlocksPerPiece - prefix.size();
@@ -100,7 +100,7 @@ std::string Viewer::LineWithPiece(const Game* game, const int&row, const std::st
     return out.str();
 }
 
-std::string Viewer::PieceForRow(const Game* game, const int& row)
+std::string Viewer::PieceForRow(const Game& game, const int& row)
 {
     std::ostringstream out;
     if (row < Tetrimino::BlocksPerPiece)
@@ -108,7 +108,7 @@ std::string Viewer::PieceForRow(const Game* game, const int& row)
         for (int ii = 0; ii < Tetrimino::BlocksPerPiece; ii++)
         {
             out << " ";
-            if (game->nextPiece->GetShape(row, ii) != 0)
+            if (game.nextPiece.GetShape(row, ii) != 0)
             {
                 out << filled;
             }
@@ -121,16 +121,16 @@ std::string Viewer::PieceForRow(const Game* game, const int& row)
     return out.str();
 }
 
-bool Viewer::IsPiece(const Game* game, const int& col, const int& row)
+bool Viewer::IsPiece(const Game& game, const int& col, const int& row)
 {
-    const int iLocal = col - game->currentPosition.col;
-    const int jLocal = row - game->currentPosition.row;
+    const int iLocal = col - game.currentPosition.col;
+    const int jLocal = row - game.currentPosition.row;
     if (iLocal >= 0 &&
         iLocal < Tetrimino::BlocksPerPiece &&
         jLocal >= 0 &&
         jLocal < Tetrimino::BlocksPerPiece)
     {
-        if (game->piece->GetShape(jLocal, iLocal) != 0)
+        if (game.piece.GetShape(jLocal, iLocal) != 0)
         {
             return true;
         }

@@ -27,7 +27,7 @@ void Board::Reset()
 }
 
 void Board::AddTetrimino(
-    const Tetrimino* tetrimino,
+    const Tetrimino& tetrimino,
     const int& pX,
     const int& pY)
 {
@@ -43,9 +43,9 @@ void Board::AddTetrimino(
 }
 
 bool Board::IsPossibleMove(
-    const Tetrimino* tetrimino,
+    const Tetrimino& tetrimino,
     const int& pX,
-    const int& pY)
+    const int& pY) const
 {
     bool isPossible = true;
     auto func = [this, &isPossible](const int& x, const int& y) mutable -> bool {
@@ -68,7 +68,7 @@ bool Board::IsPossibleMove(
     return isPossible;
 }
 
-int Board::CountFilledBlocks()
+int Board::CountFilledBlocks() const
 {
     int count = 0;
     auto func = [this, &count](const int& ii, const int& jj) -> bool {
@@ -79,17 +79,17 @@ int Board::CountFilledBlocks()
     return count;
 }
 
-int Board::GetHoles()
+int Board::GetHoles() const
 {
     return this->stats[0];
 }
 
-int Board::GetMaxLevel()
+int Board::GetMaxLevel() const
 {
     return this->stats[1];
 }
 
-int Board::GetMinMaxLevel()
+int Board::GetMinMaxLevel() const
 {
     return this->stats[2];
 }
@@ -145,7 +145,7 @@ bool Board::IsGameOver() const
     return false;
 }
 
-std::string Board::Print()
+std::string Board::Print() const
 {
     std::string out = "";
     std::string line = "";
@@ -210,17 +210,17 @@ void Board::DeleteLine(const int& pY)
 }
 
 void Board::LoopOverTetrimino(
-    const Tetrimino* tetrimino,
+    const Tetrimino& tetrimino,
     const int& pX,
     const int& pY,
-    std::function<bool(const int&, const int&)> func)
+    std::function<bool(const int&, const int&)> func) const
 {
     // Store each block of the piece into the board
     for (int x = pX, col = 0; x < pX + Tetrimino::BlocksPerPiece; x++, col++)
     {
         for (int y = pY, row = 0; y < pY + Tetrimino::BlocksPerPiece; y++, row++)
         {
-            if (tetrimino->GetShape(row, col) != 0)
+            if (tetrimino.GetShape(row, col) != 0)
             {
                 if(!func(x, y))
                 {
@@ -234,7 +234,7 @@ void Board::LoopOverTetrimino(
 void Board::LoopOverBoard(
     std::function<bool(const int&, const int&)> func,
     const int& bottomRow,
-    const int& topRow)
+    const int& topRow) const
 {
     // from bottom to top
     for (int jj = bottomRow; jj >= topRow; jj--)

@@ -14,16 +14,16 @@ public:
 
     Board();
     void Reset();
-    void AddTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY);
-    bool IsPossibleMove(const Tetrimino* tetrimino, const int& pX, const int& pY);
-    int CountFilledBlocks();
-    int GetHoles();
-    int GetMaxLevel();
-    int GetMinMaxLevel();
+    void AddTetrimino(const Tetrimino& tetrimino, const int& pX, const int& pY);
+    bool IsPossibleMove(const Tetrimino& tetrimino, const int& pX, const int& pY) const;
+    int CountFilledBlocks() const;
+    int GetHoles() const;
+    int GetMaxLevel() const;
+    int GetMinMaxLevel() const;
     bool IsFreeBlock(const int& pX, const int& pY) const;
     int DeletePossibleLines();
     bool IsGameOver() const;
-    std::string Print();
+    std::string Print() const;
 
 protected:
     enum class Block : unsigned char
@@ -37,8 +37,8 @@ protected:
 
     void CalcStatistics();
     void DeleteLine(const int& pY);
-    void LoopOverTetrimino(const Tetrimino* tetrimino, const int& pX, const int& pY, std::function<bool(const int&, const int&)> func);
-    void LoopOverBoard(std::function<bool(const int&, const int&)> func, const int& bottomRow = BOARD_HEIGHT - 1, const int& topRow = 0);
+    void LoopOverTetrimino(const Tetrimino& tetrimino, const int& pX, const int& pY, std::function<bool(const int&, const int&)> func) const;
+    void LoopOverBoard(std::function<bool(const int&, const int&)> func, const int& bottomRow = BOARD_HEIGHT - 1, const int& topRow = 0) const;
     void CheckLimits(const int& pX, const int& pY) const;
     bool ValidLimits(const int& pX, const int& pY) const;
 };

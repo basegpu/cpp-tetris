@@ -10,13 +10,16 @@ class ActionsTest :
 {
 protected:
 
-    Tetrimino* t = nullptr;
+    Tetrimino t;
 
     // void SetUp() override {}
+    // void TearDown() override {}
+    // 
     void Init(const Tetrimino::Type& type)
     {
         this->t = Tetrimino::Make(type, 0);
     }
+
     void Check(const std::vector<int>& widths)
     {
         int nActions = widths.size() * (Board::Width + 1)
@@ -26,12 +29,8 @@ protected:
         {
             a = Actions::CreateFor(this->t, {0, (int)Board::Width/2-1});
             ASSERT_EQ(a.size(), nActions);
-            this->t->Rotate();
+            this->t.Rotate();
         }
-    }
-    void TearDown() override
-    {
-        if (t) delete t;
     }
 };
 

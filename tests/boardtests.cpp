@@ -16,15 +16,8 @@ protected:
         lHook180 = Tetrimino::Make(Tetrimino::Type::LeftHook, 2);
         tee180 = Tetrimino::Make(Tetrimino::Type::Tee, 2);
     }
-    void TearDown() override
-    {
-        delete square;
-        delete line0;
-        delete line90;
-        delete line270;
-        delete lHook180;
-    }
-    Tetrimino *square, *line0, *line90, *line270, *lHook180, *tee180;
+    // void TearDown() override {}
+    Tetrimino square, line0, line90, line270, lHook180, tee180;
 };
 
 TEST_F(BoardTest, EmptyBoard)
@@ -213,11 +206,10 @@ TEST_F(BoardTest, PossibleMoves)
 
 TEST(MiscBoardTest, Copy)
 {
-    Tetrimino* line90 = Tetrimino::Make(Tetrimino::Type::Line, 1);
-    Board* board = new Board();
-    Board copy = *board;
+    Tetrimino line90 = Tetrimino::Make(Tetrimino::Type::Line, 1);
+    Board board;
+    Board copy = board;
     copy.AddTetrimino(line90, 0, Board::Height - 3);
     ASSERT_EQ(copy.CountFilledBlocks(), 4);
-    ASSERT_EQ(board->CountFilledBlocks(), 0);
-    delete board, line90;
+    ASSERT_EQ(board.CountFilledBlocks(), 0);
 }

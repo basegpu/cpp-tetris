@@ -14,7 +14,6 @@ Game::Game() :
 }
 
 Game::Game(const bool& random) :
-    board(new Board()),
     gameIsOn(true),
     score(0)
 {
@@ -30,13 +29,6 @@ Game::Game(const bool& random) :
     // Next piece
     this->nextPiece = this->CreatePiece();
     this->AddNewPiece();
-}
-
-Game::~Game()
-{
-    delete this->nextPiece;
-    delete this->piece;
-    delete this->board;
 }
 
 bool Game::On() const
@@ -82,7 +74,7 @@ void Game::PlayRandom()
 
 void Game::MoveDown()
 {
-    if (this->board->IsPossibleMove(
+    if (this->board.IsPossibleMove(
         this->piece,
         this->currentPosition.col,
         this->currentPosition.row + 1))
@@ -93,7 +85,7 @@ void Game::MoveDown()
 
 void Game::MoveLeft()
 {
-    if (this->board->IsPossibleMove(
+    if (this->board.IsPossibleMove(
         this->piece,
         this->currentPosition.col - 1,
         this->currentPosition.row))
@@ -104,7 +96,7 @@ void Game::MoveLeft()
 
 void Game::MoveRight()
 {
-    if (this->board->IsPossibleMove(
+    if (this->board.IsPossibleMove(
         this->piece,
         this->currentPosition.col + 1,
         this->currentPosition.row))
@@ -115,15 +107,15 @@ void Game::MoveRight()
 
 void Game::Rotate()
 {
-    this->piece->Rotate();
-    if (!this->board->IsPossibleMove(
+    this->piece.Rotate();
+    if (!this->board.IsPossibleMove(
         this->piece,
         this->currentPosition.col,
         this->currentPosition.row))
     {
         for (int ii = 1; ii < Tetrimino::NumberOfRotations; ii++)
         {
-            this->piece->Rotate();
+            this->piece.Rotate();
         }
     }
 }
@@ -131,7 +123,7 @@ void Game::Rotate()
 void Game::Advance()
 {
     // move downwards as many times as it is possible
-    while (this->board->IsPossibleMove(
+    while (this->board.IsPossibleMove(
         this->piece,
         this->currentPosition.col,
         this->currentPosition.row + 1))
@@ -139,14 +131,14 @@ void Game::Advance()
         this->currentPosition.row++;
     }
     // add the piece at this location
-    this->board->AddTetrimino(
+    this->board.AddTetrimino(
         this->piece,
         this->currentPosition.col,
         this->currentPosition.row);
     // delete all possible lines above
-    this->score += this->board->DeletePossibleLines();
+    this->score += this->board.DeletePossibleLines();
     // check for game over or advance with new piece
-    if (!this->board->IsGameOver())
+    if (!this->board.IsGameOver())
     {
         this->AddNewPiece();
     }
@@ -158,13 +150,11 @@ void Game::Advance()
 
 void Game::AddNewPiece()
 {
-    // delete old piece
-    if (this->piece) delete this->piece;
-    // The new piece
+    // the new piece
     this->piece = this->nextPiece;
     this->currentPosition = {
-        0 - this->piece->GetTopBlock(),
-        (int)Board::Width/2 - this->piece->GetLeftBlock() - 1
+        0 - this->piece.GetTopBlock(),
+        (int)Board::Width/2 - this->piece.GetLeftBlock() - 1
     };
     // Random next piece
     this->nextPiece = this->CreatePiece();
@@ -172,7 +162,7 @@ void Game::AddNewPiece()
 
 const Actions& Game::GetPossibleActions()
 {
-    size_t hash = this->piece->GetHash();
+    size_t hash = this->piece.GetHash();
     if (this->actionsRegistry.count(hash) == 0)
     { 
         // we have to generate all possible actions
@@ -182,11 +172,11 @@ const Actions& Game::GetPossibleActions()
     return this->actionsRegistry.at(hash);
 }
 
-Tetrimino* Game::CreatePiece() const
+Tetrimino Game::CreatePiece() const
 {
-    int piece = this->GetRand(0, Tetrimino::NumberOfTypes - 1);
+    int p = this->GetRand(0, Tetrimino::NumberOfTypes - 1);
     int rotation = this->GetRand(0, Tetrimino::NumberOfRotations - 1);
-    return Tetrimino::Make(static_cast<Tetrimino::Type>(piece), rotation);
+    return Tetrimino::Make(static_cast<Tetrimino::Type>(p), rotation);
 }
 
 int Game::GetRand(const int& pA, const int& pB) const

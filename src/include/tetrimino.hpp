@@ -10,6 +10,9 @@ class Tetrimino
 {
 public:
 
+    Tetrimino();
+    virtual ~Tetrimino() {;}
+
     enum class Type : unsigned char {
         Square,
         Line,
@@ -26,11 +29,12 @@ public:
         Point
     };
 
-    static Tetrimino* Make(const Type& type, const int& rotation);
+    static Tetrimino Make(const Type& type, const int& rotation);
     static const int BlocksPerPiece;
     static const int NumberOfRotations;
     static const int NumberOfTypes;
 
+    bool operator==(const Tetrimino& other) const;
     Symmetry GetSymmetry() const;
     size_t GetHash() const;
     unsigned char GetShape(const int& x, const int& y) const;
@@ -55,7 +59,7 @@ private:
 
     unsigned char shapes[TETRIMINO_NROTATIONS][TETRIMINO_WIDTH][TETRIMINO_WIDTH];
     int cornerBlocks[TETRIMINO_NROTATIONS][4];
-    const Symmetry symmetry;
+    Symmetry symmetry;
     int rotationState;
 
     template<int ROTATION>

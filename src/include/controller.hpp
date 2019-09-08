@@ -16,7 +16,7 @@ public:
     void RunGame();
 
 private:
-    static const std::map<char, Game::Moves> commands;
+    static const std::map<char, Moves> commands;
     bool isRandom;
     bool autoPlay;
     std::string initSequence;

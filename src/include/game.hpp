@@ -4,7 +4,7 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include "board.hpp"
-#include <vector>
+#include "actions.hpp"
 #include <map>
 
 // forward declaration
@@ -15,21 +15,7 @@ class Game
 public:
     Game();
     Game(const bool& random);
-    ~Game();
-
-    enum class Moves : int {
-        Advance,
-        Rotate,
-        Down,
-        Left,
-        Right
-    };
-    typedef struct Position
-    {
-        int row;
-        int col;
-    } Position;
-    typedef std::vector<Moves> Action;
+    virtual ~Game() {;}
 
     bool On() const;
     int GetScore() const;
@@ -40,12 +26,12 @@ public:
     friend class Viewer;
 
 protected:
-    Board* board = nullptr;
+    Board board;
     // the piece that is falling down
-    Tetrimino* piece = nullptr;
+    Tetrimino piece;
     Position currentPosition;
     // the next piece
-    Tetrimino* nextPiece = nullptr;
+    Tetrimino nextPiece;
     // registry of all possible actions for given tetrimino
     std::map<size_t, Actions> actionsRegistry;
 
@@ -62,7 +48,7 @@ private:
     void Rotate();
     void Advance();
 
-    Tetrimino* CreatePiece() const;
+    Tetrimino CreatePiece() const;
     int GetRand(const int& pA, const int& pB) const;
 };
 

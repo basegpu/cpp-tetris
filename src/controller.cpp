@@ -11,12 +11,12 @@
 #include <thread>
 
 
-const std::map<char, Game::Moves> Controller::commands = {
-    {'m', Game::Moves::Advance},
-    {'i', Game::Moves::Rotate },
-    {'k', Game::Moves::Down   },
-    {'j', Game::Moves::Left   },
-    {'l', Game::Moves::Right  },
+const std::map<char, Moves> Controller::commands = {
+    {'m', Moves::Advance},
+    {'i', Moves::Rotate },
+    {'k', Moves::Down   },
+    {'j', Moves::Left   },
+    {'l', Moves::Right  },
 };
 
 const std::string Controller::PrintUsage()
@@ -47,7 +47,7 @@ Controller::~Controller()
 void Controller::CreateGame(int argc, char* argv[])
 {
     this->ParseCommandLine(argc, argv);
-    std::vector<Game::Moves> moves;
+    std::vector<Moves> moves;
     for (const char& c : this->initSequence)
     {
         try
@@ -117,7 +117,7 @@ void Controller::ViewGame(const bool& withUsage) const
 {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
     std::cout << "\x1B[2J\x1B[H";
-    std::cout << Viewer::Print(this->game);
+    std::cout << Viewer::Print(*this->game);
     if (withUsage)
     {
         std::cout << std::endl << this->PrintUsage();

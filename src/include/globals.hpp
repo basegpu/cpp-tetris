@@ -1,6 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include <vector>
+
 // tetrimino properties
 #define TETRIMINO_WIDTH 4
 #define TETRIMINO_NROTATIONS 4
@@ -26,5 +28,20 @@ static_assert(VIEWER_WIDTH >= BOARD_WIDTH+2,
 #include <iostream>
 #define TETRIS_MESSAGE(msg) {std::cout << "Tetris> " << msg << std::endl;}
 #define TETRIS_ERROR(msg) {std::cerr << "Tetris - error> " << msg << std::endl;}
+
+// some typdefs
+enum class Moves : int {
+    Advance,
+    Rotate,
+    Down,
+    Left,
+    Right
+};
+typedef std::vector<Moves> Action;
+typedef struct Position
+{
+    int row;
+    int col;
+} Position;
 
 #endif
