@@ -17,9 +17,6 @@ public:
     Game(const bool& random);
     ~Game();
 
-    bool On() const;
-    int GetScore() const;
-
     enum class Moves : int {
         Advance,
         Rotate,
@@ -34,6 +31,8 @@ public:
     } Position;
     typedef std::vector<Moves> Action;
 
+    bool On() const;
+    int GetScore() const;
     void MakeMove(const Moves& move);
     void PlaySequence(const Action& seq);
     void PlayRandom();
