@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <stdexcept>
+#include <algorithm>
 #include "board.hpp"
 #include "tetrimino.hpp"
 
@@ -209,4 +209,15 @@ TEST_F(BoardTest, PossibleMoves)
     {
         FAIL() << "This test passes only for board width = 10, not for " << Board::Width << ".";
     }
+}
+
+TEST(MiscBoardTest, Copy)
+{
+    Tetrimino* line90 = Tetrimino::Make(Tetrimino::Type::Line, 1);
+    Board* board = new Board();
+    Board copy = *board;
+    copy.AddTetrimino(line90, 0, Board::Height - 3);
+    ASSERT_EQ(copy.CountFilledBlocks(), 4);
+    ASSERT_EQ(board->CountFilledBlocks(), 0);
+    delete board, line90;
 }
