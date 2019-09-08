@@ -37,6 +37,20 @@ TEST_F(TetriminoTest, Hash)
         std::bitset<TETRIMINO_HASHSIZE>("000010010000010000").to_ullong());
 }
 
+TEST_F(TetriminoTest, Equality)
+{
+    this->SetRotation(0);
+    Tetrimino t = static_cast<Tetrimino>(*this);
+    ASSERT_TRUE(t==static_cast<Tetrimino>(*this));
+}
+
+TEST_F(TetriminoTest, InEquality)
+{
+    this->SetRotation(0);
+    Tetrimino t = Tetrimino::Make(Tetrimino::Type::Line, 0);
+    ASSERT_FALSE(t==static_cast<Tetrimino>(*this));
+}
+
 TEST_F(TetriminoTest, NoRotationShape)
 {
     this->SetRotation(0);
