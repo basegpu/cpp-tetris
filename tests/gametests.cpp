@@ -13,15 +13,15 @@ protected:
 TEST_F(GameTest, Init)
 {
     ASSERT_NE(&this->board, nullptr);
-    ASSERT_NE(&this->piece, nullptr);
-    ASSERT_NE(&this->nextPiece, nullptr);
+    ASSERT_NE(this->currentPiece, nullptr);
+    ASSERT_NE(this->nextPiece, nullptr);
 }
 
 TEST_F(GameTest, NewPiece)
 {
-    Tetrimino p = this->nextPiece;
+    Tetrimino p = *this->nextPiece;
     this->AddNewPiece();
-    ASSERT_EQ(this->piece, p);
+    ASSERT_EQ(*this->currentPiece, p);
 }
 
 
@@ -29,7 +29,7 @@ TEST_F(GameTest, SameState)
 {
     Tetrimino t = Tetrimino::Make(Tetrimino::Type::Square, 0);
     size_t hash_ref = t.GetHash();
-    this->piece = t;
+    *this->currentPiece = t;
     this->GetPossibleActions();
     ASSERT_EQ(t.GetHash(), hash_ref);
 }
@@ -38,13 +38,13 @@ TEST_F(GameTest, ActionGeneration)
 {
     Tetrimino t = Tetrimino::Make(Tetrimino::Type::Square, 0);
     ASSERT_EQ(this->actionsRegistry.size(), 0);
-    this->piece = t;
+    *this->currentPiece = t;
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
     t.Rotate();
-    this->piece = t;
+    *this->currentPiece = t;
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 2);
 }

@@ -108,7 +108,7 @@ std::string Viewer::PieceForRow(const Game& game, const int& row)
         for (int ii = 0; ii < Tetrimino::BlocksPerPiece; ii++)
         {
             out << " ";
-            if (game.nextPiece.GetShape(row, ii) != 0)
+            if (game.nextPiece->GetShape(row, ii) != 0)
             {
                 out << filled;
             }
@@ -130,7 +130,7 @@ bool Viewer::IsPiece(const Game& game, const int& col, const int& row)
         jLocal >= 0 &&
         jLocal < Tetrimino::BlocksPerPiece)
     {
-        if (game.piece.GetShape(jLocal, iLocal) != 0)
+        if (game.currentPiece->GetShape(jLocal, iLocal) != 0)
         {
             return true;
         }

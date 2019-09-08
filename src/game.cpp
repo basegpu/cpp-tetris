@@ -6,6 +6,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <sstream>
+#include <algorithm>
 
 Game::Game() :
     Game(true)
@@ -27,7 +28,9 @@ Game::Game(const bool& random) :
         srand(1);
     }
     // Next piece
-    this->nextPiece = this->CreatePiece();
+    this->currentPiece = &this->pieces[0];
+    this->pieces[1] = this->CreatePiece();
+    this->nextPiece = &this->pieces[1];
     this->AddNewPiece();
 }
 
@@ -75,7 +78,7 @@ void Game::PlayRandom()
 void Game::MoveDown()
 {
     if (this->board.IsPossibleMove(
-        this->piece,
+        *this->currentPiece,
         this->currentPosition.col,
         this->currentPosition.row + 1))
     {
@@ -86,7 +89,7 @@ void Game::MoveDown()
 void Game::MoveLeft()
 {
     if (this->board.IsPossibleMove(
-        this->piece,
+        *this->currentPiece,
         this->currentPosition.col - 1,
         this->currentPosition.row))
     {
@@ -97,7 +100,7 @@ void Game::MoveLeft()
 void Game::MoveRight()
 {
     if (this->board.IsPossibleMove(
-        this->piece,
+        *this->currentPiece,
         this->currentPosition.col + 1,
         this->currentPosition.row))
     {
@@ -107,15 +110,15 @@ void Game::MoveRight()
 
 void Game::Rotate()
 {
-    this->piece.Rotate();
+    this->currentPiece->Rotate();
     if (!this->board.IsPossibleMove(
-        this->piece,
+        *this->currentPiece,
         this->currentPosition.col,
         this->currentPosition.row))
     {
         for (int ii = 1; ii < Tetrimino::NumberOfRotations; ii++)
         {
-            this->piece.Rotate();
+            this->currentPiece->Rotate();
         }
     }
 }
@@ -124,7 +127,7 @@ void Game::Advance()
 {
     // move downwards as many times as it is possible
     while (this->board.IsPossibleMove(
-        this->piece,
+        *this->currentPiece,
         this->currentPosition.col,
         this->currentPosition.row + 1))
     {
@@ -132,7 +135,7 @@ void Game::Advance()
     }
     // add the piece at this location
     this->board.AddTetrimino(
-        this->piece,
+        *this->currentPiece,
         this->currentPosition.col,
         this->currentPosition.row);
     // delete all possible lines above
@@ -151,23 +154,23 @@ void Game::Advance()
 void Game::AddNewPiece()
 {
     // the new piece
-    this->piece = this->nextPiece;
+    std::swap(this->currentPiece, this->nextPiece);
     this->currentPosition = {
-        0 - this->piece.GetTopBlock(),
-        (int)Board::Width/2 - this->piece.GetLeftBlock() - 1
+        0 - this->currentPiece->GetTopBlock(),
+        (int)Board::Width/2 - this->currentPiece->GetLeftBlock() - 1
     };
     // Random next piece
-    this->nextPiece = this->CreatePiece();
+    *this->nextPiece = this->CreatePiece();
 }
 
 const Actions& Game::GetPossibleActions()
 {
-    size_t hash = this->piece.GetHash();
+    size_t hash = this->currentPiece->GetHash();
     if (this->actionsRegistry.count(hash) == 0)
     { 
         // we have to generate all possible actions
         // and add them to hash table
-        this->actionsRegistry[hash] = Actions::CreateFor(this->piece, this->currentPosition);
+        this->actionsRegistry[hash] = Actions::CreateFor(*this->currentPiece, this->currentPosition);
     }
     return this->actionsRegistry.at(hash);
 }
