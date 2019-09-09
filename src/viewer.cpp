@@ -23,9 +23,9 @@ std::string Viewer::Print(const Game& game)
 std::string Viewer::Rewards(const Game& game)
 {
     std::ostringstream out;
-    out << "holes: " << game.board.GetHoles();
-    out << ", max: " << game.board.GetMaxLevel();
-    out << ", min-max: " << game.board.GetMinMaxLevel();
+    out << "holes: " << game.state.board.GetHoles();
+    out << ", max: " << game.state.board.GetMaxLevel();
+    out << ", min-max: " << game.state.board.GetMinMaxLevel();
     return out.str();
 }
 
@@ -57,7 +57,7 @@ std::string Viewer::Board(const Game& game)
         for (int ii = 0; ii < Board::Width; ii++)
         {
             out << " ";
-            if (!game.board.IsFreeBlock(ii, jj))
+            if (!game.state.board.IsFreeBlock(ii, jj))
             {
                 out << filled;
             }
@@ -108,7 +108,7 @@ std::string Viewer::PieceForRow(const Game& game, const int& row)
         for (int ii = 0; ii < Tetrimino::BlocksPerPiece; ii++)
         {
             out << " ";
-            if (game.nextPiece->GetShape(row, ii) != 0)
+            if (game.state.GetNextPiece()->GetShape(row, ii) != 0)
             {
                 out << filled;
             }
@@ -123,14 +123,14 @@ std::string Viewer::PieceForRow(const Game& game, const int& row)
 
 bool Viewer::IsPiece(const Game& game, const int& col, const int& row)
 {
-    const int iLocal = col - game.currentPosition.col;
-    const int jLocal = row - game.currentPosition.row;
+    const int iLocal = col - game.state.GetCurrentPosition().col;
+    const int jLocal = row - game.state.GetCurrentPosition().row;
     if (iLocal >= 0 &&
         iLocal < Tetrimino::BlocksPerPiece &&
         jLocal >= 0 &&
         jLocal < Tetrimino::BlocksPerPiece)
     {
-        if (game.currentPiece->GetShape(jLocal, iLocal) != 0)
+        if (game.state.GetCurrentPiece()->GetShape(jLocal, iLocal) != 0)
         {
             return true;
         }

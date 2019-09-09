@@ -4,6 +4,7 @@
 #include "globals.hpp"
 #include "tetrimino.hpp"
 #include "board.hpp"
+#include "state.hpp"
 #include "actions.hpp"
 #include <map>
 
@@ -26,33 +27,12 @@ public:
     friend class Viewer;
 
 protected:
-    Board board;
-    // the position of current piece
-    Position currentPosition;
-    // pointer of current piece
-    Tetrimino* currentPiece;
-    // pointer of next piece
-    Tetrimino* nextPiece;
-    // registry of all possible actions for given tetrimino
-    std::map<size_t, Actions> actionsRegistry;
-
-    void AddNewPiece();
-    const Actions& GetPossibleActions();
-
-private:
+    State state;
     bool gameIsOn;
     int score;
-    // two pieces (one falling down and the next one)
-    Tetrimino pieces[2];
+    std::map<size_t, Actions> actionsRegistry;
 
-    void MoveDown();
-    void MoveLeft();
-    void MoveRight();
-    void Rotate();
-    void Advance();
-
-    Tetrimino CreatePiece() const;
-    int GetRand(const int& pA, const int& pB) const;
+    const Actions& GetPossibleActions();
 };
 
 #endif // GAME_H
