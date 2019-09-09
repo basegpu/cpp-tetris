@@ -4,6 +4,8 @@
 #include "board.hpp"
 #include "state.hpp"
 #include "actions.hpp"
+#include <vector>
+#include <algorithm>
 
 Game::Game() :
     gameIsOn(true),
@@ -24,22 +26,27 @@ int Game::GetScore() const
 
 void Game::MakeMove(const Moves& move)
 {
-    int out = this->state.moves.at(move)();
-    if (out >= 0)
+    int out = this->MakeMove(move, this->state);
+    if (this->gameIsOn)
     {
         this->score += out;
-    }
-    else
-    {
-        this->gameIsOn = false;
     }
 }
 
 void Game::PlaySequence(const Action& seq)
 {
-    for (const Moves& move : seq)
+    this->score += this->PlaySequence(seq, this->state);
+}
+
+void Game::SelfPlay(const bool& withStrategy)
+{
+    if (withStrategy)
     {
-        this->MakeMove(move);
+        this->PlayBest();
+    }
+    else
+    {
+        this->PlayRandom();
     }
 }
 
@@ -47,10 +54,50 @@ void Game::PlayRandom()
 {
     const Actions acts = this->GetPossibleActions();
     const int index = GetRand(0, acts.size() - 1);
-    for (const Moves& move : acts.at(index))
+    this->PlaySequence(acts.at(index));
+}
+
+void Game::PlayBest()
+{
+    std::vector<int> values;
+    for (const Action& a : this->GetPossibleActions())
     {
-        this->MakeMove(move);
+        State tempState = this->state;
+        int nLines = this->PlaySequence(a, tempState);
+        // evaluation
+        values.push_back(nLines*10 - tempState.GetBoard().GetHoles());
     }
+    int bestAction = std::max_element(values.begin(), values.end()) - values.begin();
+    TETRIS_MESSAGE("best action: " << bestAction);
+    this->PlaySequence(this->GetPossibleActions().at(bestAction), this->state);
+}
+
+int Game::MakeMove(const Moves& move, State& onState)
+{
+    int out = onState.moves.at(move)();
+    if (out < 0)
+    {
+        this->gameIsOn = false;
+    }
+    return out;
+}
+
+int Game::PlaySequence(const Action& seq, State& onState)
+{
+    int out, countLines = 0;
+    for (const Moves& move : seq)
+    {
+        out = this->MakeMove(move, onState);
+        if (this->gameIsOn)
+        {
+            countLines += out;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return countLines;
 }
 
 const Actions& Game::GetPossibleActions()

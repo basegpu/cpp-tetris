@@ -22,7 +22,13 @@ State::State()
 
 State::State(const State& other)
 {
-    this->board = other.board;
+    // init the moves
+    this->moves[Moves::Rotate] = std::bind(&State::Rotate, this);
+    this->moves[Moves::Left] = std::bind(&State::MoveLeft, this);
+    this->moves[Moves::Right] = std::bind(&State::MoveRight, this);
+    this->moves[Moves::Down] = std::bind(&State::MoveDown, this);
+    this->moves[Moves::Advance] = std::bind(&State::Advance, this);
+    // init the pieces
     this->position = other.position;
     this->pieces[0] = other.pieces[0];
     this->pieces[1] = other.pieces[1];

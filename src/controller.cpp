@@ -33,6 +33,7 @@ const std::string Controller::PrintUsage()
 Controller::Controller() :
     isRandom(true),
     autoPlay(false),
+    bestPlay(false),
     initSequence(""),
     game(nullptr)
 {
@@ -75,11 +76,11 @@ void Controller::RunGame()
     char M;
     while (this->game->On())
     {
-        if (this->autoPlay)
+        if (this->autoPlay || this->bestPlay)
         {
             this->ViewGame(false);
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            this->game->PlayRandom();
+            this->game->SelfPlay(this->bestPlay);
         }
         else
         {
@@ -103,12 +104,14 @@ void Controller::ParseCommandLine(int argc, char* argv[])
         TCLAP::CmdLine cmd("This is a tetris game engine", ' ', "0.9");
         TCLAP::ValueArg<std::string> sequenceArg("s", "sequence", "play sequence of commands initially", false, "", "string", cmd);
         TCLAP::SwitchArg reproArg("r", "reproducible", "non-random, reproducible game", cmd, false);
-        TCLAP::SwitchArg autoArg("a", "auto", "auto-ply mode", cmd, false);
+        TCLAP::SwitchArg autoArg("a", "auto", "auto-play mode", cmd, false);
+        TCLAP::SwitchArg bestArg("b", "best", "best-play mode", cmd, false);
         cmd.parse(argc, argv);
         // Get the value parsed by each arg.
         this->initSequence = sequenceArg.getValue();
         this->isRandom = !reproArg.getValue();
         this->autoPlay = autoArg.getValue();
+        this->bestPlay = bestArg.getValue();
     }
     catch (TCLAP::ArgException &e)
     {

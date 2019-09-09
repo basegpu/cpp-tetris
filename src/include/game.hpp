@@ -21,7 +21,7 @@ public:
     int GetScore() const;
     void MakeMove(const Moves& move);
     void PlaySequence(const Action& seq);
-    void PlayRandom();
+    void SelfPlay(const bool& withStrategy);
 
     friend class Viewer;
 
@@ -31,6 +31,10 @@ protected:
     int score;
     std::map<size_t, Actions> actionsRegistry;
 
+    void PlayRandom();
+    void PlayBest();
+    int MakeMove(const Moves& move, State& onState);
+    int PlaySequence(const Action& action, State& onState);
     const Actions& GetPossibleActions();
 };
 

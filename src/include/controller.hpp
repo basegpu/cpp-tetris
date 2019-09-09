@@ -19,6 +19,7 @@ private:
     static const std::unordered_map<char, Moves> commands;
     bool isRandom;
     bool autoPlay;
+    bool bestPlay;
     std::string initSequence;
     Game* game;
 
