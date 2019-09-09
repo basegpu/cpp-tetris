@@ -4,14 +4,14 @@
 #include <tclap/CmdLine.h>
 #include <iostream>
 #include <sstream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <chrono>
 #include <thread>
 
 
-const std::map<char, Moves> Controller::commands = {
+const std::unordered_map<char, Moves> Controller::commands = {
     {'m', Moves::Advance},
     {'i', Moves::Rotate },
     {'k', Moves::Down   },
@@ -47,6 +47,9 @@ Controller::~Controller()
 void Controller::CreateGame(int argc, char* argv[])
 {
     this->ParseCommandLine(argc, argv);
+    // eventually seed random numbers
+    SetRandom(this->isRandom);
+    // create initial moves
     std::vector<Moves> moves;
     for (const char& c : this->initSequence)
     {
@@ -57,7 +60,7 @@ void Controller::CreateGame(int argc, char* argv[])
         catch (...) {} // bad char
     }
     // create game
-    this->game = new Game(this->isRandom);
+    this->game = new Game();
     // eventually play a given sequence first
     if (moves.size())
     {

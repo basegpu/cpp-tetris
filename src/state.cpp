@@ -20,6 +20,24 @@ State::State()
     this->AddNewPiece();
 }
 
+State::State(const State& other)
+{
+    this->board = other.board;
+    this->position = other.position;
+    this->pieces[0] = other.pieces[0];
+    this->pieces[1] = other.pieces[1];
+    if (*other.currentPiece == other.pieces[0])
+    {
+        this->currentPiece = &this->pieces[0];
+        this->nextPiece = &this->pieces[1];
+    }
+    else
+    {
+        this->currentPiece = &this->pieces[1];
+        this->nextPiece = &this->pieces[0];
+    }
+}
+
 const Tetrimino* State::GetCurrentPiece() const
 {
     return this->currentPiece;
@@ -30,9 +48,9 @@ const Tetrimino* State::GetNextPiece() const
     return this->nextPiece;
 }
 
-const Position& State::GetCurrentPosition() const
+const Position& State::GetPosition() const
 {
-    return this->currentPosition;
+    return this->position;
 }
 
 const Board& State::GetBoard() const
@@ -44,10 +62,10 @@ int State::MoveDown()
 {
     if (this->board.IsPossibleMove(
         *this->currentPiece,
-        this->currentPosition.col,
-        this->currentPosition.row + 1))
+        this->position.col,
+        this->position.row + 1))
     {
-        this->currentPosition.row++;
+        this->position.row++;
     }
     return 0;
 }
@@ -56,10 +74,10 @@ int State::MoveLeft()
 {
     if (this->board.IsPossibleMove(
         *this->currentPiece,
-        this->currentPosition.col - 1,
-        this->currentPosition.row))
+        this->position.col - 1,
+        this->position.row))
     {
-        this->currentPosition.col--;
+        this->position.col--;
     }
     return 0;
 }
@@ -68,10 +86,10 @@ int State::MoveRight()
 {
     if (this->board.IsPossibleMove(
         *this->currentPiece,
-        this->currentPosition.col + 1,
-        this->currentPosition.row))
+        this->position.col + 1,
+        this->position.row))
     {
-        this->currentPosition.col++;
+        this->position.col++;
     }
     return 0;
 }
@@ -81,8 +99,8 @@ int State::Rotate()
     this->currentPiece->Rotate();
     if (!this->board.IsPossibleMove(
         *this->currentPiece,
-        this->currentPosition.col,
-        this->currentPosition.row))
+        this->position.col,
+        this->position.row))
     {
         for (int ii = 1; ii < Tetrimino::NumberOfRotations; ii++)
         {
@@ -97,16 +115,16 @@ int State::Advance()
     // move downwards as many times as it is possible
     while (this->board.IsPossibleMove(
         *this->currentPiece,
-        this->currentPosition.col,
-        this->currentPosition.row + 1))
+        this->position.col,
+        this->position.row + 1))
     {
-        this->currentPosition.row++;
+        this->position.row++;
     }
     // add the piece at this location
     this->board.AddTetrimino(
         *this->currentPiece,
-        this->currentPosition.col,
-        this->currentPosition.row);
+        this->position.col,
+        this->position.row);
     // delete all possible lines above
     int linesDeleted = this->board.DeletePossibleLines();
     // check for game over or advance with new piece
@@ -125,7 +143,7 @@ void State::AddNewPiece()
 {
     // the new piece
     std::swap(this->currentPiece, this->nextPiece);
-    this->currentPosition = {
+    this->position = {
         0 - this->currentPiece->GetTopBlock(),
         (int)Board::Width/2 - this->currentPiece->GetLeftBlock() - 1
     };

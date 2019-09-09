@@ -4,7 +4,7 @@
 #include "game.hpp"
 #include "viewer.hpp"
 #include <string>
-#include <map>
+#include <unordered_map>
 
 class Controller
 {
@@ -16,7 +16,7 @@ public:
     void RunGame();
 
 private:
-    static const std::map<char, Moves> commands;
+    static const std::unordered_map<char, Moves> commands;
     bool isRandom;
     bool autoPlay;
     std::string initSequence;

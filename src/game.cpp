@@ -6,24 +6,10 @@
 #include "actions.hpp"
 
 Game::Game() :
-    Game(true)
-{
-    ;
-}
-
-Game::Game(const bool& random) :
     gameIsOn(true),
     score(0)
 {
-    // eventually seed random numbers
-    if (random)
-    {
-        srand((unsigned int) time(NULL));
-    }
-    else
-    {
-        srand(1);
-    }
+    
 }
 
 bool Game::On() const
@@ -75,7 +61,9 @@ const Actions& Game::GetPossibleActions()
     { 
         // we have to generate all possible actions
         // and add them to hash table
-        this->actionsRegistry[hash] = Actions::CreateFor(const_cast<Tetrimino&>(*piece), this->state.GetCurrentPosition());
+        this->actionsRegistry[hash] = Actions::CreateFor(
+            const_cast<Tetrimino&>(*piece),
+            this->state.GetPosition());
     }
     return this->actionsRegistry.at(hash);
 }

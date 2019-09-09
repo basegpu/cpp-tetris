@@ -123,8 +123,8 @@ std::string Viewer::PieceForRow(const Game& game, const int& row)
 
 bool Viewer::IsPiece(const Game& game, const int& col, const int& row)
 {
-    const int iLocal = col - game.state.GetCurrentPosition().col;
-    const int jLocal = row - game.state.GetCurrentPosition().row;
+    const int iLocal = col - game.state.GetPosition().col;
+    const int jLocal = row - game.state.GetPosition().row;
     if (iLocal >= 0 &&
         iLocal < Tetrimino::BlocksPerPiece &&
         jLocal >= 0 &&

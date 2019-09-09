@@ -17,7 +17,7 @@ Tetrimino({{},{},{},{}}, Symmetry::None, 0)
 
 bool Tetrimino::operator==(const Tetrimino& other) const
 {
-    return this->EqualityRecursion<TETRIMINO_WIDTH*TETRIMINO_WIDTH-1>(other);
+    return this->GetHash() == other.GetHash();
 }
 
 Tetrimino::Symmetry Tetrimino::GetSymmetry() const
@@ -101,12 +101,6 @@ template<>
 void Tetrimino::HashRecursion<0>(Hash& hash) const
 {
     this->AssignBit<0>(hash);
-}
-
-template<>
-bool Tetrimino::EqualityRecursion<0>(const Tetrimino& other) const
-{
-    return this->CheckEquality<0>(other);
 }
 
 Tetrimino Tetrimino::Make(const Tetrimino::Type& type, const int& rotation)

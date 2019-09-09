@@ -10,41 +10,27 @@ protected:
     // void TearDown() override {}
 };
 
-TEST_F(GameTest, Init)
-{
-    ASSERT_NE(&this->board, nullptr);
-    ASSERT_NE(this->currentPiece, nullptr);
-    ASSERT_NE(this->nextPiece, nullptr);
-}
-
-TEST_F(GameTest, NewPiece)
-{
-    Tetrimino p = *this->nextPiece;
-    this->AddNewPiece();
-    ASSERT_EQ(*this->currentPiece, p);
-}
-
 
 TEST_F(GameTest, SameState)
 {
-    Tetrimino t = Tetrimino::Make(Tetrimino::Type::Square, 0);
-    size_t hash_ref = t.GetHash();
-    *this->currentPiece = t;
+    const Tetrimino* t = this->state.GetCurrentPiece();
+    size_t hash_ref = t->GetHash();
     this->GetPossibleActions();
-    ASSERT_EQ(t.GetHash(), hash_ref);
+    ASSERT_EQ(t->GetHash(), hash_ref);
 }
 
 TEST_F(GameTest, ActionGeneration)
 {
-    Tetrimino t = Tetrimino::Make(Tetrimino::Type::Square, 0);
+    const Tetrimino* t = this->state.GetCurrentPiece();
     ASSERT_EQ(this->actionsRegistry.size(), 0);
-    *this->currentPiece = t;
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
-    t.Rotate();
-    *this->currentPiece = t;
+    while (*t == *this->state.GetCurrentPiece())
+    {
+        this->state.moves.at(Moves::Advance)();
+    }
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 2);
 }
@@ -53,7 +39,8 @@ TEST(NonRandomGameTest, PlaySequence)
 {
     if (Board::Width == 10)
     {
-        Game game(false);
+        SetRandom(false);
+        Game game;
         ASSERT_EQ(game.GetScore(), 0);
         // moves represented by console input:
         // jjjjmillllmlmiijmijjjjjmimlmlmijmiillllmiiilllmijjjm

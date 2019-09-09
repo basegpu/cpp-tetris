@@ -104,19 +104,6 @@ private:
     }
 
     template<int INDEX>
-    bool EqualityRecursion(const Tetrimino& other) const
-    {
-        if (this->CheckEquality<INDEX>(other))
-        {
-            return this->CheckEquality<INDEX-1>(other);
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    template<int INDEX>
     void DoAssetInitialization(const unsigned char (&shape)[TETRIMINO_WIDTH][TETRIMINO_WIDTH], const int& rotation)
     {
         // row and column indices
@@ -165,15 +152,6 @@ private:
         {
             hash.set(INDEX);
         }
-    }
-
-    template<int INDEX>
-    bool CheckEquality(const Tetrimino& other) const
-    {
-        // row and column indices
-        int row, col;
-        this->Transform2RowCol<INDEX>(row, col);
-        return (this->shapes[this->rotationState][row][col] == other.GetShape(row, col));
     }
 
     template<int INDEX>

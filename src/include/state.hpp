@@ -11,11 +11,12 @@ class State
 {
 public:
     State();
+    State(const State& other);
     virtual ~State() {;}
 
     const Tetrimino* GetCurrentPiece() const;
     const Tetrimino* GetNextPiece() const;
-    const Position& GetCurrentPosition()const;
+    const Position& GetPosition()const;
     const Board& GetBoard() const;
 
     // map from moves to functions
@@ -26,7 +27,7 @@ public:
 protected:
     Board board;
     // the position of current piece
-    Position currentPosition;
+    Position position;
     // two pieces (one falling down and the next one)
     Tetrimino pieces[2];
     // pointer of current piece

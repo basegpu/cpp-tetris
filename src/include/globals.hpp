@@ -49,5 +49,10 @@ inline int GetRand(const int& pA, const int& pB)
 {
     return std::rand() % (pB - pA + 1) + pA;
 }
+inline void SetRandom(const bool& isRandom)
+{
+    unsigned int seed = isRandom ? (unsigned int) time(NULL) : 1;
+    srand(seed);
+}
 
 #endif
