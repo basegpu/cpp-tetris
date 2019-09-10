@@ -18,14 +18,16 @@ public:
 private:
     static const std::unordered_map<char, Moves> commands;
     bool isRandom;
+    bool showBoard;
     bool autoPlay;
     bool bestPlay;
+    int sleepTime;
     std::string initSequence;
     Game* game;
 
     static const std::string PrintUsage();
     void ParseCommandLine(int argc, char* argv[]);
-    void ViewGame(const bool& withUsage) const;
+    void ViewGame() const;
 };
 
 #endif

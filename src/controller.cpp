@@ -31,10 +31,6 @@ const std::string Controller::PrintUsage()
 }
 
 Controller::Controller() :
-    isRandom(true),
-    autoPlay(false),
-    bestPlay(false),
-    initSequence(""),
     game(nullptr)
 {
     ;
@@ -76,16 +72,18 @@ void Controller::RunGame()
     char M;
     while (this->game->On())
     {
+        if (this->showBoard)
+        {
+            this->ViewGame();
+        }
         if (this->autoPlay || this->bestPlay)
         {
-            this->ViewGame(false);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::chrono::milliseconds pause(this->sleepTime);
+            std::this_thread::sleep_for(pause);
             this->game->SelfPlay(this->bestPlay);
-            //std::this_thread::sleep_for(std::chrono::milliseconds(500));
         }
         else
         {
-            this->ViewGame(true);
             // read key
             std::cin >> M;
             // try to make a move
@@ -104,13 +102,17 @@ void Controller::ParseCommandLine(int argc, char* argv[])
     {
         TCLAP::CmdLine cmd("This is a tetris game engine", ' ', "0.9");
         TCLAP::ValueArg<std::string> sequenceArg("s", "sequence", "play sequence of commands initially", false, "", "string", cmd);
+        TCLAP::ValueArg<int> sleepArg("p", "pause", "sleeping time in milli seconds between moves", false, 100, "int", cmd);
         TCLAP::SwitchArg reproArg("r", "reproducible", "non-random, reproducible game", cmd, false);
         TCLAP::SwitchArg autoArg("a", "auto", "auto-play mode", cmd, false);
         TCLAP::SwitchArg bestArg("b", "best", "best-play mode", cmd, false);
+        TCLAP::SwitchArg quietArg("q", "quiet", "don't show the board after each move", cmd, false);
         cmd.parse(argc, argv);
         // Get the value parsed by each arg.
         this->initSequence = sequenceArg.getValue();
+        this->sleepTime = sleepArg.getValue();
         this->isRandom = !reproArg.getValue();
+        this->showBoard = !quietArg.getValue();
         this->autoPlay = autoArg.getValue();
         this->bestPlay = bestArg.getValue();
     }
@@ -120,12 +122,12 @@ void Controller::ParseCommandLine(int argc, char* argv[])
     }
 }
 
-void Controller::ViewGame(const bool& withUsage) const
+void Controller::ViewGame() const
 {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
     std::cout << "\x1B[2J\x1B[H";
     std::cout << Viewer::Print(*this->game);
-    if (withUsage)
+    if (!this->autoPlay && !this->bestPlay)
     {
         std::cout << std::endl << this->PrintUsage();
     }
