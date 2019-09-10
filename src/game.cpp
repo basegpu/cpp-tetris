@@ -65,14 +65,14 @@ void Game::PlayBest()
         State tempState = this->state;
         int nLines = this->PlaySequence(a, tempState);
         // evaluation
-        int v = 10 * nLines
-                - tempState.GetBoard().GetHoles()
-                - tempState.GetBoard().GetMaxLevel()
-                - tempState.GetBoard().GetMinMaxLevel();
+        int v = 76 * nLines
+                - 35 * tempState.GetBoard().GetHoles()
+                - 51 * tempState.GetBoard().GetAggregateLevel()
+                - 18 * tempState.GetBoard().GetBumpiness();
         values.push_back(v);
     }
     int bestAction = std::max_element(values.begin(), values.end()) - values.begin();
-    this->PlaySequence(this->GetPossibleActions().at(bestAction), this->state);
+    this->score += this->PlaySequence(this->GetPossibleActions().at(bestAction), this->state);
 }
 
 int Game::MakeMove(const Moves& move, State& onState)

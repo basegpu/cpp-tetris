@@ -24,8 +24,8 @@ std::string Viewer::Rewards(const Game& game)
 {
     std::ostringstream out;
     out << "holes: " << game.state.board.GetHoles();
-    out << ", max: " << game.state.board.GetMaxLevel();
-    out << ", min-max: " << game.state.board.GetMinMaxLevel();
+    out << ", avg.level: " << game.state.board.GetAggregateLevel();
+    out << ", bumpiness: " << game.state.board.GetBumpiness();
     return out.str();
 }
 

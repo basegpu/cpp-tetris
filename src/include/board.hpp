@@ -18,8 +18,8 @@ public:
     bool IsPossibleMove(const Tetrimino& tetrimino, const int& pX, const int& pY) const;
     int CountFilledBlocks() const;
     int GetHoles() const;
-    int GetMaxLevel() const;
-    int GetMinMaxLevel() const;
+    int GetAggregateLevel() const;
+    int GetBumpiness() const;
     bool IsFreeBlock(const int& pX, const int& pY) const;
     int DeletePossibleLines();
     bool IsGameOver() const;
@@ -33,7 +33,7 @@ protected:
     };
 
     Block mBoard[BOARD_WIDTH][BOARD_HEIGHT]; // Board that contains the pieces
-    int stats[3]; // nHoles, max level, min-max level
+    int stats[3]; // nHoles, aggregate level, bumpiness
 
     void CalcStatistics();
     void DeleteLine(const int& pY);

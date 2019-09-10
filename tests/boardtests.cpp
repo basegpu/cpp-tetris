@@ -88,8 +88,8 @@ TEST_F(BoardTest, InitStats)
 {
     this->Reset();
     ASSERT_EQ(this->GetHoles(), 0);
-    ASSERT_EQ(this->GetMaxLevel(), 0);
-    ASSERT_EQ(this->GetMinMaxLevel(), 0);
+    ASSERT_EQ(this->GetAggregateLevel(), 0);
+    ASSERT_EQ(this->GetBumpiness(), 0);
 }
 
 TEST_F(BoardTest, SingleHoles)
@@ -127,10 +127,10 @@ TEST_F(BoardTest, MaxLevel)
     this->Reset();
     this->AddTetrimino(this->line90, 0, Board::Height - 3);
     this->CalcStatistics();
-    ASSERT_EQ(this->GetMaxLevel(), 1);
+    ASSERT_EQ(this->GetAggregateLevel(), 4);
     this->AddTetrimino(this->line0, 0, Board::Height - 5);
     this->CalcStatistics();
-    ASSERT_EQ(this->GetMaxLevel(), 5);
+    ASSERT_EQ(this->GetAggregateLevel(), 8);
 }
 
 TEST_F(BoardTest, MinMaxLevelSimple)
@@ -138,10 +138,10 @@ TEST_F(BoardTest, MinMaxLevelSimple)
     this->Reset();
     this->AddTetrimino(this->line0, -2, Board::Height - 4);
     this->CalcStatistics();
-    ASSERT_EQ(this->GetMinMaxLevel(), 4);
+    ASSERT_EQ(this->GetBumpiness(), 4);
     this->AddTetrimino(this->line90, Board::Width - 4, Board::Height - 3);
     this->CalcStatistics();
-    ASSERT_EQ(this->GetMinMaxLevel(), 4);
+    ASSERT_EQ(this->GetBumpiness(), 5);
 }
 
 TEST_F(BoardTest, MinMaxLevel)
@@ -155,7 +155,7 @@ TEST_F(BoardTest, MinMaxLevel)
         this->AddTetrimino(this->line90, 2, Board::Height - 5);
         this->CalcStatistics();
         //TETRIS_MESSAGE(this->Print());
-        ASSERT_EQ(this->GetMinMaxLevel(), 3);
+        ASSERT_EQ(this->GetBumpiness(), 3);
     }
     else
     {

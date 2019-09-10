@@ -84,12 +84,12 @@ int Board::GetHoles() const
     return this->stats[0];
 }
 
-int Board::GetMaxLevel() const
+int Board::GetAggregateLevel() const
 {
     return this->stats[1];
 }
 
-int Board::GetMinMaxLevel() const
+int Board::GetBumpiness() const
 {
     return this->stats[2];
 }
@@ -186,16 +186,18 @@ void Board::CalcStatistics()
         return true;
     };
     this->LoopOverBoard(func);
-    int min = BOARD_HEIGHT;
-    int max = 0;
+    int aLevel = 0, bumpiness = 0;
     for (int ii = 0; ii < BOARD_WIDTH; ii++)
     {
-        min = std::min(min, minLevels[ii]);
-        max = std::max(max, minLevels[ii]);
+        aLevel += BOARD_HEIGHT - minLevels[ii];
+        if (ii > 0)
+        {
+            bumpiness += abs(minLevels[ii] - minLevels[ii-1]);
+        }
     }
     this->stats[0] = nHoles;
-    this->stats[1] = BOARD_HEIGHT - min;
-    this->stats[2] = max - min;
+    this->stats[1] = aLevel;
+    this->stats[2] = bumpiness;
 }
 
 void Board::DeleteLine(const int& pY)
