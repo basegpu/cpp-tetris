@@ -22,11 +22,13 @@ private:
     bool autoPlay;
     bool bestPlay;
     int sleepTime;
+    int nGames;
     std::string initSequence;
     Game* game;
 
     static const std::string PrintUsage();
     void ParseCommandLine(int argc, char* argv[]);
+    void RunGameOnce();
     void ViewGame() const;
 };
 

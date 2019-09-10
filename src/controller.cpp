@@ -9,6 +9,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <cmath>
 
 
 const std::unordered_map<char, Moves> Controller::commands = {
@@ -68,6 +69,52 @@ void Controller::CreateGame(int argc, char* argv[])
 
 void Controller::RunGame()
 {
+    int count = 0, totalScore = 0, totalScore2 = 0;
+    while (count++ < this->nGames)
+    {
+        this->RunGameOnce();
+        totalScore += this->game->GetScore();
+        totalScore2 += pow(this->game->GetScore(),2);
+    }
+    double stdev = 0.0;
+    if (this->nGames > 1)
+    {
+        stdev = sqrt((this->nGames * totalScore2 - pow(totalScore, 2))/(this->nGames * (this->nGames - 1)));
+    }
+    TETRIS_MESSAGE("total score achieved: " << (double)totalScore/this->nGames << " (" << stdev << ")");
+}
+
+void Controller::ParseCommandLine(int argc, char* argv[])
+{
+    try
+    {
+        TCLAP::CmdLine cmd("This is a tetris game engine", ' ', "0.9");
+        TCLAP::ValueArg<std::string> sequenceArg("s", "sequence", "play sequence of commands initially", false, "", "string", cmd);
+        TCLAP::ValueArg<int> sleepArg("p", "pause", "sleeping time in milli seconds between moves", false, 100, "int", cmd);
+        TCLAP::ValueArg<int> nArg("n", "number", "number of games to be played", false, 1, "int", cmd);
+        TCLAP::SwitchArg reproArg("r", "reproducible", "non-random, reproducible game", cmd, false);
+        TCLAP::SwitchArg autoArg("a", "auto", "auto-play mode", cmd, false);
+        TCLAP::SwitchArg bestArg("b", "best", "best-play mode", cmd, false);
+        TCLAP::SwitchArg quietArg("q", "quiet", "don't show the board after each move", cmd, false);
+        cmd.parse(argc, argv);
+        // Get the value parsed by each arg.
+        this->initSequence = sequenceArg.getValue();
+        this->sleepTime = sleepArg.getValue();
+        this->nGames = nArg.getValue();
+        this->isRandom = !reproArg.getValue();
+        this->showBoard = !quietArg.getValue();
+        this->autoPlay = autoArg.getValue();
+        this->bestPlay = bestArg.getValue();
+    }
+    catch (TCLAP::ArgException &e)
+    {
+        TETRIS_ERROR(e.error() << " for arg " << e.argId());
+    }
+}
+
+void Controller::RunGameOnce()
+{
+    //this->game->Reset();
     // process user input
     char M;
     while (this->game->On())
@@ -93,33 +140,6 @@ void Controller::RunGame()
             }
             catch (...) {} // bad key
         }
-    }
-    TETRIS_MESSAGE("total score achieved: " << this->game->GetScore());
-}
-
-void Controller::ParseCommandLine(int argc, char* argv[])
-{
-    try
-    {
-        TCLAP::CmdLine cmd("This is a tetris game engine", ' ', "0.9");
-        TCLAP::ValueArg<std::string> sequenceArg("s", "sequence", "play sequence of commands initially", false, "", "string", cmd);
-        TCLAP::ValueArg<int> sleepArg("p", "pause", "sleeping time in milli seconds between moves", false, 100, "int", cmd);
-        TCLAP::SwitchArg reproArg("r", "reproducible", "non-random, reproducible game", cmd, false);
-        TCLAP::SwitchArg autoArg("a", "auto", "auto-play mode", cmd, false);
-        TCLAP::SwitchArg bestArg("b", "best", "best-play mode", cmd, false);
-        TCLAP::SwitchArg quietArg("q", "quiet", "don't show the board after each move", cmd, false);
-        cmd.parse(argc, argv);
-        // Get the value parsed by each arg.
-        this->initSequence = sequenceArg.getValue();
-        this->sleepTime = sleepArg.getValue();
-        this->isRandom = !reproArg.getValue();
-        this->showBoard = !quietArg.getValue();
-        this->autoPlay = autoArg.getValue();
-        this->bestPlay = bestArg.getValue();
-    }
-    catch (TCLAP::ArgException &e)
-    {
-        TETRIS_ERROR(e.error() << " for arg " << e.argId());
     }
 }
 

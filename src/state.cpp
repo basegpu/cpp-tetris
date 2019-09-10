@@ -7,12 +7,10 @@
 
 State::State()
 {
+    // init the board
+    this->board = Board();
     // init the moves
-    this->moves[Moves::Rotate] = std::bind(&State::Rotate, this);
-    this->moves[Moves::Left] = std::bind(&State::MoveLeft, this);
-    this->moves[Moves::Right] = std::bind(&State::MoveRight, this);
-    this->moves[Moves::Down] = std::bind(&State::MoveDown, this);
-    this->moves[Moves::Advance] = std::bind(&State::Advance, this);
+    this->InitializeMoves();
     // init the pieces
     this->currentPiece = &this->pieces[0];
     this->pieces[1] = this->CreatePiece();
@@ -25,11 +23,7 @@ State::State(const State& other)
     // copy the board
     this->board = other.board;
     // init the moves
-    this->moves[Moves::Rotate] = std::bind(&State::Rotate, this);
-    this->moves[Moves::Left] = std::bind(&State::MoveLeft, this);
-    this->moves[Moves::Right] = std::bind(&State::MoveRight, this);
-    this->moves[Moves::Down] = std::bind(&State::MoveDown, this);
-    this->moves[Moves::Advance] = std::bind(&State::Advance, this);
+    this->InitializeMoves();
     // init the pieces
     this->position = other.position;
     this->pieces[0] = other.pieces[0];
@@ -164,4 +158,13 @@ Tetrimino State::CreatePiece() const
     int p = GetRand(0, Tetrimino::NumberOfTypes - 1);
     int rotation = GetRand(0, Tetrimino::NumberOfRotations - 1);
     return Tetrimino::Make(static_cast<Tetrimino::Type>(p), rotation);
+}
+
+void State::InitializeMoves()
+{
+    this->moves[Moves::Rotate] = std::bind(&State::Rotate, this);
+    this->moves[Moves::Left] = std::bind(&State::MoveLeft, this);
+    this->moves[Moves::Right] = std::bind(&State::MoveRight, this);
+    this->moves[Moves::Down] = std::bind(&State::MoveDown, this);
+    this->moves[Moves::Advance] = std::bind(&State::Advance, this);
 }

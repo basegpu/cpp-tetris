@@ -43,6 +43,9 @@ protected:
 
     void AddNewPiece();
     Tetrimino CreatePiece() const;
+
+private:
+    void InitializeMoves();
 };
 
 #endif // STATE_H
