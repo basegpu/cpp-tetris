@@ -22,6 +22,7 @@ public:
     void MakeMove(const Moves& move);
     void PlaySequence(const Action& seq);
     void SelfPlay(const bool& withStrategy);
+    void Reset();
 
     friend class Viewer;
 

@@ -75,6 +75,13 @@ void Game::PlayBest()
     this->score += this->PlaySequence(this->GetPossibleActions().at(bestAction), this->state);
 }
 
+void Game::Reset()
+{
+    this->gameIsOn = true;
+    this->score = 0;
+    this->state = State();
+}
+
 int Game::MakeMove(const Moves& move, State& onState)
 {
     int out = onState.moves.at(move)();

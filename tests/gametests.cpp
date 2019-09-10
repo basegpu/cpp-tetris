@@ -35,6 +35,17 @@ TEST_F(GameTest, ActionGeneration)
     ASSERT_EQ(this->actionsRegistry.size(), 2);
 }
 
+TEST_F(GameTest, Reset)
+{
+    this->GetPossibleActions();
+    ASSERT_EQ(this->actionsRegistry.size(), 1);
+    this->state.moves.at(Moves::Advance)();
+    ASSERT_TRUE(this->state.GetBoard().CountFilledBlocks() > 0);
+    this->Reset();
+    ASSERT_EQ(this->actionsRegistry.size(), 1);
+    ASSERT_EQ(this->state.GetBoard().CountFilledBlocks(), 0);
+}
+
 TEST(NonRandomGameTest, PlaySequence)
 {
     if (Board::Width == 10)

@@ -1,11 +1,19 @@
 #include "controller.hpp"
-#include <iostream>
+#include <exception>
 
 
 int main(int argc, char* argv[])
 {
-    Controller c;
-    c.CreateGame(argc, argv);
-    c.RunGame();
-    return 1;
+    try
+    {
+        Controller c;
+        c.CreateGame(argc, argv);
+        c.RunGame();
+    }
+    catch (const std::exception& e)
+    {
+        TETRIS_ERROR("something went wrong: " << e.what())
+        return 1;
+    }
+    return 0;
 }

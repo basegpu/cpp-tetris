@@ -94,6 +94,7 @@ void Controller::RunGame()
             catch (...) {} // bad key
         }
     }
+    TETRIS_MESSAGE("total score achieved: " << this->game->GetScore());
 }
 
 void Controller::ParseCommandLine(int argc, char* argv[])
