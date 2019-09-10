@@ -11,7 +11,7 @@ class Actions : public std::vector<const Action>
 public:
     static Actions CreateFor(Tetrimino& tetrimino, const Position& position)
     {
-        TETRIS_MESSAGE("creating new actions for tetrimino <" << tetrimino.GetHash() << ">");
+        //TETRIS_MESSAGE("creating new actions for tetrimino <" << tetrimino.GetHash() << ">");
         // check th possible enumber of rotations
         int nRot;
         switch (tetrimino.GetSymmetry())

@@ -65,10 +65,13 @@ void Game::PlayBest()
         State tempState = this->state;
         int nLines = this->PlaySequence(a, tempState);
         // evaluation
-        values.push_back(nLines*10 - tempState.GetBoard().GetHoles());
+        int v = 10 * nLines
+                - tempState.GetBoard().GetHoles()
+                - tempState.GetBoard().GetMaxLevel()
+                - tempState.GetBoard().GetMinMaxLevel();
+        values.push_back(v);
     }
     int bestAction = std::max_element(values.begin(), values.end()) - values.begin();
-    TETRIS_MESSAGE("best action: " << bestAction);
     this->PlaySequence(this->GetPossibleActions().at(bestAction), this->state);
 }
 

@@ -22,6 +22,8 @@ State::State()
 
 State::State(const State& other)
 {
+    // copy the board
+    this->board = other.board;
     // init the moves
     this->moves[Moves::Rotate] = std::bind(&State::Rotate, this);
     this->moves[Moves::Left] = std::bind(&State::MoveLeft, this);

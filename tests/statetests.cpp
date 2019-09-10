@@ -27,12 +27,16 @@ TEST_F(StateTest, NewPiece)
 
 TEST_F(StateTest, CopyState)
 {
+    this->Advance();
     State copy = static_cast<State>(*this);
     ASSERT_NE(&copy, this);
+    ASSERT_NE(&copy.GetBoard(), &this->GetBoard());
+    ASSERT_EQ(copy.GetBoard().CountFilledBlocks(), this->GetBoard().CountFilledBlocks());
     ASSERT_NE(copy.GetCurrentPiece(), this->GetCurrentPiece());
     ASSERT_NE(copy.GetNextPiece(), this->GetNextPiece());
     ASSERT_TRUE(*copy.GetCurrentPiece() == *this->GetCurrentPiece());
-    this->AddNewPiece();
+    this->Advance();
+    ASSERT_NE(copy.GetBoard().CountFilledBlocks(), this->GetBoard().CountFilledBlocks());
     ASSERT_TRUE(*copy.GetNextPiece() == *this->GetCurrentPiece());
     const bool equal = this->currentPiece == this->nextPiece;
     ASSERT_TRUE(equal == (*copy.GetCurrentPiece() == *this->GetCurrentPiece()));
