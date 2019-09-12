@@ -23,6 +23,7 @@ public:
     void PlaySequence(const Action& seq);
     void SelfPlay(const bool& withStrategy);
     void Reset();
+    void Print() const;
 
     friend class Viewer;
 

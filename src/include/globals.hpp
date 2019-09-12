@@ -24,8 +24,14 @@ static_assert(VIEWER_WIDTH >= BOARD_WIDTH+2,
 
 // some debugging utilities
 #include <iostream>
+#include <sstream>
 #define TETRIS_MESSAGE(msg) {std::cout << "Tetris> " << msg << std::endl;}
 #define TETRIS_ERROR(msg) {std::cerr << "Tetris - error> " << msg << std::endl;}
+#define TETRIS_TRACE() { \
+    std::ostringstream _sout; \
+    _sout << "in file: " << __FILE__ << " on line " << __LINE__; \
+    TETRIS_MESSAGE(_sout.str()) \
+}
 
 // some typdefs
 #include <vector>

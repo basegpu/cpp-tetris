@@ -114,14 +114,16 @@ void Controller::ParseCommandLine(int argc, char* argv[])
 
 void Controller::RunGameOnce()
 {
-    //this->game->Reset();
+    this->game->Print();
+    this->game->Reset();
+    this->game->Print();
     // process user input
     char M;
     while (this->game->On())
     {
         if (this->showBoard)
         {
-            this->ViewGame();
+            this->ViewGame(false);
         }
         if (this->autoPlay || this->bestPlay)
         {
@@ -136,17 +138,22 @@ void Controller::RunGameOnce()
             // try to make a move
             try
             {
+                TETRIS_TRACE()
                 this->game->MakeMove(commands.at(M));
+                TETRIS_TRACE()
             }
             catch (...) {} // bad key
         }
     }
 }
 
-void Controller::ViewGame() const
+void Controller::ViewGame(const bool& clean) const
 {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
-    std::cout << "\x1B[2J\x1B[H";
+    if (clean)
+    {
+        std::cout << "\x1B[2J\x1B[H";
+    }
     std::cout << Viewer::Print(*this->game);
     if (!this->autoPlay && !this->bestPlay)
     {

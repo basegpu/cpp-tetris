@@ -42,3 +42,20 @@ TEST_F(StateTest, CopyState)
     ASSERT_TRUE(equal == (*copy.GetCurrentPiece() == *this->GetCurrentPiece()));
 }
 
+TEST_F(StateTest, NewState)
+{
+    this->Advance();
+    ASSERT_TRUE(this->GetBoard().CountFilledBlocks() > 0);
+    this->Print();
+    State state;
+    state.Print();
+    state.MakeMove(Moves::Down);
+    ASSERT_EQ(state.GetBoard().CountFilledBlocks(), 0);
+    ASSERT_NE(this->GetCurrentPiece(), state.GetCurrentPiece());
+    ASSERT_NE(state.GetCurrentPiece(), nullptr);
+    ASSERT_NE(state.GetNextPiece(), nullptr);
+    state.MakeMove(Moves::Advance);
+    state.Print();
+    ASSERT_TRUE(state.GetBoard().CountFilledBlocks() > 0);
+}
+

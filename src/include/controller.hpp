@@ -29,7 +29,7 @@ private:
     static const std::string PrintUsage();
     void ParseCommandLine(int argc, char* argv[]);
     void RunGameOnce();
-    void ViewGame() const;
+    void ViewGame(const bool& clear) const;
 };
 
 #endif

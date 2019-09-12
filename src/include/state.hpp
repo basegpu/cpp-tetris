@@ -18,9 +18,8 @@ public:
     const Tetrimino* GetNextPiece() const;
     const Position& GetPosition()const;
     const Board& GetBoard() const;
-
-    // map from moves to functions
-    std::unordered_map<Moves, std::function<int()>> moves;
+    int MakeMove(const Moves&);
+    void Print() const;
 
     friend class Viewer;
 
@@ -45,6 +44,8 @@ protected:
     Tetrimino CreatePiece() const;
 
 private:
+    // map from moves to functions
+    std::unordered_map<Moves, std::function<int()>> moves;
     void InitializeMoves();
 };
 

@@ -7,8 +7,6 @@
 
 State::State()
 {
-    // init the board
-    this->board = Board();
     // init the moves
     this->InitializeMoves();
     // init the pieces
@@ -20,10 +18,10 @@ State::State()
 
 State::State(const State& other)
 {
-    // copy the board
-    this->board = other.board;
     // init the moves
     this->InitializeMoves();
+    // copy the board
+    this->board = other.board;
     // init the pieces
     this->position = other.position;
     this->pieces[0] = other.pieces[0];
@@ -60,8 +58,22 @@ const Board& State::GetBoard() const
     return this->board;
 }
 
+int State::MakeMove(const Moves& m)
+{
+    return this->moves.at(m)();
+}
+
+void State::Print() const
+{
+    std::cout << this->board.Print() << std::endl;
+    std::cout << "Position: " << this->position.row << "/" << this->position.col << std::endl;
+    std::cout << "current: " << this->currentPiece << "(" << this->currentPiece->GetHash() << ")" << std::endl;
+    std::cout << "next: " << this->nextPiece << "(" << this->nextPiece->GetHash() << ")" << std::endl;
+}
+
 int State::MoveDown()
 {
+    TETRIS_TRACE()
     if (this->board.IsPossibleMove(
         *this->currentPiece,
         this->position.col,
@@ -167,4 +179,4 @@ void State::InitializeMoves()
     this->moves[Moves::Right] = std::bind(&State::MoveRight, this);
     this->moves[Moves::Down] = std::bind(&State::MoveDown, this);
     this->moves[Moves::Advance] = std::bind(&State::Advance, this);
-}
+ }

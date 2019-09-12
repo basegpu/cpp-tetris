@@ -204,7 +204,17 @@ TEST_F(BoardTest, PossibleMoves)
     }
 }
 
-TEST(MiscBoardTest, Copy)
+TEST(MiscBoardTest, NewBoard)
+{
+    Tetrimino line90 = Tetrimino::Make(Tetrimino::Type::Line, 1);
+    Board board;
+    board.AddTetrimino(line90, 0, Board::Height - 3);
+    ASSERT_EQ(board.CountFilledBlocks(), 4);
+    board = Board();
+    ASSERT_EQ(board.CountFilledBlocks(), 0);
+}
+
+TEST(MiscBoardTest, CopyBoard)
 {
     Tetrimino line90 = Tetrimino::Make(Tetrimino::Type::Line, 1);
     Board board;

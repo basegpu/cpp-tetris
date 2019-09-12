@@ -82,9 +82,14 @@ void Game::Reset()
     this->state = State();
 }
 
+void Game::Print() const
+{
+    this->state.Print();
+}
+
 int Game::MakeMove(const Moves& move, State& onState)
 {
-    int out = onState.moves.at(move)();
+    int out = onState.MakeMove(move);
     if (out < 0)
     {
         this->gameIsOn = false;

@@ -29,7 +29,7 @@ TEST_F(GameTest, ActionGeneration)
     ASSERT_EQ(this->actionsRegistry.size(), 1);
     while (*t == *this->state.GetCurrentPiece())
     {
-        this->state.moves.at(Moves::Advance)();
+        this->state.MakeMove(Moves::Advance);
     }
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 2);
@@ -39,7 +39,7 @@ TEST_F(GameTest, Reset)
 {
     this->GetPossibleActions();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
-    this->state.moves.at(Moves::Advance)();
+    this->state.MakeMove(Moves::Advance);
     ASSERT_TRUE(this->state.GetBoard().CountFilledBlocks() > 0);
     this->Reset();
     ASSERT_EQ(this->actionsRegistry.size(), 1);
