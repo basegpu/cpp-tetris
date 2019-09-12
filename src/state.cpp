@@ -63,11 +63,23 @@ int State::MakeMove(const Moves& m)
     return this->moves.at(m)();
 }
 
+void State::Reset()
+{
+    this->board = Board();
+    // init the pieces
+    this->currentPiece = &this->pieces[0];
+    this->pieces[1] = this->CreatePiece();
+    this->nextPiece = &this->pieces[1];
+    this->AddNewPiece();
+}
+
 void State::Print() const
 {
     std::cout << this->board.Print() << std::endl;
     std::cout << "Position: " << this->position.row << "/" << this->position.col << std::endl;
+    TETRIS_TRACE()
     std::cout << "current: " << this->currentPiece << "(" << this->currentPiece->GetHash() << ")" << std::endl;
+    TETRIS_TRACE()
     std::cout << "next: " << this->nextPiece << "(" << this->nextPiece->GetHash() << ")" << std::endl;
 }
 

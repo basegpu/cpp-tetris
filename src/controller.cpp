@@ -114,16 +114,14 @@ void Controller::ParseCommandLine(int argc, char* argv[])
 
 void Controller::RunGameOnce()
 {
-    this->game->Print();
     this->game->Reset();
-    this->game->Print();
     // process user input
     char M;
     while (this->game->On())
     {
         if (this->showBoard)
         {
-            this->ViewGame(false);
+            this->ViewGame(true);
         }
         if (this->autoPlay || this->bestPlay)
         {

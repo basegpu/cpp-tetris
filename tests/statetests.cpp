@@ -25,7 +25,7 @@ TEST_F(StateTest, NewPiece)
     ASSERT_EQ(*this->GetCurrentPiece(), p);
 }
 
-TEST_F(StateTest, CopyState)
+TEST_F(StateTest, CopyConstructor)
 {
     this->Advance();
     State copy = static_cast<State>(*this);
@@ -45,17 +45,21 @@ TEST_F(StateTest, CopyState)
 TEST_F(StateTest, NewState)
 {
     this->Advance();
-    ASSERT_TRUE(this->GetBoard().CountFilledBlocks() > 0);
-    this->Print();
+    ASSERT_TRUE(this->GetBoard().CountFilledBlocks() >= 4);
     State state;
-    state.Print();
-    state.MakeMove(Moves::Down);
     ASSERT_EQ(state.GetBoard().CountFilledBlocks(), 0);
     ASSERT_NE(this->GetCurrentPiece(), state.GetCurrentPiece());
     ASSERT_NE(state.GetCurrentPiece(), nullptr);
     ASSERT_NE(state.GetNextPiece(), nullptr);
     state.MakeMove(Moves::Advance);
-    state.Print();
-    ASSERT_TRUE(state.GetBoard().CountFilledBlocks() > 0);
+    ASSERT_TRUE(state.GetBoard().CountFilledBlocks() >= 4);
+}
+
+TEST_F(StateTest, Reset)
+{
+    this->Advance();
+    ASSERT_TRUE(this->GetBoard().CountFilledBlocks() >= 4);
+    this->Reset();
+    ASSERT_EQ(this->GetBoard().CountFilledBlocks(), 0);
 }
 

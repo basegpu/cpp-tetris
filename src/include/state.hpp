@@ -19,6 +19,7 @@ public:
     const Position& GetPosition()const;
     const Board& GetBoard() const;
     int MakeMove(const Moves&);
+    void Reset();
     void Print() const;
 
     friend class Viewer;

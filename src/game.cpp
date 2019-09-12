@@ -79,7 +79,7 @@ void Game::Reset()
 {
     this->gameIsOn = true;
     this->score = 0;
-    this->state = State();
+    this->state.Reset();
 }
 
 void Game::Print() const
