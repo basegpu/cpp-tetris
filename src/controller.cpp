@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "controller.hpp"
 #include "viewer.hpp"
+#include "monitor.hpp"
 #include <tclap/CmdLine.h>
 #include <iostream>
 #include <sstream>
@@ -11,6 +12,7 @@
 #include <thread>
 #include <cmath>
 
+using namespace std::chrono;
 
 const std::unordered_map<char, Moves> Controller::commands = {
     {'m', Moves::Advance},
@@ -69,19 +71,28 @@ void Controller::CreateGame(int argc, char* argv[])
 
 void Controller::RunGame()
 {
-    int count = 0, totalScore = 0, totalScore2 = 0;
+    Monitor m;
+    high_resolution_clock::time_point t_start, t_end;
+    double t_spent;
+    int count = 0;
     while (count++ < this->nGames)
     {
+        t_start = high_resolution_clock::now();
         this->RunGameOnce();
-        totalScore += this->game->GetScore();
-        totalScore2 += pow(this->game->GetScore(),2);
+        t_end = high_resolution_clock::now();
+        t_spent = duration_cast<duration<double>>(t_end - t_start).count();
+        m.AddOutput(
+            this->game->GetScore(),
+            t_spent/this->game->GetScore());
+        // totalScore += this->game->GetScore();
+        // totalScore2 += pow(this->game->GetScore(),2);
     }
-    double stdev = 0.0;
-    if (this->nGames > 1)
-    {
-        stdev = sqrt((this->nGames * totalScore2 - pow(totalScore, 2))/(this->nGames * (this->nGames - 1)));
-    }
-    TETRIS_MESSAGE("total score achieved: " << (double)totalScore/this->nGames << " (" << stdev << ")");
+    // double stdev = 0.0;
+    // if (this->nGames > 1)
+    // {
+    //     stdev = sqrt((this->nGames * totalScore2 - pow(totalScore, 2))/(this->nGames * (this->nGames - 1)));
+    // }
+    // TETRIS_MESSAGE("total score achieved: " << (double)totalScore/this->nGames << " (" << stdev << ")");
 }
 
 void Controller::ParseCommandLine(int argc, char* argv[])
