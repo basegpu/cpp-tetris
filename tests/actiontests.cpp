@@ -6,7 +6,7 @@
 
 
 class ActionsTest :
-    public ::testing::Test
+    public ::testing::Test, public Actions
 {
 protected:
 
@@ -74,4 +74,26 @@ TEST_F(ActionsTest, LeftChairActions)
 {
     this->Init(Tetrimino::Type::LeftChair);
     this->Check({3, 2});
+}
+
+TEST_F(ActionsTest, ConstTetrimino)
+{
+    this->Init(Tetrimino::Type::Square);
+    size_t hash_ref = this->t.GetHash();
+    this->GetPossibleActions(this->t, {0, 0});
+    ASSERT_EQ(t.GetHash(), hash_ref);
+}
+
+TEST_F(ActionsTest, ActionGeneration)
+{
+    this->Registry.clear();
+    this->Init(Tetrimino::Type::Square);
+    ASSERT_EQ(this->Registry.size(), 0);
+    this->GetPossibleActions(this->t, {0, 0});
+    ASSERT_EQ(this->Registry.size(), 1);
+    this->GetPossibleActions(this->t, {0, 0});
+    ASSERT_EQ(this->Registry.size(), 1);
+    this->Init(Tetrimino::Type::Line);
+    this->GetPossibleActions(this->t, {0, 0});
+    ASSERT_EQ(this->Registry.size(), 2);
 }

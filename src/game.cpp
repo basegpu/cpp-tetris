@@ -52,15 +52,20 @@ void Game::SelfPlay(const bool& withStrategy)
 
 void Game::PlayRandom()
 {
-    const Actions acts = this->GetPossibleActions();
+    const Actions acts = Actions::GetPossibleActions(
+        const_cast<Tetrimino&>(*this->state.GetCurrentPiece()),
+        this->state.GetPosition());
     const int index = GetRand(0, acts.size() - 1);
     this->PlaySequence(acts.at(index));
 }
 
 void Game::PlayBest()
 {
+    const Actions acts = Actions::GetPossibleActions(
+        const_cast<Tetrimino&>(*this->state.GetCurrentPiece()),
+        this->state.GetPosition());
     std::vector<int> values;
-    for (const Action& a : this->GetPossibleActions())
+    for (const Action& a : acts)
     {
         State tempState = this->state;
         int nLines = this->PlaySequence(a, tempState);
@@ -72,7 +77,7 @@ void Game::PlayBest()
         values.push_back(v);
     }
     int bestAction = std::max_element(values.begin(), values.end()) - values.begin();
-    this->score += this->PlaySequence(this->GetPossibleActions().at(bestAction), this->state);
+    this->score += this->PlaySequence(acts.at(bestAction), this->state);
 }
 
 void Game::Reset()
@@ -113,19 +118,4 @@ int Game::PlaySequence(const Action& seq, State& onState)
         }
     }
     return countLines;
-}
-
-const Actions& Game::GetPossibleActions()
-{
-    const Tetrimino* piece = this->state.GetCurrentPiece();
-    size_t hash = piece->GetHash();
-    if (this->actionsRegistry.count(hash) == 0)
-    { 
-        // we have to generate all possible actions
-        // and add them to hash table
-        this->actionsRegistry[hash] = Actions::CreateFor(
-            const_cast<Tetrimino&>(*piece),
-            this->state.GetPosition());
-    }
-    return this->actionsRegistry.at(hash);
 }

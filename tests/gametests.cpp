@@ -10,43 +10,16 @@ protected:
     // void TearDown() override {}
 };
 
-
-TEST_F(GameTest, SameState)
-{
-    const Tetrimino* t = this->state.GetCurrentPiece();
-    size_t hash_ref = t->GetHash();
-    this->GetPossibleActions();
-    ASSERT_EQ(t->GetHash(), hash_ref);
-}
-
-TEST_F(GameTest, ActionGeneration)
-{
-    const Tetrimino* t = this->state.GetCurrentPiece();
-    ASSERT_EQ(this->actionsRegistry.size(), 0);
-    this->GetPossibleActions();
-    ASSERT_EQ(this->actionsRegistry.size(), 1);
-    this->GetPossibleActions();
-    ASSERT_EQ(this->actionsRegistry.size(), 1);
-    while (*t == *this->state.GetCurrentPiece())
-    {
-        this->state.MakeMove(Moves::Advance);
-    }
-    this->GetPossibleActions();
-    ASSERT_EQ(this->actionsRegistry.size(), 2);
-}
-
 TEST_F(GameTest, Reset)
 {
-    this->GetPossibleActions();
-    ASSERT_EQ(this->actionsRegistry.size(), 1);
+    SetRandom(true);
     this->state.MakeMove(Moves::Advance);
     ASSERT_TRUE(this->state.GetBoard().CountFilledBlocks() > 0);
     this->Reset();
-    ASSERT_EQ(this->actionsRegistry.size(), 1);
     ASSERT_EQ(this->state.GetBoard().CountFilledBlocks(), 0);
 }
 
-TEST(NonRandomGameTest, PlaySequence)
+TEST_F(GameTest, PlaySequence)
 {
     if (Board::Width == 10)
     {
