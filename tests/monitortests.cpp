@@ -25,3 +25,22 @@ TEST(MonitorTest, OneDataPoint)
     CheckStats(m.GetScoreStatistics(), {10, 10, 10, 10});
     CheckStats(m.GetTimeStatistics(), {1.0, 1.0, 1.0, 1.0});
 }
+
+TEST(MonitorTest, TwoDataPoint)
+{
+    Monitor m;
+    m.AddOutput(10, 1.0);
+    m.AddOutput(5, 2.0);
+    CheckStats(m.GetScoreStatistics(), {5, 10, 7.5, 7.5, 12.5});
+    CheckStats(m.GetTimeStatistics(), {1.0, 2.0, 1.5, 1.5, 0.5});
+}
+
+TEST(MonitorTest, ThreeDataPoint)
+{
+    Monitor m;
+    m.AddOutput(10, 1.0);
+    m.AddOutput(5, 2.0);
+    m.AddOutput(9, 4.5);
+    CheckStats(m.GetScoreStatistics(), {5, 10, 9, 8, 7.0, 0.0});
+    CheckStats(m.GetTimeStatistics(), {1.0, 4.5, 2.0, 2.5, 3.25, 0.0});
+}

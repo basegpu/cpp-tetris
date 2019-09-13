@@ -23,8 +23,7 @@ Monitor::Stats Monitor::GetTimeStatistics()
     return CalcStatistics(this->Times);
 }
 
-template<typename T>
-Monitor::Stats Monitor::CalcStatistics(std::vector<T>& vec)
+Monitor::Stats Monitor::CalcStatistics(std::vector<double>& vec)
 {
     Stats stats;
     if (vec.size() > 0)
@@ -33,10 +32,13 @@ Monitor::Stats Monitor::CalcStatistics(std::vector<T>& vec)
         stats[Statistics::Min] = vec.front();
         stats[Statistics::Max] = vec.back();
         stats[Statistics::Median] = this->CalcMedian(vec);
-        stats[Statistics::Mean] = std::accumulate(vec.begin(), vec.end(), 0.0);
+        stats[Statistics::Mean] = std::accumulate(vec.begin(), vec.end(), 0.0) / vec.size();
         if (vec.size() > 1)
         {
-            stats[Statistics::Variance] = 0.0;
+            stats[Statistics::Variance] = this->CalcNthMoment<double, 2>(
+                vec.begin(),
+                vec.end(),
+                stats[Statistics::Mean]);
             if (vec.size() > 2)
             {
                 stats[Statistics::Skewness] = 0.0;
@@ -44,24 +46,4 @@ Monitor::Stats Monitor::CalcStatistics(std::vector<T>& vec)
         }
     }
     return stats;
-}
-
-template<typename T>
-double Monitor::CalcMedian(std::vector<T>& vec) const
-{
-    int n = vec.size();
-    if (n%2 == 1)
-    {
-        return vec.at((n-1)/2);
-    }
-    else
-    {
-        return 0.5*(vec.at(n/2-1) + vec.at(n/2));
-    }
-}
-
-template<int N, typename T>
-double Monitor::CalcNthMoment(std::vector<T>& vec) const
-{
-    ;
 }
