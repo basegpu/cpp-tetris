@@ -2,18 +2,26 @@
 #include "monitor.hpp"
 #include <exception>
 
-
-class MonitorTest :
-    public ::testing::Test, public Monitor
+void CheckStats(const Monitor::Stats& stats, const std::vector<double>& ref)
 {
-protected:
+    ASSERT_EQ(stats.size(), ref.size());
+    for (int ii = 0; ii < ref.size(); ii++)
+    {
+        ASSERT_EQ(stats.at(static_cast<Monitor::Statistics>(ii)), ref.at(ii));   
+    }
+}
 
-    // void SetUp() override {}
-    // void TearDown() override {}
-};
-
-TEST_F(MonitorTest, NoData)
+TEST(MonitorTest, NoData)
 {
-    ASSERT_THROW(this->GetScoreStatistics(), std::logic_error);
-    ASSERT_THROW(this->GetTimeStatistics(), std::logic_error);
+    Monitor m;
+    CheckStats(m.GetScoreStatistics(), {});
+    CheckStats(m.GetTimeStatistics(), {});
+}
+
+TEST(MonitorTest, OneDataPoint)
+{
+    Monitor m;
+    m.AddOutput(10, 1.0);
+    CheckStats(m.GetScoreStatistics(), {10, 10, 10, 10});
+    CheckStats(m.GetTimeStatistics(), {1.0, 1.0, 1.0, 1.0});
 }

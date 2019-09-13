@@ -11,24 +11,28 @@ public:
     void AddOutput(const int& score, const double& time);
 
     enum class Statistics : int {
-        Mean,
-        StandardDeviation,
-        Variance,
-        Median,
         Min,
         Max,
+        Median,
+        Mean,
+        Variance,
         Skewness
     };
 
-    std::map<Statistics, double> GetScoreStatistics();
-    std::map<Statistics, double> GetTimeStatistics();
+    typedef std::map<Statistics, double> Stats;
+    Stats GetScoreStatistics();
+    Stats GetTimeStatistics();
 
 private:
     std::vector<int> Scores;
     std::vector<double> Times;
 
     template<typename T>
-    std::map<Statistics, double> CalcStatistics(std::vector<T>& vec);
+    Stats CalcStatistics(std::vector<T>& vec);
+    template<typename T>
+    double CalcMedian(std::vector<T>& vec) const;
+    template<int N, typename T>
+    double CalcNthMoment(std::vector<T>& vec) const;
 };
 
 #endif
