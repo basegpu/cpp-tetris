@@ -24,12 +24,14 @@ public:
     typedef std::map<Statistics, double> Stats;
     Stats GetScoreStatistics();
     Stats GetTimeStatistics();
+    void Print();
 
 private:
     std::vector<double> Scores;
     std::vector<double> Times;
 
     Stats CalcStatistics(std::vector<double>& vec);
+    void PrintStats(const Stats& stats);
 
     template<class T>
     double CalcMedian(std::vector<T>& vec) const

@@ -83,16 +83,9 @@ void Controller::RunGame()
         t_spent = duration_cast<duration<double>>(t_end - t_start).count();
         m.AddOutput(
             this->game->GetScore(),
-            t_spent/this->game->GetScore());
-        // totalScore += this->game->GetScore();
-        // totalScore2 += pow(this->game->GetScore(),2);
+            t_spent/this->game->GetScore()*1000);
     }
-    // double stdev = 0.0;
-    // if (this->nGames > 1)
-    // {
-    //     stdev = sqrt((this->nGames * totalScore2 - pow(totalScore, 2))/(this->nGames * (this->nGames - 1)));
-    // }
-    // TETRIS_MESSAGE("total score achieved: " << (double)totalScore/this->nGames << " (" << stdev << ")");
+    m.Print();
 }
 
 void Controller::ParseCommandLine(int argc, char* argv[])

@@ -4,6 +4,7 @@
 #include <map>
 #include <numeric>
 #include <algorithm>
+#include <cmath>
 #include <exception>
 
 
@@ -21,6 +22,14 @@ Monitor::Stats Monitor::GetScoreStatistics()
 Monitor::Stats Monitor::GetTimeStatistics()
 {
     return CalcStatistics(this->Times);
+}
+
+void Monitor::Print()
+{
+    TETRIS_MESSAGE("Score Statistics")
+    this->PrintStats(this->GetScoreStatistics());
+    TETRIS_MESSAGE("Performance Statistics")
+    this->PrintStats(this->GetTimeStatistics());
 }
 
 Monitor::Stats Monitor::CalcStatistics(std::vector<double>& vec)
@@ -49,4 +58,18 @@ Monitor::Stats Monitor::CalcStatistics(std::vector<double>& vec)
         }
     }
     return stats;
+}
+
+void Monitor::PrintStats(const Stats& s)
+{
+    TETRIS_MESSAGE("min: " << s.at(Statistics::Min) << ", max: " << s.at(Statistics::Max))
+    TETRIS_MESSAGE("median: " << s.at(Statistics::Median) << ", mean: " << s.at(Statistics::Mean))
+    if (s.count(Statistics::Variance))
+    {
+        TETRIS_MESSAGE("stdev: " << std::sqrt(s.at(Statistics::Variance)))
+    }
+    if (s.count(Statistics::Skewness))
+    {
+        TETRIS_MESSAGE("skewness: " << s.at(Statistics::Skewness))
+    }
 }
