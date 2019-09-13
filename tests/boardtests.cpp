@@ -49,16 +49,11 @@ TEST_F(BoardTest, SingleTetrimino)
 
 TEST_F(BoardTest, TetriminoOutside)
 {
-    ASSERT_THROW(
-        this->AddTetrimino(
-            this->line90,
-            Board::Width-Tetrimino::BlocksPerPiece+1, 0),
-        std::out_of_range);
-    ASSERT_THROW(
-        this->AddTetrimino(
-            this->line270,
-            0, 100),
-        std::out_of_range);
+    this->Reset();
+    this->AddTetrimino(this->line90, -1, 0);
+    ASSERT_EQ(this->CountFilledBlocks(), 3);
+    this->AddTetrimino(this->line270, 0, Board::Height);
+    ASSERT_EQ(this->CountFilledBlocks(), 3);
 }
 
 TEST_F(BoardTest, DeleteSingleLine)

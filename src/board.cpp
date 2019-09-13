@@ -33,13 +33,16 @@ void Board::AddTetrimino(
 {
     auto func = [&, this](const int& x, const int& y) -> bool {
         // Check if within the boundaries
-        this->CheckLimits(x, y);
-        // if ok, then set the position as filled
-        this->mBoard[x][y] = Block::Filled;
-        // and return true to continue with looping
+        if (this->ValidLimits(x, y))
+        {
+            // if ok, then set the position as filled
+            this->mBoard[x][y] = Block::Filled;
+        }
+        // try to go on
         return true;
     };
     this->LoopOverTetrimino(tetrimino, pX, pY, func);
+    
 }
 
 bool Board::IsPossibleMove(
@@ -53,13 +56,14 @@ bool Board::IsPossibleMove(
         // or the piece have collisioned with a block already stored in the map
         if (!this->ValidLimits(x, y) || this->mBoard[x][y] == Block::Filled)
         {
-            // allow being above the board (may happen while rotating)
+            // stop when within board
             if (y >= 0)
             {
                 isPossible = false;
                 // stop looping
                 return false;
             }
+            // allow being above the board (may happen while rotating)
         }
         // continue with looping
         return true;

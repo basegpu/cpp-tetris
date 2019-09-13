@@ -136,9 +136,7 @@ void Controller::RunGameOnce()
             // try to make a move
             try
             {
-                TETRIS_TRACE()
                 this->game->MakeMove(commands.at(M));
-                TETRIS_TRACE()
             }
             catch (...) {} // bad key
         }
