@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <numeric>
+#include <cmath>
 
 class Monitor
 {
@@ -68,6 +69,25 @@ private:
         size_t cnt = std::distance(first, last);
         return std::accumulate(first, last, T( ), SumDiffNthPower<T, N>(mean)) / (cnt + 1 - N);
     };
+
+    template<class T, class Iter_T>
+    T ComputeVariance(Iter_T first, Iter_T last, T mean) {
+        return CalcNthMoment<T, 2>(first, last, mean);
+    }
+
+    template<class T, class Iter_T>
+    T ComputeSkewness(Iter_T begin, Iter_T end, T mean) {
+        T m3 = CalcNthMoment<T, 3>(begin, end, mean);
+        T m2 = CalcNthMoment<T, 2>(begin, end, mean);
+        return m3 / (m2 * std::sqrt(m2));
+    }
+
+    template<class T, class Iter_T>
+    T ComputeKurtosisExcess(Iter_T begin, Iter_T end, T mean) {
+        T m4 = CalcNthMoment<T, 4>(begin, end, mean);
+        T m2 = CalcNthMoment<T, 2>(begin, end, mean);
+        return m4 / (m2 * m2) - 3;
+    }
 };
 
 #endif

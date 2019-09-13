@@ -35,13 +35,16 @@ Monitor::Stats Monitor::CalcStatistics(std::vector<double>& vec)
         stats[Statistics::Mean] = std::accumulate(vec.begin(), vec.end(), 0.0) / vec.size();
         if (vec.size() > 1)
         {
-            stats[Statistics::Variance] = this->CalcNthMoment<double, 2>(
+            stats[Statistics::Variance] = this->ComputeVariance<double>(
                 vec.begin(),
                 vec.end(),
                 stats[Statistics::Mean]);
             if (vec.size() > 2)
             {
-                stats[Statistics::Skewness] = 0.0;
+                stats[Statistics::Skewness] = this->ComputeSkewness<double>(
+                    vec.begin(),
+                    vec.end(),
+                    stats[Statistics::Mean]);
             }
         }
     }
