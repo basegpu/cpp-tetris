@@ -42,42 +42,12 @@ void Game::SelfPlay(const bool& withStrategy)
 {
     if (withStrategy)
     {
-        this->PlayBest();
+        this->PlayBest(1);
     }
     else
     {
         this->PlayRandom();
     }
-}
-
-void Game::PlayRandom()
-{
-    const Actions acts = Actions::GetPossibleActions(
-        const_cast<Tetrimino&>(*this->state.GetCurrentPiece()),
-        this->state.GetPosition());
-    const int index = GetRand(0, acts.size() - 1);
-    this->PlaySequence(acts.at(index));
-}
-
-void Game::PlayBest()
-{
-    const Actions acts = Actions::GetPossibleActions(
-        const_cast<Tetrimino&>(*this->state.GetCurrentPiece()),
-        this->state.GetPosition());
-    std::vector<int> values;
-    for (const Action& a : acts)
-    {
-        State tempState = this->state;
-        int nLines = this->PlaySequence(a, tempState);
-        // evaluation
-        int v = 76 * nLines
-                - 35 * tempState.GetBoard().GetHoles()
-                - 51 * tempState.GetBoard().GetAggregateLevel()
-                - 18 * tempState.GetBoard().GetBumpiness();
-        values.push_back(v);
-    }
-    int bestAction = std::max_element(values.begin(), values.end()) - values.begin();
-    this->score += this->PlaySequence(acts.at(bestAction), this->state);
 }
 
 void Game::Reset()
@@ -90,6 +60,44 @@ void Game::Reset()
 void Game::Print() const
 {
     this->state.Print();
+}
+
+
+
+void Game::PlayRandom()
+{
+    const Actions acts = Actions::GetPossibleActions(
+        const_cast<Tetrimino&>(*this->state.GetCurrentPiece()),
+        this->state.GetPosition());
+    const int index = GetRand(0, acts.size() - 1);
+    this->PlaySequence(acts.at(index));
+}
+
+void Game::PlayBest(const bool& includeNext)
+{
+    int recursionDepth = includeNext ? 1 : 0;
+    this->score += this->MakeBestMoves(this->state, recursionDepth);
+}
+
+int Game::MakeBestMoves(State& theState, const int& depth)
+{
+    const Actions acts = Actions::GetPossibleActions(
+        const_cast<Tetrimino&>(*theState.GetCurrentPiece()),
+        theState.GetPosition());
+    std::vector<int> values(acts.size());
+    int ii = 0;
+    for (const Action& a : acts)
+    {
+        State tempState = theState;
+        int nLines = this->PlaySequence(a, tempState);
+        if (depth > 0)
+        {
+            nLines += this->MakeBestMoves(tempState, depth-1);
+        }
+        values.at(ii++) = this->Evaluate(tempState.GetBoard(), nLines);
+    }
+    int bestAction = std::max_element(values.begin(), values.end()) - values.begin();
+    return this->PlaySequence(acts.at(bestAction), theState);
 }
 
 int Game::MakeMove(const Moves& move, State& onState)
@@ -118,4 +126,12 @@ int Game::PlaySequence(const Action& seq, State& onState)
         }
     }
     return countLines;
+}
+
+int Game::Evaluate(const Board& board, const int& nLines)
+{
+    return 76 * nLines
+        - 35 * board.GetHoles()
+        - 51 * board.GetAggregateLevel()
+        - 18 * board.GetBumpiness();
 }

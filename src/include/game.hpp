@@ -32,9 +32,11 @@ protected:
     int score;
 
     void PlayRandom();
-    void PlayBest();
+    void PlayBest(const bool& includeNext);
+    int MakeBestMoves(State& theState, const int& depth);
     int MakeMove(const Moves& move, State& onState);
     int PlaySequence(const Action& action, State& onState);
+    int Evaluate(const Board& board, const int& nLines);
 };
 
 #endif // GAME_H
