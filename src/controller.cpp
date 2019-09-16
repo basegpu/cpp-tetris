@@ -121,6 +121,8 @@ void Controller::RunGameOnce()
     this->game->Reset();
     // process user input
     char M;
+    const int outStep = 100;
+    int nextOut = outStep;
     while (this->game->On())
     {
         if (this->showBoard)
@@ -132,6 +134,11 @@ void Controller::RunGameOnce()
             std::chrono::milliseconds pause(this->sleepTime);
             std::this_thread::sleep_for(pause);
             this->game->SelfPlay(this->strategy);
+            if (outStep > 0 && this->game->GetScore() >= nextOut)
+            {
+                TETRIS_MESSAGE("current score: " << this->game->GetScore());
+                nextOut += outStep;
+            }
         }
         else
         {

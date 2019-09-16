@@ -11,7 +11,7 @@ Game::Game() :
     gameIsOn(true),
     score(0)
 {
-    
+    ;
 }
 
 bool Game::On() const
@@ -61,8 +61,6 @@ void Game::Print() const
 {
     this->state.Print();
 }
-
-
 
 void Game::PlayRandom()
 {
