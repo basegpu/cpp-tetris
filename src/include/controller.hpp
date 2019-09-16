@@ -20,7 +20,7 @@ private:
     bool isRandom;
     bool showBoard;
     bool autoPlay;
-    bool bestPlay;
+    int strategy;
     int sleepTime;
     int nGames;
     std::string initSequence;

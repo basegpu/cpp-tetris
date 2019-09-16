@@ -20,7 +20,7 @@ public:
     int GetScore() const;
     void MakeMove(const Moves& move);
     void PlaySequence(const Action& seq);
-    void SelfPlay(const bool& withStrategy);
+    void SelfPlay(const int& strategy);
     void Reset();
     void Print() const;
 

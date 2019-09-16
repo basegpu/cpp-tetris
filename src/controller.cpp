@@ -93,12 +93,12 @@ void Controller::ParseCommandLine(int argc, char* argv[])
     try
     {
         TCLAP::CmdLine cmd("This is a tetris game engine", ' ', "0.9");
-        TCLAP::ValueArg<std::string> sequenceArg("s", "sequence", "play sequence of commands initially", false, "", "string", cmd);
+        TCLAP::ValueArg<std::string> sequenceArg("i", "initial", "play sequence of commands initially", false, "", "string", cmd);
         TCLAP::ValueArg<int> sleepArg("p", "pause", "sleeping time in milli seconds between moves", false, 100, "int", cmd);
         TCLAP::ValueArg<int> nArg("n", "number", "number of games to be played", false, 1, "int", cmd);
         TCLAP::SwitchArg reproArg("r", "reproducible", "non-random, reproducible game", cmd, false);
         TCLAP::SwitchArg autoArg("a", "auto", "auto-play mode", cmd, false);
-        TCLAP::SwitchArg bestArg("b", "best", "best-play mode", cmd, false);
+        TCLAP::ValueArg<int> strategyArg("s", "strategy", "playing strategy of auto-mode", false, 0, "int", cmd);
         TCLAP::SwitchArg quietArg("q", "quiet", "don't show the board after each move", cmd, false);
         cmd.parse(argc, argv);
         // Get the value parsed by each arg.
@@ -108,7 +108,7 @@ void Controller::ParseCommandLine(int argc, char* argv[])
         this->isRandom = !reproArg.getValue();
         this->showBoard = !quietArg.getValue();
         this->autoPlay = autoArg.getValue();
-        this->bestPlay = bestArg.getValue();
+        this->strategy = strategyArg.getValue();
     }
     catch (TCLAP::ArgException &e)
     {
@@ -127,11 +127,11 @@ void Controller::RunGameOnce()
         {
             this->ViewGame(true);
         }
-        if (this->autoPlay || this->bestPlay)
+        if (this->autoPlay)
         {
             std::chrono::milliseconds pause(this->sleepTime);
             std::this_thread::sleep_for(pause);
-            this->game->SelfPlay(this->bestPlay);
+            this->game->SelfPlay(this->strategy);
         }
         else
         {
@@ -155,7 +155,7 @@ void Controller::ViewGame(const bool& clean) const
         std::cout << "\x1B[2J\x1B[H";
     }
     std::cout << Viewer::Print(*this->game);
-    if (!this->autoPlay && !this->bestPlay)
+    if (!this->autoPlay)
     {
         std::cout << std::endl << this->PrintUsage();
     }

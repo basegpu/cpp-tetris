@@ -38,11 +38,11 @@ void Game::PlaySequence(const Action& seq)
     this->score += this->PlaySequence(seq, this->state);
 }
 
-void Game::SelfPlay(const bool& withStrategy)
+void Game::SelfPlay(const int& strategy)
 {
-    if (withStrategy)
+    if (strategy > 0)
     {
-        this->PlayBest(1);
+        this->PlayBest(strategy-1);
     }
     else
     {
