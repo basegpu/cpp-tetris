@@ -6,13 +6,15 @@ include_directories(
 	../libs/tclap/include
 )
 
+set(LibraryName tetris)
+
 add_subdirectory(../tests tests)
 
 file(GLOB sources *.cpp)
 list(REMOVE_ITEM sources main.cpp)
-add_library(tetris ${sources})
-target_compile_options(tetris PUBLIC -std=c++14 -O3 -Wall -Wfloat-conversion)
+add_library(${LibraryName} ${sources})
+target_compile_options(${LibraryName} PUBLIC -std=c++14 -O3 -Wall -Wfloat-conversion)
 
 add_executable(game main.cpp)
-target_link_libraries(game tetris)
+target_link_libraries(game ${LibraryName})
 target_compile_options(game PUBLIC -std=c++14 -O3 -Wall -Wfloat-conversion)

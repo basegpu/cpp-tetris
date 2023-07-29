@@ -51,9 +51,14 @@ typedef struct Position
 
 // utility functions
 #include <cstdlib>
+#include <thread>
 inline int GetRand(const int& pA, const int& pB)
 {
-    return std::rand() % (pB - pA + 1) + pA;
+    std::mutex m;
+    m.lock();
+    const int r = std::rand() % (pB - pA + 1) + pA;
+    m.unlock();
+    return r;
 }
 inline void SetRandom(const bool& isRandom)
 {
